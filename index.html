@@ -10,67 +10,45 @@
   <meta property="og:title" content="Dataquill – Turn Your Data Into Decisions" />
   <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
   <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dataquill.vercel.app/og.png" />
   <meta property="og:url" content="https://dataquill.vercel.app/" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <style>
-    :root {
-      --bg: #000000;
-      --panel: #0b1418;
-      --card: #0f1c22;
-      --text: #e9ffff;
-      --accent: #00e0c3;
+    :root{
+      --bg:#000; --panel:#0b1418; --card:#0f1c22; --text:#e9ffff;
+      --muted:#9fe7e1; --accent:#00e0c3; --accentDim:#00b8a1; --border:#124e4b;
     }
-
-    body {
-      margin: 0;
-      font-family: Arial, Helvetica, sans-serif;
-      background: var(--bg);
-      color: var(--text);
+    *{box-sizing:border-box}
+    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
+    a{color:var(--muted)}
+    header{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:var(--panel);position:sticky;top:0;z-index:10}
+    .brand{font-weight:800;font-size:22px;color:var(--accent)}
+    nav a{margin-left:16px;text-decoration:none;color:var(--text);opacity:.9}
+    nav a:hover{opacity:1}
+    main{padding:18px}
+    .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin:14px auto;max-width:1100px}
+    h1,h2{margin:0 0 10px}
+    .dropzone{
+      border:2px dashed var(--accent);border-radius:12px;padding:28px;text-align:center;
+      transition:all .2s ease;background:rgba(0,224,195,.04)
     }
-
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 1rem 2rem;
-      background: var(--panel);
-    }
-
-    .brand {
-      font-size: 1.5rem;
-      font-weight: bold;
-      color: var(--accent);
-    }
-
-    .nav-actions a {
-      margin-left: 1rem;
-      color: var(--text);
-      text-decoration: none;
-      font-weight: 600;
-    }
-
-    .panel {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 1.5rem;
-      margin: 1rem auto;
-      max-width: 800px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 2rem;
-      background: var(--panel);
-      margin-top: 2rem;
-    }
+    .dropzone.drag{background:rgba(0,224,195,.08);border-color:#64ffe9;transform:scale(1.01)}
+    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+    .btn{background:var(--accent);border:none;color:#003b34;font-weight:700;padding:10px 14px;border-radius:10px;cursor:pointer}
+    .btn.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
+    .stats{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
+    .stat{background:#061315;border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:120px}
+    table{width:100%;border-collapse:collapse;margin-top:12px}
+    th,td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    th{color:var(--muted)}
+    footer{text-align:center;padding:28px;background:var(--panel);margin-top:24px;border-top:1px solid var(--border)}
+    .hint{opacity:.8;font-size:.95rem}
   </style>
 </head>
 <body>
   <header>
     <div class="brand">Dataquill</div>
-    <nav class="nav-actions">
+    <nav>
       <a href="#pricing">Pricing</a>
       <a href="#faq">FAQ</a>
       <a href="#live-app">Live App</a>
@@ -80,14 +58,33 @@
   <main>
     <section class="panel">
       <h1>Dataquill</h1>
-      <p>AI powered embedded analytics platform</p>
+      <p class="hint">AI powered embedded analytics platform</p>
     </section>
 
     <section id="live-app" class="panel">
       <h2>Drop your CSV file</h2>
-      <p>Drag & drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
-      <div style="border:2px dashed var(--accent); padding:2rem; text-align:center;">
-        Drag a .csv here or <a href="#">browse</a>
+      <p class="hint">Drag &amp; drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
+
+      <!-- Hidden file input (triggered by “Browse” button) -->
+      <input id="csvInput" type="file" accept=".csv,text/csv" style="display:none" />
+
+      <div id="dropzone" class="dropzone" role="button" aria-label="CSV Drop Area">
+        Drag a .csv here or <a id="browseLink" href="#">browse</a>
+      </div>
+
+      <div class="actions">
+        <button id="clearBtn" class="btn secondary" type="button">Clear Data</button>
+        <button id="loadSampleBtn" class="btn secondary" type="button">Load Sample</button>
+      </div>
+
+      <div class="stats" id="stats" style="display:none">
+        <div class="stat"><div class="hint">Rows</div><div id="rowsCount">0</div></div>
+        <div class="stat"><div class="hint">Columns</div><div id="colsCount">0</div></div>
+        <div class="stat"><div class="hint">Sample</div><div id="sampleValue">—</div></div>
+      </div>
+
+      <div id="previewWrap" style="overflow:auto">
+        <table id="previewTable" style="display:none"></table>
       </div>
     </section>
 
@@ -110,8 +107,147 @@
     </section>
   </main>
 
-  <footer>
-    © 2025 Dataquill. All rights reserved.
-  </footer>
+  <footer>© 2025 Dataquill. All rights reserved.</footer>
+
+  <script>
+    // --- helpers -------------------------------------------------------------
+    const $ = sel => document.querySelector(sel);
+    const csvInput = $('#csvInput');
+    const dropzone = $('#dropzone');
+    const browseLink = $('#browseLink');
+    const clearBtn = $('#clearBtn');
+    const loadSampleBtn = $('#loadSampleBtn');
+    const previewTable = $('#previewTable');
+    const stats = $('#stats');
+    const rowsCount = $('#rowsCount');
+    const colsCount = $('#colsCount');
+    const sampleValue = $('#sampleValue');
+
+    function setPreview(headers, rows) {
+      // Build table (show up to 100 rows for performance)
+      const maxRows = 100;
+      previewTable.innerHTML = '';
+      const thead = document.createElement('thead');
+      const trh = document.createElement('tr');
+      headers.forEach(h => {
+        const th = document.createElement('th');
+        th.textContent = h ?? '';
+        trh.appendChild(th);
+      });
+      thead.appendChild(trh);
+      previewTable.appendChild(thead);
+
+      const tbody = document.createElement('tbody');
+      rows.slice(0, maxRows).forEach(r => {
+        const tr = document.createElement('tr');
+        r.forEach(cell => {
+          const td = document.createElement('td');
+          td.textContent = cell ?? '';
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+      previewTable.appendChild(tbody);
+
+      // Stats
+      rowsCount.textContent = rows.length.toLocaleString();
+      colsCount.textContent = headers.length;
+      sampleValue.textContent = rows.length && rows[0].length ? (rows[0][0] + '') : '—';
+
+      stats.style.display = 'flex';
+      previewTable.style.display = 'table';
+    }
+
+    function clearPreview() {
+      previewTable.style.display = 'none';
+      previewTable.innerHTML = '';
+      stats.style.display = 'none';
+      rowsCount.textContent = '0';
+      colsCount.textContent = '0';
+      sampleValue.textContent = '—';
+    }
+
+    // Robust-ish CSV parser that handles quoted fields & commas inside quotes
+    function parseCSV(text) {
+      const rows = [];
+      let row = [], cur = '', inQuotes = false;
+      for (let i = 0; i < text.length; i++) {
+        const c = text[i], n = text[i+1];
+        if (c === '"' ) {
+          if (inQuotes && n === '"') { cur += '"'; i++; }
+          else { inQuotes = !inQuotes; }
+        } else if (c === ',' && !inQuotes) {
+          row.push(cur); cur = '';
+        } else if ((c === '\n' || c === '\r') && !inQuotes) {
+          if (cur !== '' || row.length) { row.push(cur); rows.push(row); row = []; cur=''; }
+          if (c === '\r' && n === '\n') i++; // handle CRLF
+        } else {
+          cur += c;
+        }
+      }
+      if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
+      if (!rows.length) return { headers: [], rows: [] };
+      const headers = rows[0];
+      return { headers, rows: rows.slice(1) };
+    }
+
+    function handleText(text) {
+      const { headers, rows } = parseCSV(text);
+      if (!headers.length) {
+        clearPreview();
+        alert('No data found in CSV.');
+        return;
+      }
+      setPreview(headers, rows);
+    }
+
+    // --- wiring: browse / drag & drop ---------------------------------------
+    browseLink.addEventListener('click', e => {
+      e.preventDefault();
+      csvInput.click();
+    });
+
+    csvInput.addEventListener('change', e => {
+      const f = e.target.files && e.target.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => handleText(reader.result);
+      reader.readAsText(f);
+      // reset input so choosing same file again re-triggers
+      e.target.value = '';
+    });
+
+    ;['dragenter','dragover'].forEach(evt =>
+      dropzone.addEventListener(evt, e => {
+        e.preventDefault(); e.stopPropagation();
+        dropzone.classList.add('drag');
+      })
+    );
+    ;['dragleave','drop'].forEach(evt =>
+      dropzone.addEventListener(evt, e => {
+        e.preventDefault(); e.stopPropagation();
+        dropzone.classList.remove('drag');
+      })
+    );
+    dropzone.addEventListener('drop', e => {
+      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
+      if (!f) return;
+      const reader = new FileReader();
+      reader.onload = () => handleText(reader.result);
+      reader.readAsText(f);
+    });
+
+    // --- misc buttons --------------------------------------------------------
+    clearBtn.addEventListener('click', clearPreview);
+
+    loadSampleBtn.addEventListener('click', () => {
+      // Tiny inline sample to avoid network calls
+      const sample = `Name,City,Sales
+Alice,New York,120
+Bob,Miami,95
+Cara,Chicago,141`;
+      handleText(sample);
+    });
+  </script>
 </body>
 </html>
