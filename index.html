@@ -3,1225 +3,273 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload CSVs and get instant insights in a clean black-and-teal UI." />
 
-  <!-- Basic social (adjust the URL once you confirm your final domain) -->
-  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore." />
+  <title>Dataquill — Turn Your Data Into Decisions</title>
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
+
+  <!-- Open Graph / Twitter (update host after you confirm your final domain) -->
   <meta property="og:type" content="website" />
-  <meta property="og:url" content="/" />
+  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
+  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
+  <meta property="og:url" content="https://dataquill.vercel.app/" />
+  <meta property="og:image" content="https://dataquill.vercel.app/og.png" />
   <meta name="twitter:card" content="summary_large_image" />
 
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%2300d7c9'/%3E%3Cpath d='M28 86c14-2 22-32 34-32s20 30 38 30' stroke='%23001418' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
+
   <style>
+    /* ===== THEME (black & teal) ===== */
     :root{
-      --bg:#000000;
-      --panel:#0b1418;
-      --card:#0f1c22;
-      --text:#e9ffff;
-      --muted:#9fe7e1;
-      --teal:#14b8a6;     /* accent */
-      --teal-2:#22d3c5;   /* accent hover */
-      --line:#133137;
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --radius:16px;
+      --bg:#000000;           /* page background */
+      --panel:#0b1418;        /* panels */
+      --card:#0f1c22;         /* cards */
+      --text:#e9ffff;         /* primary text */
+      --muted:#9fe7e1;        /* subtle text */
+      --teal1:#23d4c9;        /* bright teal accents */
+      --teal2:#1ca5a5;        /* secondary teal */
+      --glow: 0 0 24px rgba(35,212,201,.25);
+      --ring: 0 0 0 2px rgba(35,212,201,.28);
+      --border: 1px solid #0c2a2a;
+      --radius: 14px;
     }
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
       margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      font:16px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
       color:var(--text);
-      background:
-        radial-gradient(1000px 600px at 20% -10%, rgba(20,184,166,.25), transparent 60%),
-        radial-gradient(900px 540px at 90% 0%, rgba(34,211,197,.18), transparent 60%),
-        var(--bg);
-    }
-    .container{max-width:1100px;margin:0 auto;padding:24px}
-
-    /* Header */
-    .hero{
-      padding:28px 24px;
-      border-radius:22px;
-      background:
-        radial-gradient(800px 480px at 10% -20%, rgba(20,184,166,.18), transparent 60%),
-        radial-gradient(900px 540px at 110% 0%, rgba(34,211,197,.14), transparent 60%),
-        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-    }
-    .brand{display:flex;align-items:center;gap:14px}
-    .logo{
-      width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
-      background: radial-gradient(120% 120% at 30% 20%, rgba(34,211,197,.2), rgba(20,184,166,.25));
-      border:1px solid #145c54;
-    }
-    .title h1{margin:0;font-size:28px;letter-spacing:.2px}
-    .title p{margin:.25rem 0 0 0;color:var(--muted);font-size:14px}
-    .nav{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
-    .pill{
-      padding:8px 12px;border-radius:999px;color:var(--text);
-      border:1px solid var(--line);background:rgba(255,255,255,.02)
-    }
-    .pill:hover{border-color:#1e6e66}
-
-    /* Grid */
-    .grid{
-      margin-top:20px;
-      display:grid;gap:16px;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
-    }
-    .card{
-      border-radius:var(--radius);
-      background:
-        radial-gradient(120% 120% at 10% -10%, rgba(20,184,166,.10), transparent 50%),
-        radial-gradient(120% 120% at 110% 10%, rgba(34,211,197,.08), transparent 45%),
-        var(--card);
-      border:1px solid var(--line);
-      box-shadow:var(--shadow);
-      padding:18px;
-      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
-    }
-    .card:hover{
-      transform:translateY(-2px);
-      border-color:#198c81;
-      box-shadow:0 0 0 1px rgba(20,184,166,.25), 0 0 60px 10px rgba(34,211,197,.08);
-    }
-    .card h3{margin:0 0 8px 0;font-size:18px}
-    .muted{color:var(--muted);font-size:14px}
-
-    /* Upload */
-    .drop{
-      margin-top:10px;border:1px dashed rgba(255,255,255,.16);
-      border-radius:12px;padding:18px;text-align:center;cursor:pointer;
-      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
-    }
-    .drop:hover{border-color:rgba(20,184,166,.6)}
-    input[type="file"]{display:none}
-
-    .stats{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px
-    }
-    .stat{
-      border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)
-    }
-    .stat b{display:block;font-size:18px;margin-bottom:2px}
-
-    /* Buttons */
-    .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:10px 14px;border-radius:12px;border:1px solid var(--line);
-      background:linear-gradient(135deg, rgba(20,184,166,.25), rgba(34,211,197,.18));
-      color:white;
-    }
-    .btn:hover{border-color:#1e6e66}
-
-    footer{margin:28px 0;color:var(--muted);text-align:center;font-size:13px}
-  </style>
-</head>
-<body>
-  <div class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="brand">
-        <!-- Simple inline “quill” teal logo -->
-        <div class="logo" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <defs>
-              <linearGradient id="gteal" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#22d3c5"/><stop offset="1" stop-color="#14b8a6"/>
-              </linearGradient>
-            </defs>
-            <path d="M16 3c5 2 9 2 12 0 0 9-3 16-12 21C7 19 4 12 4 3c3 2 7 2 12 0Z" stroke="url(#gteal)" stroke-width="1.6" fill="none"/>
-            <path d="M10 17c6-6 9-7 12-7-2 3-4 6-9 10l-3 2 2-3Z" fill="url(#gteal)"/>
-            <path d="M19 12l-7 7" stroke="white" stroke-opacity=".9" stroke-width="1.2" />
-          </svg>
-        </div>
-        <div class="title">
-          <h1>Dataquill</h1>
-          <p>AI powered embedded analytics platform</p>
-        </div>
-      </div>
-      <div class="nav">
-        <span class="pill">Features</span>
-        <span class="pill">Live App</span>
-        <span class="pill">Pricing</span>
-        <span class="pill">FAQ</span>
-      </div>
-    </section>
-
-    <!-- GRID -->
-    <section class="grid">
-      <article class="card">
-        <h3>Instant</h3>
-        <p class="muted">Drop a CSV → get KPIs + charts immediately.</p>
-      </article>
-
-      <article class="card">
-        <h3>Private</h3>
-        <p class="muted">100% client-side. No server, no database required.</p>
-      </article>
-
-      <article class="card">
-        <h3>White-label</h3>
-        <p class="muted">Swap logo, colors & favicon in minutes.</p>
-      </article>
-
-      <article class="card">
-        <h3>Upload CSV</h3>
-        <label class="drop" for="csvInput">Tap to choose or drop a file here</label>
-        <input id="csvInput" type="file" accept=".csv" />
-        <div class="stats">
-          <div class="stat"><b id="rCount">0</b><span class="muted">Rows</span></div>
-          <div class="stat"><b id="cCount">0</b><span class="muted">Columns</span></div>
-          <div class="stat"><b id="sampleCell">—</b><span class="muted">Sample</span></div>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>See it in action</h3>
-        <p class="muted">Guided demo with live animations.</p>
-        <a class="btn" href="#">Run Demo</a>
-      </article>
-
-      <article class="card">
-        <h3>Start free — explore integrations</h3>
-        <p class="muted">Coming soon: embed SDKs, exports, and more.</p>
-      </article>
-    </section>
-
-    <footer>© <span id="year"></span> Dataquill</footer>
-  </div>
-
-  <script>
-    // --- CSV handling (simple, client-side preview) ---
-    const csvInput = document.getElementById('csvInput');
-    const rCount = document.getElementById('rCount');
-    const cCount = document.getElementById('cCount');
-    const sampleCell = document.getElementById('sampleCell');
-
-    function parseCSV(text){
-      const rows = text.replace(/\r/g,'').split('\n').filter(Boolean);
-      return rows.map(r=>{
-        const out=[]; let cur='', q=false;
-        for(let i=0;i<r.length;i++){
-          const ch=r[i], nx=r[i+1];
-          if(ch==='"' && nx==='"'){ cur+='"'; i++; continue; }
-          if(ch==='"'){ q=!q; continue; }
-          if(ch===',' && !q){ out.push(cur); cur=''; continue; }
-          cur+=ch;
-        }
-        out.push(cur);
-        return out;
-      });
+      background:radial-gradient(1200px 600px at 50% -120px,#0fd5c9 0%, #042d2d 32%, #000 62%) fixed,
+                 var(--bg);
     }
 
-    function handleFile(file){
-      const reader = new FileReader();
-      reader.onload = () => {
-        const text = reader.result || '';
-        const data = parseCSV(String(text));
-        if(!data.length) return;
-
-        const headers = data[0] || [];
-        const firstRow = data[1] || [];
-        rCount.textContent = Math.max(0, data.length - 1);
-        cCount.textContent = headers.length;
-        sampleCell.textContent = firstRow[0] ?? '—';
-      };
-      reader.readAsText(file);
-    }
-
-    csvInput?.addEventListener('change', e => {
-      const f = e.target.files?.[0];
-      if(f) handleFile(f);
-    });
-
-    // Drag-over support for the label (optional; label already opens file picker on tap)
-    const drop = document.querySelector('.drop');
-    ['dragenter','dragover','dragleave','drop'].forEach(ev=>{
-      drop.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }, false);
-    });
-    drop.addEventListener('drop', e=>{
-      const f = e.dataTransfer?.files?.[0];
-      if(f) handleFile(f);
-    });
-
-    // Footer year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html>!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: sleek, client-side analytics. Upload CSVs, explore widgets, and ship dashboards fast." />
-
-  <!-- Social preview (optional; update to your deployed URL if you add an image later) -->
-  <title>Dataquill – Smarter Analytics, Faster Decisions</title><meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="Sleek, client-side analytics with a violet→cyan glow." />
-  <meta property="og:type" content="website" />
-  <meta property="og:image" content="https://dataquill.vercel.app/og.png" />
-  <meta property="og:url" content="https://dataquill.vercel.app" />
-
-  <style>
-    /* ===== THEME ===== */
-    :root{
-      --bg:#0a0b12;           /* page background */
-      --surface:#101426;      /* panels */
-      --card:#0e1830;         /* cards */
-      --text:#eef3ff;         /* primary text */
-      --muted:#a9b4ff;        /* secondary text */
-      --outline:#243a73;      /* borders */
-
-      --violet:#7c3aed;       /* accent 1 */
-      --violet-2:#a855f7;     /* accent 1b */
-      --cyan:#22d3ee;         /* accent 2 */
-
-      --glow: 0 0 0 1px rgba(124,58,237,.25),
-              0 0 60px 10px rgba(34,211,238,.09);
-      --radius:16px;
-      --shadow: 0 20px 60px rgba(0,0,0,.45);
-      --glass: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
-    }
-
-    /* ===== RESET / BASE ===== */
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:
-        radial-gradient(circle at 20% -10%, rgba(124,58,237,.25), transparent 45%),
-        radial-gradient(circle at 80% 10%, rgba(34,211,238,.25), transparent 45%),
-        var(--bg);
-    }
-
-    a{color:inherit;text-decoration:none}
-    .container{max-width:1100px;margin:0 auto;padding:24px}
-
-    /* ===== HEADER ===== */
-    .hero{
-      position:relative;
-      padding:28px 24px;
-      border-radius:calc(var(--radius) + 6px);
-      background:linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.25));
-      box-shadow:var(--shadow);
-      overflow:hidden;
+    /* ========= LAYOUT ========= */
+    .topbar{
+      position:sticky; top:0; z-index:30;
+      display:flex; align-items:center; gap:16px; justify-content:space-between;
+      padding:14px 18px; backdrop-filter:saturate(140%) blur(8px);
+      background:linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.45));
+      border-bottom: var(--border);
     }
     .brand{
-      display:flex;align-items:center;gap:14px;
+      display:flex; align-items:center; gap:12px;
     }
     .logo{
-      width:44px;height:44px;display:grid;place-items:center;
-      border-radius:12px;
-      background: radial-gradient(120% 120% at 30% 20%, rgba(34,211,238,.2), rgba(124,58,237,.25));
+      width:28px; height:28px; border-radius:8px;
+      background:linear-gradient(135deg,#22e7d8,#0cc1b7);
       box-shadow: var(--glow);
     }
-    .logo svg{display:block}
-    .title{
-      display:flex;flex-direction:column;line-height:1.1
-    }
-    .title h1{margin:0;font-size:28px;letter-spacing:.3px}
-    .title span{font-size:13px;color:var(--muted)}
-    .nav{
-      margin-top:14px;display:flex;gap:14px;flex-wrap:wrap
-    }
-    .pill{
-      padding:8px 12px;border-radius:999px;color:var(--text);
-      border:1px solid rgba(255,255,255,.08);background:var(--glass)
-    }
-    .pill:hover{border-color:rgba(255,255,255,.18)}
+    .brand h1{margin:0; font-weight:800; letter-spacing:.2px; font-size:20px}
+    .brand small{display:block; color:var(--muted); font-weight:500; margin-top:2px}
 
-    /* ===== GRID ===== */
+    .container{
+      max-width:1100px;
+      margin:28px auto 80px;
+      padding:0 18px;
+    }
+
     .grid{
-      margin-top:20px;
-      display:grid;gap:16px;
-      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      display:grid;
+      grid-template-columns: 1fr 1fr;
+      gap:16px;
     }
+    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
+
     .card{
-      border-radius:var(--radius);
-      background:
-        radial-gradient(120% 120% at 10% -10%, rgba(124,58,237,.10), transparent 50%),
-        radial-gradient(120% 120% at 110% 10%, rgba(34,211,238,.09), transparent 45%),
-        var(--card);
-      border:1px solid var(--outline);
-      box-shadow:var(--shadow);
-      padding:18px;
-      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+      background:linear-gradient(180deg,var(--panel),#031c1c);
+      border: var(--border);
+      border-radius: var(--radius);
+      padding:16px;
+      box-shadow: var(--glow);
     }
-    .card:hover{
-      transform:translateY(-2px);
-      border-color:rgba(124,58,237,.55);
-      box-shadow:var(--glow);
-    }
-    .card h3{margin:0 0 8px 0;font-size:18px}
-    .muted{color:var(--muted);font-size:14px}
+    .card h3{margin:0 0 8px}
+    .muted{color:var(--muted)}
+    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
 
-    /* ===== UPLOAD ===== */
-    .drop{
-      margin-top:10px;border:1px dashed rgba(255,255,255,.15);
-      border-radius:12px;padding:18px;text-align:center;cursor:pointer;
-      background:var(--glass)
-    }
-    .drop:hover{border-color:rgba(255,255,255,.28)}
-    .stats{
-      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px
-    }
-    .stat{
-      border:1px solid var(--outline);border-radius:12px;padding:10px 12px;background:var(--surface);
-    }
-    .stat b{display:block;font-size:18px;margin-bottom:2px}
-
-    /* ===== FOOTER ===== */
-    footer{margin:28px 0;color:var(--muted);text-align:center;font-size:13px}
     .btn{
-      display:inline-flex;align-items:center;gap:8px;
-      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
-      background:linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.25));
-      color:white;
+      appearance:none; border:1px solid #144a49; background:#072022;
+      color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer;
     }
-    .btn:hover{border-color:rgba(255,255,255,.22)}
-    input[type="file"]{display:none}
+    .btn:hover{box-shadow: var(--ring); transform:translateY(-1px)}
+    .btn.primary{background:#052b2a; border-color:#1a6a66}
+
+    /* ===== CSV Drop / Input ===== */
+    .drop{
+      display:flex; align-items:center; justify-content:center;
+      border: 2px dashed #1b7370; color:var(--muted);
+      border-radius:12px; height:120px; margin-top:10px;
+      background:#071616;
+    }
+    .drop.drag{background:#062626; box-shadow: var(--ring)}
+    .drop input{display:none}
+
+    /* ===== Table Preview ===== */
+    .preview{
+      margin-top:16px; overflow:auto; max-height: 340px;
+      border-radius:12px; border:var(--border); background:#031416;
+    }
+    table{width:100%; border-collapse:collapse; color:#cfeeed}
+    th,td{padding:.65rem .8rem; border-bottom:1px solid #143738; white-space:nowrap}
+    th{position:sticky; top:0; background:#052428; z-index:1}
+
+    /* ===== Footer ===== */
+    footer{margin-top:40px; text-align:center; color:var(--muted)}
+    footer a{color:var(--teal1); text-decoration:none}
+    footer a:hover{text-decoration:underline}
   </style>
-</head>
-<body>
-  <div class="container">
-    <!-- HERO -->
-    <section class="hero">
-      <div class="brand">
-        <!-- Inline SVG Logo: stylized quill in a shield -->
-        <div class="logo" aria-hidden="true">
-          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
-            <defs>
-              <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#22D3EE"/>
-                <stop offset="1" stop-color="#7C3AED"/>
-              </linearGradient>
-            </defs>
-            <!-- shield -->
-            <path d="M16 3c5 2 9 2 12 0 0 9-3 16-12 21C7 19 4 12 4 3c3 2 7 2 12 0Z" stroke="url(#g1)" stroke-width="1.6" fill="none"/>
-            <!-- quill -->
-            <path d="M10 17c6-6 9-7 12-7-2 3-4 6-9 10l-3 2 2-3Z" fill="url(#g1)"/>
-            <path d="M19 12l-7 7" stroke="white" stroke-opacity=".9" stroke-width="1.2" />
-          </svg>
-        </div>
-        <div class="title">
-          <h1>Dataquill</h1>
-          <span>Violet-to-cyan glow • 100% client-side</span>
-        </div>
-      </div>
-      <div class="nav">
-        <span class="pill">Features</span>
-        <span class="pill">Live App</span>
-        <span class="pill">Pricing</span>
-        <span class="pill">FAQ</span>
-      </div>
-    </section>
-
-    <!-- GRID -->
-    <section class="grid">
-      <article class="card">
-        <h3>Instant</h3>
-        <p class="muted">Drop a CSV → get KPIs + charts immediately.</p>
-      </article>
-
-      <article class="card">
-        <h3>Private</h3>
-        <p class="muted">100% client-side. No server, no data leaves the browser.</p>
-      </article>
-
-      <article class="card">
-        <h3>White-label</h3>
-        <p class="muted">Swap logo, colors &amp; favicon easily.</p>
-      </article>
-
-      <article class="card">
-        <h3>Upload CSV</h3>
-        <label class="drop" for="csvInput">Tap to choose or drop a file here</label>
-        <input id="csvInput" type="file" accept=".csv" />
-        <div class="stats">
-          <div class="stat"><b id="rCount">0</b><span class="muted">Rows</span></div>
-          <div class="stat"><b id="cCount">0</b><span class="muted">Columns</span></div>
-          <div class="stat"><b id="sampleCell">—</b><span class="muted">Sample</span></div>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>See it in action</h3>
-        <p class="muted">Live animations &amp; instant feedback after upload.</p>
-        <a class="btn" href="#">Run Demo</a>
-      </article>
-
-      <article class="card">
-        <h3>Start free — explore integrations</h3>
-        <p class="muted">Coming soon: embed SDKs, exports, and more.</p>
-      </article>
-    </section>
-
-    <footer>© <span id="year"></span> Dataquill</footer>
-  </div>
-
-  <script>
-    // ===== CSV UPLOAD (simple preview) =====
-    const csvInput = document.getElementById('csvInput');
-    const drop = document.querySelector('.drop');
-    const rCount = document.getElementById('rCount');
-    const cCount = document.getElementById('cCount');
-    const sampleCell = document.getElementById('sampleCell');
-
-    function parseCSV(text){
-      // Split respecting simple quoted fields
-      const rows = text.replace(/\r/g,'').split('\n').filter(Boolean);
-      const data = rows.map(r=>{
-        const out=[]; let cur='', q=false;
-        for(let i=0;i<r.length;i++){
-          const ch=r[i], nx=r[i+1];
-          if(ch==='"' && nx=== '"'){ cur+='"'; i++; continue; }
-          if(ch=== '"'){ q=!q; continue; }
-          if(ch=== ',' && !q){ out.push(cur); cur=''; continue; }
-          cur+=ch;
-        }
-        out.push(cur);
-        return out;
-      });
-      return data;
-    }
-
-    function handleFile(file){
-      const reader = new FileReader();
-      reader.onload = () => {
-        const text = reader.result || '';
-        const data = parseCSV(String(text));
-        if(!data.length) return;
-
-        const headers = data[0] || [];
-        const firstDataRow = data[1] || [];
-        rCount.textContent = data.length - 1; // minus header
-        cCount.textContent = headers.length;
-        sampleCell.textContent = firstDataRow[0] ?? '—';
-      };
-      reader.readAsText(file);
-    }
-
-    csvInput?.addEventListener('change', e=>{
-      const f = e.target.files?.[0];
-      if(f) handleFile(f);
-    });
-
-    // Drag & drop behavior
-    ;['dragenter','dragover','dragleave','drop'].forEach(ev=>{
-      drop.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }, false);
-    });
-    drop.addEventListener('drop', e=>{
-      const f = e.dataTransfer?.files?.[0];
-      if(f) handleFile(f);
-    });
-
-    // Year
-    document.getElementById('year').textContent = new Date().getFullYear();
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>InsightPulse — Turn Your Data Into Decisions</title>
-
-<link rel="icon" href='data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><defs><radialGradient id="g" cx="50%" cy="50%" r="50%"><stop offset="0%" stop-color="%234afff0"/><stop offset="100%" stop-color="%2326d9cf"/></radialGradient></defs><circle cx="32" cy="32" r="30" fill="url(%23g)"/><path d="M16 34h32M16 26h24" stroke="%23001010" stroke-width="4" stroke-linecap="round"/></svg>'>
-
-<meta name="description" content="Premium, brandable analytics experience. Offline-ready and private.">
-<meta property="og:title" content="InsightPulse — Turn Your Data Into Decisions">
-<meta property="og:description" content="Premium, brandable analytics experience. Offline-ready and private.">
-<meta property="og:url" content="https://insightpulse.vercel.app">
-<meta property="og:type" content="website">
-<meta property="og:image" content="https://insightpulse.vercel.app/og.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="InsightPulse — Turn Your Data Into Decisions">
-<meta name="twitter:description" content="Premium, brandable analytics experience. Offline-ready and private.">
-<meta name="twitter:image" content="https://insightpulse.vercel.app/og.png">
-
-<style>
-:root{
-  --bg:#000; --surface:#050a0a; --muted:#0d1c1c; --text:#eaffff;
-  --sub:#a5f7f1; --teal1:#146b6b; --teal2:#1ca5a5; --teal3:#26d9cf; --mint:#4afff0;
-}
-html,body{height:100%}
-body{
-  margin:0; font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-  color:var(--text); line-height:1.6;
-  background:linear-gradient(135deg,#001212,#002626,#001212);
-  background-size:400% 400%; animation:tealGradient 20s ease infinite;
-}
-@keyframes tealGradient{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
-*{box-sizing:border-box}
-
-/* Header / Nav */
-header{background:linear-gradient(135deg,var(--teal1),var(--teal2),var(--teal3));text-align:center;padding:2rem 1rem}
-header h1{margin:0;font-size:2.6rem;color:var(--mint);text-shadow:0 0 14px rgba(74,255,240,.9),0 0 34px rgba(38,217,207,.7);animation:glowPulse 3s ease-in-out infinite alternate}
-header p{margin:.4rem 0 0;color:#c5fdfb}
-@keyframes glowPulse{from{ text-shadow:0 0 14px rgba(74,255,240,.9),0 0 34px rgba(38,217,207,.7)}to{ text-shadow:0 0 20px rgba(74,255,240,1),0 0 46px rgba(38,217,207,.9)}}
-
-nav{display:flex;justify-content:center;gap:.5rem;background:linear-gradient(135deg,var(--teal2),var(--teal3))}
-nav a{color:#fff;text-decoration:none;padding:1rem 1.25rem;border-radius:10px}
-nav a:hover{background:rgba(74,255,240,.15);box-shadow:0 0 12px rgba(74,255,240,.6);text-shadow:0 0 8px rgba(74,255,240,.85),0 0 14px rgba(38,217,207,.6);transition:all .2s ease}
-
-/* Sections & headings */
-section{padding:2rem 1rem;max-width:1100px;margin:auto}
-h2{color:var(--mint);margin:0 0 .75rem}
-
-/* Cards & glow */
-.feature,.card,.chart-box,.kpi,.table-wrap,.cta-card{
-  background:var(--surface);border:1px solid var(--muted);border-radius:12px;padding:1rem;
-  box-shadow:0 0 14px rgba(38,217,207,.4),0 0 28px rgba(74,255,240,.15);transition:box-shadow .3s ease
-}
-.feature:hover,.card:hover,.chart-box:hover,.kpi:hover,.table-wrap:hover,.cta-card:hover{box-shadow:0 0 18px rgba(38,217,207,.7),0 0 32px rgba(74,255,240,.3)}
-
-/* Features grid */
-.features{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}
-.feature h3{color:var(--teal3);margin:.2rem 0}
-.feature p{color:var(--sub);margin:0}
-
-/* KPIs */
-.kpis{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem}
-.kpi{flex:1 1 180px;text-align:center}
-.kpi .kpi-value{font-size:2rem;color:var(--mint);font-weight:800}
-.kpi .kpi-label{color:var(--sub)}
-
-/* Charts */
-.chart-container{display:flex;flex-wrap:wrap;gap:1rem;margin-top:1rem}
-.chart-box svg{width:100%;height:220px;background:#000;border:1px solid var(--teal2);border-radius:10px}
-
-/* Table */
-.table-wrap{margin-top:1rem}
-table{width:100%;border-collapse:collapse;color:#eaffff}
-th,td{padding:.6rem;border-bottom:1px solid var(--teal2);text-align:left;white-space:nowrap}
-th{color:var(--mint);background:#021111}
-
-/* Actions / CTAs */
-.actions{display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;margin-bottom:.75rem}
-.btn,.label-btn{
-  display:inline-block;padding:.85rem 1rem;border:1px dashed var(--teal3);
-  border-radius:12px;color:var(--mint);cursor:pointer;background:#031515;
-  box-shadow:0 0 10px rgba(74,255,240,.35);text-decoration:none
-}
-.label-btn{animation:buttonPulse 3s infinite alternate}
-.btn:hover,.label-btn:hover{background:#052020}
-@keyframes buttonPulse{0%{box-shadow:0 0 6px rgba(74,255,240,.4)}100%{box-shadow:0 0 18px rgba(74,255,240,.9)}}
-
-/* Overlay input that iPad Chrome will accept */
-.file-wrap{position:relative;display:inline-block}
-.file-wrap input[type="file"]{
-  position:absolute; inset:0; width:100%; height:100%;
-  opacity:0.01; cursor:pointer; z-index:2; -webkit-appearance:none; appearance:none;
-}
-
-/* Dropzone */
-.dropzone{
-  position:relative;
-  border:2px dashed var(--teal3);border-radius:14px;padding:1.25rem;text-align:center;color:var(--sub);
-  background:#021616; margin:.5rem 0 0
-}
-.dropzone.dragover{background:#062222;box-shadow:0 0 16px rgba(74,255,240,.5)}
-.dropzone strong{color:var(--mint)}
-.dropzone:focus{outline:2px solid var(--mint)}
-/* The real input sits on top of the dropzone to capture taps */
-.dropzone .dz-input{
-  position:absolute; inset:0; width:100%; height:100%;
-  opacity:0.01; cursor:pointer; z-index:3; /* above text */
-  -webkit-appearance:none; appearance:none; pointer-events:auto;
-}
-
-/* CTA cards */
-.cta-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1rem;margin-top:1rem}
-.cta-card h3{margin:.2rem 0;color:var(--mint)}
-.cta-card p{margin:.2rem 0;color:var(--sub)}
-.cta-row{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:.4rem}
-
-/* Demo highlight */
-.highlight{outline:2px solid var(--mint); box-shadow:0 0 20px rgba(74,255,240,.8)!important}
-
-/* Footer */
-footer{background:#001414;text-align:center;padding:1rem;color:var(--mint);margin-top:2rem}
-footer nav{background:none;gap:1rem}
-footer a{color:var(--mint);text-decoration:underline}
-.badge{display:inline-block;margin-left:.5rem;background:#072222;border:1px solid var(--teal2);border-radius:999px;padding:.2rem .55rem;color:var(--mint);font-size:.85rem}
-</style>
-</head>
-<body>
-<header>
-  <h1>InsightPulse</h1>
-  <p>Premium teal-on-black analytics with animated glow.</p>
-</header>
-
-<nav>
-  <a href="#features">Features</a>
-  <a href="#liveapp">Live App</a>
-  <a href="#pricing">Pricing</a>
-  <a href="#faq">FAQ</a>
-</nav>
-
-<section id="features">
-  <h2>Features</h2>
-  <div class="features">
-    <div class="feature"><h3>Instant</h3><p>Drop a CSV → KPIs + charts immediately.</p></div>
-    <div class="feature"><h3>Private</h3><p>100% client-side. No server needed.</p></div>
-    <div class="feature"><h3>White-label</h3><p>Swap logo and colors easily.</p></div>
-  </div>
-
-  <!-- CTA widgets -->
-  <div class="cta-grid">
-    <div class="cta-card">
-      <h3>Drop your CSV file here</h3>
-      <p>Drag a CSV (desktop) or tap to choose (iPad).</p>
-      <!-- Overlaid input + JS fallback for Chrome on iPad -->
-      <div id="dropZone" class="dropzone" role="button" tabindex="0" aria-label="Upload CSV">
-        <strong>Tap to choose</strong> or drop file here
-        <input id="fileInputDrop" class="dz-input" type="file"
-               accept=".csv,text/csv,text/plain,application/vnd.ms-excel" />
-      </div>
-    </div>
-
-    <div class="cta-card">
-      <h3>Upload your data — Get insights</h3>
-      <p>One tap to import and visualize.</p>
-      <div class="cta-row">
-        <div class="file-wrap">
-          <span class="label-btn">Upload CSV</span>
-          <input id="fileInputTop" type="file" accept=".csv,text/csv,text/plain,application/vnd.ms-excel" />
-        </div>
-        <div class="file-wrap">
-          <span class="btn">Try it with your data</span>
-          <input id="fileInputTop2" type="file" accept=".csv,text/csv,text/plain,application/vnd.ms-excel" />
-        </div>
-      </div>
-    </div>
-
-    <div class="cta-card">
-      <h3>See it in action</h3>
-      <p>Watch a guided demo with live animations.</p>
-      <button id="btnSeeAction" type="button" class="btn">Run Demo 🚀</button>
-    </div>
-
-    <div class="cta-card">
-      <h3>Start for free — Explore integrations</h3>
-      <p>Contact us; we’ll wire integrations for you.</p>
-      <a class="btn"
-         href="mailto:jdegrazia57@gmail.com?subject=InsightPulse%20%E2%80%94%20Getting%20Started&body=Hi%20InsightPulse%2C%0A%0AI%27d%20like%20to%20start%20for%20free%20and%20see%20integrations.%0AName%3A%20%0ACompany%3A%20%0AUse%20case%3A%20">
-         Start for free — Explore integrations
-      </a>
-    </div>
-  </div>
-</section>
-
-<section id="liveapp">
-  <h2>Live App <span class="badge">Demo Mode included</span></h2>
-
-  <div class="actions">
-    <!-- iPad-safe main picker -->
-    <div class="file-wrap">
-      <span class="label-btn">Upload CSV</span>
-      <input id="fileInput" type="file" accept=".csv,text/csv,text/plain,application/vnd.ms-excel" />
-    </div>
-    <button class="btn" id="runDemo" type="button">Run Demo 🚀</button>
-    <button class="btn" id="replayDemo" type="button" style="display:none">Replay Demo</button>
-  </div>
-
-  <p style="margin:.2rem 0 .2rem">
-    <a href="data:text/csv,Month,Revenue%0AJan,12000%0AFeb,14100%0AMar,15750%0AApr,17040%0AMay,16660%0AJun,18220%0AJul,19510"
-       download="sample.csv" style="color:#4afff0;text-decoration:underline">Download sample CSV</a>
-  </p>
-
-  <div class="kpis">
-    <div class="kpi" id="kpiBox1"><span class="kpi-value" id="kpi1">0</span><span class="kpi-label">Total</span></div>
-    <div class="kpi" id="kpiBox2"><span class="kpi-value" id="kpi2">0</span><span class="kpi-label">Average ×100</span></div>
-    <div class="kpi" id="kpiBox3"><span class="kpi-value" id="kpi3">0%</span><span class="kpi-label">Growth</span></div>
-  </div>
-
-  <div class="chart-container">
-    <div class="chart-box" id="lineBox"><svg id="lineChart"></svg></div>
-    <div class="chart-box" id="barBox"><svg id="barChart"></svg></div>
-  </div>
-
-  <div class="table-wrap" id="tableBox"><table id="dataTable"><thead></thead><tbody></tbody></table></div>
-</section>
-
-<section id="pricing" class="card">
-  <h2>Pricing</h2>
-  <p style="color:var(--sub)">Exclusive acquisition package available.</p>
-</section>
-
-<section id="faq">
-  <h2>FAQ</h2>
-  <p><strong>Does it work offline?</strong> Yes — single file, no CDNs.</p>
-  <p><strong>Is it private?</strong> 100% client-side parsing; no uploads.</p>
-  <p><strong>Can it be branded?</strong> Yes — edit variables at the top of the CSS.</p>
-</section>
-
-<footer>
-  <nav>
-    <a href="#features">Features</a>
-    <a href="#liveapp">Live App</a>
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-  </nav>
-  <p>&copy; <span id="year"></span> InsightPulse
-     <small style="opacity:.7;margin-left:.5rem">• Build: HOTFIX-6 (Chrome-iPad)</small>
-  </p>
-</footer>
-
-<script>
-document.addEventListener('DOMContentLoaded', () => {
-  const $ = id => document.getElementById(id);
-
-  // Year + smooth scroll
-  $('year').textContent = new Date().getFullYear();
-  document.querySelectorAll('a[href^="#"]').forEach(a=>{
-    a.addEventListener('click', e=>{
-      const id=a.getAttribute('href').slice(1);
-      const el=document.getElementById(id);
-      if(el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
-    });
-  });
-
-  // CSV utils
-  function parseCSV(text){
-    const lines = text.trim().split(/\r?\n/);
-    return lines.map(line=>{
-      const out=[]; let cur='', q=false;
-      for(let i=0;i<line.length;i++){
-        const ch=line[i];
-        if(ch === '"'){ q=!q; }
-        else if(ch === ',' && !q){ out.push(cur); cur=''; }
-        else{ cur += ch; }
-      }
-      out.push(cur);
-      return out.map(c => c.replace(/^"|"$/g,''));
-    });
-  }
-  function firstNumericColumn(rows){
-    if(rows.length < 2) return -1;
-    for(let c=1;c<rows[0].length;c++){
-      if(rows.slice(1).some(r => !isNaN(parseFloat(r[c])))) return c;
-    }
-    return -1;
-  }
-
-  function animateNumber(el, from, to, duration=900){
-    const start = performance.now();
-    function tick(now){
-      const p = Math.min(1,(now-start)/duration);
-      const val = from + (to-from)*p;
-      el.textContent = val.toFixed(2);
-      if(p<1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
-  function updateKPIs(rows,numCol, animate=true){
-    const nums = rows.slice(1).map(r=>parseFloat(r[numCol])).filter(n=>!isNaN(n));
-    if(!nums.length) return;
-    const sum = nums.reduce((a,b)=>a+b,0);
-    const avg = sum/nums.length;
-    const growth = nums[0] ? ((nums[nums.length-1]-nums[0])/Math.abs(nums[0]))*100 : 0;
-
-    const el1=$('kpi1'), el2=$('kpi2'), el3=$('kpi3');
-    if(animate){
-      animateNumber(el1, parseFloat(el1.textContent)||0, sum);
-      animateNumber(el2, parseFloat(el2.textContent)||0, avg*100);
-      const gFrom=parseFloat((el3.textContent||"0").replace("%",""))||0;
-      const gTo=growth, start=performance.now(), dur=900;
-      function tick(t){
-        const p=Math.min(1,(t-start)/dur), v=gFrom+(gTo-gFrom)*p;
-        el3.textContent=v.toFixed(2)+"%";
-        if(p<1) requestAnimationFrame(tick);
-      } requestAnimationFrame(tick);
-    } else {
-      el1.textContent=sum.toFixed(2);
-      el2.textContent=(avg*100).toFixed(2);
-      el3.textContent=growth.toFixed(2)+"%";
-    }
-  }
-  function clearSVG(svg){ while(svg.firstChild) svg.removeChild(svg.firstChild); }
-  function drawLineChart(rows,numCol){
-    const svg = $('lineChart'); clearSVG(svg);
-    const nums = rows.slice(1).map(r=>parseFloat(r[numCol])).filter(n=>!isNaN(n));
-    if(!nums.length) return;
-    const W = svg.clientWidth || 600, H = 220;
-    const min = Math.min(...nums), max = Math.max(...nums), range = (max-min)||1;
-    for(let i=0;i<=4;i++){
-      const y = (i/4)*H;
-      const ln = document.createElementNS("http://www.w3.org/2000/svg","line");
-      ln.setAttribute("x1",0); ln.setAttribute("x2",W);
-      ln.setAttribute("y1",y); ln.setAttribute("y2",y);
-      ln.setAttribute("stroke","#134c4c"); ln.setAttribute("stroke-width","1");
-      svg.appendChild(ln);
-    }
-    const pts = nums.map((n,i)=>{
-      const x = (i/Math.max(1,nums.length-1))*W;
-      const y = H - ((n-min)/range)*H;
-      return `${x},${y}`;
-    }).join(" ");
-    const poly = document.createElementNS("http://www.w3.org/2000/svg","polyline");
-    poly.setAttribute("fill","none");
-    poly.setAttribute("stroke","#4afff0");
-    poly.setAttribute("stroke-width","2");
-    poly.setAttribute("points",pts);
-    svg.appendChild(poly);
-  }
-  function drawBarChart(rows,numCol){
-    const svg = $('barChart'); clearSVG(svg);
-    const nums = rows.slice(1).map(r=>parseFloat(r[numCol])).filter(n=>!isNaN(n));
-    if(!nums.length) return;
-    const W = svg.clientWidth || 600, H = 220;
-    const max = Math.max(...nums) || 1;
-    const slot = W/nums.length;
-    const barW = Math.max(1, slot-3);
-    for(let i=0;i<=4;i++){
-      const y = (i/4)*H;
-      const ln = document.createElementNS("http://www.w3.org/2000/svg","line");
-      ln.setAttribute("x1",0); ln.setAttribute("x2",W);
-      ln.setAttribute("y1",y); ln.setAttribute("y2",y);
-      ln.setAttribute("stroke","#134c4c"); ln.setAttribute("stroke-width","1");
-      svg.appendChild(ln);
-    }
-    nums.forEach((n,i)=>{
-      const h = (n/max)*H;
-      const x = i*slot + (slot-barW)/2;
-      const y = H - h;
-      const rect = document.createElementNS("http://www.w3.org/2000/svg","rect");
-      rect.setAttribute("x",x); rect.setAttribute("y",y);
-      rect.setAttribute("width",barW); rect.setAttribute("height",h);
-      rect.setAttribute("fill","#26d9cf");
-      rect.setAttribute("rx","4");
-      svg.appendChild(rect);
-    });
-  }
-  function fillTable(rows){
-    const thead = document.querySelector("#dataTable thead");
-    const tbody = document.querySelector("#dataTable tbody");
-    thead.innerHTML = "<tr>" + rows[0].map(h=>`<th>${h}</th>`).join("") + "</tr>";
-    tbody.innerHTML = rows.slice(1).map(r=>"<tr>"+r.map(c=>`<td>${c}</td>`).join("")+"</tr>").join("");
-  }
-  function handleRows(rows){
-    const numCol = firstNumericColumn(rows);
-    fillTable(rows);
-    if(numCol !== -1){
-      updateKPIs(rows,numCol,false);
-      drawLineChart(rows,numCol);
-      drawBarChart(rows,numCol);
-    }
-    $('liveapp').scrollIntoView({behavior:'smooth', block:'start'});
-  }
-
-  // Wire all inputs (dropzone + buttons) to same handler
-  ['fileInput','fileInputTop','fileInputTop2','fileInputDrop'].forEach(id=>{
-    const inp = $(id);
-    if(!inp) return;
-    inp.addEventListener('change', e=>{
-      const file = e.target.files && e.target.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = ev=>{
-        const rows = parseCSV(String(ev.target.result||""));
-        if(rows.length) handleRows(rows);
-      };
-      reader.readAsText(file);
-    });
-  });
-
-  // Desktop drag/drop (tap is handled by overlay input)
-  const dropZone = $('dropZone');
-  const fileInputDrop = $('fileInputDrop');
-  if(dropZone){
-    ['dragenter','dragover'].forEach(evt=>{
-      dropZone.addEventListener(evt, e=>{ e.preventDefault(); dropZone.classList.add('dragover'); });
-    });
-    ['dragleave','dragend'].forEach(evt=>{
-      dropZone.addEventListener(evt, e=>{ e.preventDefault(); dropZone.classList.remove('dragover'); });
-    });
-    dropZone.addEventListener('drop', e=>{
-      e.preventDefault(); dropZone.classList.remove('dragover');
-      const file = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if(!file) return;
-      const reader = new FileReader();
-      reader.onload = ev=>{
-        const rows = parseCSV(String(ev.target.result||""));
-        if(rows.length) handleRows(rows);
-      };
-      reader.readAsText(file);
-    });
-
-    // Fallback for Chrome on iPad: ensure taps and keyboard trigger the file dialog
-    ['click','touchend','keydown'].forEach(evt=>{
-      dropZone.addEventListener(evt, (e)=>{
-        if (e.target === fileInputDrop) return; // native path
-        if (evt === 'keydown' && !(e.key === 'Enter' || e.key === ' ')) return;
-        e.preventDefault();
-        try { fileInputDrop.click(); } catch(_) {}
-      }, {passive:false});
-    });
-  }
-
-  // Demo mode
-  const demoCSV = `Month,Revenue
-Jan,12000
-Feb,14100
-Mar,15750
-Apr,17040
-May,16660
-Jun,18220
-Jul,19510
-Aug,20500
-Sep,21150
-Oct,22620
-Nov,23990
-Dec,25550`;
-  function runDemoSequence(){
-    const rows = parseCSV(demoCSV);
-    const numCol = firstNumericColumn(rows);
-    fillTable(rows);
-    const boxes = [ 'kpiBox1','kpiBox2','kpiBox3','lineBox','barBox','tableBox' ].map(id=>$(id));
-    boxes.forEach(b=>b.classList.remove('highlight'));
-    updateKPIs(rows,numCol,true);
-    setTimeout(()=>{ boxes[0].classList.add('highlight'); }, 200);
-    setTimeout(()=>{ boxes[0].classList.remove('highlight'); boxes[1].classList.add('highlight'); }, 1200);
-    setTimeout(()=>{ boxes[1].classList.remove('highlight'); boxes[2].classList.add('highlight'); }, 2200);
-    setTimeout(()=>{ boxes[2].classList.remove('highlight'); drawLineChart(rows,numCol); boxes[3].classList.add('highlight'); }, 3000);
-    setTimeout(()=>{ boxes[3].classList.remove('highlight'); drawBarChart(rows,numCol); boxes[4].classList.add('highlight'); }, 3800);
-    setTimeout(()=>{ boxes[4].classList.remove('highlight'); boxes[5].classList.add('highlight'); }, 4600);
-    setTimeout(()=>{ boxes.forEach(b=>b.classList.remove('highlight')); $('replayDemo').style.display='inline-block'; }, 5600);
-    $('liveapp').scrollIntoView({behavior:'smooth', block:'start'});
-  }
-  $('runDemo').addEventListener('click', ()=>{ $('replayDemo').style.display='none'; runDemoSequence(); });
-  $('replayDemo').addEventListener('click', runDemoSequence);
-  $('btnSeeAction').addEventListener('click', ()=>{ $('replayDemo').style.display='none'; runDemoSequence(); });
-});
-</script><!doctype html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>InsightPulse — Live Demo</title>
-  <meta name="description" content="InsightPulse: AI-powered embedded analytics dashboard. Drag-and-drop CSV, interactive widgets, and a clean black-and-teal UI." />
-  <link rel="icon" href="data:image/svg+xml;utf8,<svg width='128' height='128' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><rect width='512' height='512' rx='64' fill='%230B0F14'/><g><path d='M96 256c0-88.366 71.634-160 160-160s160 71.634 160 160-71.634 160-160 160S96 344.366 96 256z' stroke='%2300D7C9' stroke-width='18' fill='none'/><path d='M140 312c32-72 96-112 164-96 44 10 88 42 104 80' stroke='%2319E0B5' stroke-width='18' stroke-linecap='round' fill='none'/><circle cx='256' cy='256' r='18' fill='%2300D7C9'/><path d='M256 128v60M256 324v60M188 256h-60M324 256h60' stroke='%2300D7C9' stroke-width='14' stroke-linecap='round'/></g></svg>" />
-  <style>
-    :root{--bg:#0b0f14;--surface:#0f1520;--muted:#1a2230;--text:#e6f1ff;--subtext:#9fb2c8;--teal:#00d7c9;--accent:#19e0b5;--ghost:#2a3445}
-    :root.light{--bg:#ffffff;--surface:#f7f9fc;--muted:#e7edf5;--text:#0d1117;--subtext:#5b6b7f;--teal:#00b3aa;--accent:#00d7c9;--ghost:#d8e2ee}
-    *{box-sizing:border-box}html,body{height:100%}
-    body{margin:0;font-family:ui-sans-serif,-apple-system,Segoe UI,Roboto,Helvetica,Arial,"Apple Color Emoji","Segoe UI Emoji";background:var(--bg);color:var(--text)}
-    .topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:linear-gradient(180deg,#0b0f14 0,rgba(11,15,20,.8) 100%);border-bottom:1px solid var(--muted)}
-    .brand{display:flex;align-items:center;gap:12px}
-    .brand .logo{width:28px;height:28px}
-    .brand h1{font-size:18px;margin:0;font-weight:700;letter-spacing:.3px}
-    .topnav{display:flex;gap:10px;align-items:center}
-    .btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:600;border:1px solid var(--ghost);color:var(--text);background:transparent}
-    .btn.primary{background:var(--teal);color:#081317;border-color:transparent}
-    .btn.secondary{background:var(--surface)}
-    .btn.ghost:hover{background:var(--ghost)}
-    #themeToggle{border:1px solid var(--ghost);background:transparent;color:var(--text);border-radius:10px;padding:8px 10px;cursor:pointer}
-    .container{max-width:1200px;margin:0 auto;padding:20px 16px 80px}
-    .hero{display:grid;grid-template-columns:1.2fr .8fr;gap:24px;align-items:center;background:linear-gradient(135deg,rgba(0,215,201,.12),transparent 50%);padding:24px;border:1px solid var(--muted);border-radius:16px}
-    .hero-text h2{font-size:32px;margin:0 0 8px}
-    .hero-text p{margin:0 0 16px;color:var(--subtext)}
-    .hero-actions{display:flex;gap:12px;flex-wrap:wrap}
-    .file-drop{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:2px dashed var(--teal);color:var(--text);padding:14px 16px;border-radius:12px;cursor:pointer}
-    .file-drop:hover{background:rgba(0,215,201,.08)}
-    .hero-art{display:flex;align-items:center;justify-content:center}
-    .hero-art img{width:100%;max-width:200px;opacity:.9;filter:drop-shadow(0 6px 30px rgba(0,215,201,.2))}
-    .grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;margin-top:24px}
-    .card{background:var(--surface);border:1px solid var(--muted);border-radius:16px;padding:16px;box-shadow:0 10px 30px rgba(0,0,0,.25)}
-    .card.wide{grid-column:1 / -1}
-    .card h3{margin:0 0 12px}
-    .kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .kpi{background:var(--bg);border:1px solid var(--muted);border-radius:12px;padding:12px}
-    .kpi-label{display:block;font-size:12px;color:var(--subtext)}
-    .kpi-value{display:block;font-size:22px;margin-top:6px;color:var(--accent);font-weight:800}
-    .table-wrap{overflow:auto;border:1px solid var(--muted);border-radius:12px}
-    table{width:100%;border-collapse:collapse}
-    thead th,tbody td{padding:10px;border-bottom:1px solid var(--muted);text-align:left;white-space:nowrap}
-    tbody tr:nth-child(odd){background:rgba(0,0,0,.06)}
-    .about{margin-top:24px;background:var(--surface);border:1px solid var(--muted);border-radius:16px;padding:16px}
-    .footer{border-top:1px solid var(--muted);padding:16px;text-align:center;color:var(--subtext)}
-    @media (max-width:860px){.hero{grid-template-columns:1fr}.grid{grid-template-columns:1fr}}
-  </style>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.3/dist/chart.umd.min.js" defer></script>
-  <script>
-    // Utilities
-    const $ = (q,ctx=document)=>ctx.querySelector(q);
-    const $$ = (q,ctx=document)=>Array.from(ctx.querySelectorAll(q));
-
-    // Footer year
-    function setYear(){ $("#year").textContent = new Date().getFullYear(); }
-    setYear();
-
-    // Theme toggle
-    const root = document.documentElement;
-    const themeToggle = $("#themeToggle");
-    const savedTheme = localStorage.getItem("theme") || "dark";
-    if(savedTheme === "light"){ root.classList.add("light"); themeToggle.textContent = "☀"; }
-    themeToggle?.addEventListener("click",()=>{
-      root.classList.toggle("light");
-      const mode = root.classList.contains("light") ? "light" : "dark";
-      themeToggle.textContent = mode === "light" ? "☀" : "☾";
-      localStorage.setItem("theme", mode);
-    });
-
-    // CSV handling
-    const csvInput = $("#csvInput");
-    const fileDrop = $(".file-drop");
-    fileDrop?.addEventListener("click", ()=> csvInput.click());
-    fileDrop?.addEventListener("dragover", e => { e.preventDefault(); fileDrop.classList.add("drag"); });
-    fileDrop?.addEventListener("dragleave", ()=> fileDrop.classList.remove("drag"));
-    fileDrop?.addEventListener("drop", e => {
-      e.preventDefault();
-      fileDrop.classList.remove("drag");
-      if(e.dataTransfer.files?.[0]) loadCSV(e.dataTransfer.files[0]);
-    });
-    csvInput?.addEventListener("change", e => {
-      if(e.target.files?.[0]) loadCSV(e.target.files[0]);
-    });
-
-    function loadCSV(file){
-      const reader = new FileReader();
-      reader.onload = () => {
-        const text = reader.result;
-        const rows = text.trim().split(/\r?\n/).map(r => r.split(/,(?=(?:[^"]*"[^"]*")*[^"]*$)/).map(c => c.replace(/^"|"$/g,'')));
-        renderTable(rows);
-        if(rows.length>1){
-          const headers = rows[0];
-          const firstNumColIndex = headers.findIndex((_,idx)=> rows.slice(1).some(r=>!isNaN(parseFloat(r[idx]))));
-          if(firstNumColIndex>=0){
-            const labels = rows.slice(1).map(r=>r[0]);
-            const data = rows.slice(1).map(r=>parseFloat(r[firstNumColIndex])||0);
-            updateCharts(labels, data);
-          }
-        }
-      };
-      reader.readAsText(file);
-    }
-
-    function renderTable(rows){
-      const thead = $("#csvTable thead");
-      const tbody = $("#csvTable tbody");
-      thead.innerHTML = "";
-      tbody.innerHTML = "";
-      if(!rows.length) return;
-      const headRow = document.createElement("tr");
-      rows[0].forEach(h=>{ const th = document.createElement("th"); th.textContent = h; headRow.appendChild(th); });
-      thead.appendChild(headRow);
-      rows.slice(1, 1+100).forEach(r=>{
-        const tr = document.createElement("tr");
-        r.forEach(c=>{ const td = document.createElement("td"); td.textContent = c; tr.appendChild(td); });
-        tbody.appendChild(tr);
-      });
-    }
-
-    // Charts
-    let lineChart, barChart;
-    function initCharts(){
-      const lc = document.getElementById("lineChart");
-      const bc = document.getElementById("barChart");
-      if(!lc || !bc || !window.Chart) return;
-      const labels = ["Mon","Tue","Wed","Thu","Fri","Sat","Sun"];
-      const values = [12,19,8,15,22,13,17];
-      lineChart = new Chart(lc, {
-        type: "line",
-        data: { labels, datasets: [{ label: "Sessions", data: values, tension:.35, fill:false }]},
-        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} }
-      });
-      barChart = new Chart(bc, {
-        type: "bar",
-        data: { labels, datasets: [{ label: "Signups", data: values.map(v=>Math.round(v*0.7)) }]},
-        options: { responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}} }
-      });
-    }
-    function updateCharts(labels, data){
-      if(!lineChart || !barChart) return;
-      lineChart.data.labels = labels;
-      lineChart.data.datasets[0].data = data;
-      lineChart.update();
-      barChart.data.labels = labels;
-      barChart.data.datasets[0].data = data.map(v=>Math.max(0, Math.round(v*0.6)));
-      barChart.update();
-    }
-    window.addEventListener("DOMContentLoaded", initCharts);
-  </script>
 </head>
 <body>
   <header class="topbar">
     <div class="brand">
-      <img src="data:image/svg+xml;utf8,<svg width='128' height='128' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><rect width='512' height='512' rx='64' fill='%230B0F14'/><g><path d='M96 256c0-88.366 71.634-160 160-160s160 71.634 160 160-71.634 160-160 160S96 344.366 96 256z' stroke='%2300D7C9' stroke-width='18' fill='none'/><path d='M140 312c32-72 96-112 164-96 44 10 88 42 104 80' stroke='%2319E0B5' stroke-width='18' stroke-linecap='round' fill='none'/><circle cx='256' cy='256' r='18' fill='%2300D7C9'/><path d='M256 128v60M256 324v60M188 256h-60M324 256h60' stroke='%2300D7C9' stroke-width='14' stroke-linecap='round'/></g></svg>" alt="InsightPulse logo" class="logo" />
-      <h1>InsightPulse</h1>
+      <div class="logo" aria-hidden="true"></div>
+      <div>
+        <h1>Dataquill</h1>
+        <small>AI powered embedded analytics platform</small>
+      </div>
     </div>
-    <nav class="topnav">
-      <button id="themeToggle" title="Toggle theme">☾</button>
-      <a class="btn primary" href="#upload">Upload CSV</a>
-      <a class="btn ghost" href="#widgets">Widgets</a>
-      <a class="btn ghost" href="#about">About</a>
+    <nav class="actions">
+      <a class="btn" href="#pricing">Pricing</a>
+      <a class="btn" href="#faq">FAQ</a>
+      <a class="btn primary" href="#live">Live App</a>
     </nav>
   </header>
 
   <main class="container">
-    <section class="hero">
-      <div class="hero-text">
-        <h2>Black &amp; Teal, Clean &amp; Fast</h2>
-        <p>Drop in your data. Get instant visuals. Ship dashboards in minutes.</p>
-        <div class="hero-actions">
-          <label class="file-drop" id="upload">
-            <input type="file" id="csvInput" accept=".csv" hidden />
-            <span>Drag &amp; drop CSV here or <u>browse</u></span>
+    <section class="grid" id="live">
+      <article class="card">
+        <h3>Drop your CSV file</h3>
+        <p class="muted">Drag &amp; drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
+
+        <div class="drop" id="drop">
+          <label>
+            <input type="file" id="csvInput" accept=".csv,text/csv" />
+            <span>Drag a .csv here or <u>browse</u></span>
           </label>
-          <a class="btn secondary" href="data:text/csv,Month,Revenue,Users,Conversion%0AJan,12000,980,4.3%0AFeb,14100,1022,4.5%0AMar,15750,1108,4.8%0AApr,17040,1205,5.0%0AMay,16660,1182,4.9%0AJun,18220,1260,5.1%0AJul,19510,1324,5.3" download>Download sample CSV</a>
         </div>
-      </div>
-      <div class="hero-art">
-        <img src="data:image/svg+xml;utf8,<svg width='128' height='128' viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'><rect width='512' height='512' rx='64' fill='%230B0F14'/><g><path d='M96 256c0-88.366 71.634-160 160-160s160 71.634 160 160-71.634 160-160 160S96 344.366 96 256z' stroke='%2300D7C9' stroke-width='18' fill='none'/><path d='M140 312c32-72 96-112 164-96 44 10 88 42 104 80' stroke='%2319E0B5' stroke-width='18' stroke-linecap='round' fill='none'/><circle cx='256' cy='256' r='18' fill='%2300D7C9'/><path d='M256 128v60M256 324v60M188 256h-60M324 256h60' stroke='%2300D7C9' stroke-width='14' stroke-linecap='round'/></g></svg>" alt="InsightPulse Symbol" />
-      </div>
+
+        <div class="preview" id="preview" hidden>
+          <table id="table"></table>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>Quick Stats</h3>
+        <p class="muted">After loading a CSV, you’ll see a few basics here.</p>
+        <div id="stats" class="muted">No data loaded yet.</div>
+        <div class="actions">
+          <button class="btn" id="clearBtn" disabled>Clear Data</button>
+          <button class="btn" id="sampleBtn">Load Sample</button>
+        </div>
+      </article>
     </section>
 
-    <section id="widgets" class="grid">
-      <div class="card">
-        <h3>KPIs</h3>
-        <div class="kpis">
-          <div class="kpi"><span class="kpi-label">Revenue</span><span class="kpi-value" id="kpiRevenue">$128K</span></div>
-          <div class="kpi"><span class="kpi-label">Users</span><span class="kpi-value" id="kpiUsers">8,214</span></div>
-          <div class="kpi"><span class="kpi-label">Conversion</span><span class="kpi-value" id="kpiConv">4.7%</span></div>
-        </div>
-      </div>
-
-      <div class="card">
-        <h3>Line Chart</h3>
-        <canvas id="lineChart" height="120"></canvas>
-      </div>
-
-      <div class="card">
-        <h3>Bar Chart</h3>
-        <canvas id="barChart" height="120"></canvas>
-      </div>
-
-      <div class="card wide">
-        <h3>Parsed CSV Preview</h3>
-        <div class="table-wrap">
-          <table id="csvTable">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
+    <section class="grid" style="margin-top:16px">
+      <article class="card">
+        <h3>See it in action</h3>
+        <p class="muted">Fully client-side. Nothing leaves your browser.</p>
+      </article>
+      <article class="card">
+        <h3>White-label</h3>
+        <p class="muted">Swap logo &amp; colors quickly to match your brand.</p>
+      </article>
     </section>
 
-    <section id="about" class="about">
-      <h3>About InsightPulse</h3>
-      <p>This is the single-file, GitHub Pages & Vercel-ready demo. No build step required.</p>
-    </section>
+    <footer>
+      <p>© <span id="year"></span> Dataquill. All rights reserved.</p>
+    </footer>
   </main>
 
-  <footer class="footer">
-    <small>© <span id="year"></span> InsightPulse. All rights reserved.</small>
-  </footer>
+  <script>
+    // ===== tiny helpers =====
+    const $ = sel => document.querySelector(sel);
+
+    // states
+    let data = null;
+
+    const drop = $("#drop");
+    const input = $("#csvInput");
+    const table = $("#table");
+    const preview = $("#preview");
+    const stats = $("#stats");
+    const clearBtn = $("#clearBtn");
+    const sampleBtn = $("#sampleBtn");
+    $("#year").textContent = new Date().getFullYear();
+
+    // drag events
+    ["dragenter", "dragover"].forEach(evt =>
+      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add("drag"); })
+    );
+    ["dragleave", "drop"].forEach(evt =>
+      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove("drag"); })
+    );
+    drop.addEventListener("drop", e => {
+      if (e.dataTransfer?.files?.[0]) loadCSV(e.dataTransfer.files[0]);
+    });
+
+    input.addEventListener("change", e => {
+      if (e.target.files?.[0]) loadCSV(e.target.files[0]);
+    });
+
+    clearBtn.addEventListener("click", () => {
+      data = null;
+      table.innerHTML = "";
+      preview.hidden = true;
+      stats.textContent = "No data loaded yet.";
+      clearBtn.disabled = true;
+    });
+
+    sampleBtn.addEventListener("click", () => {
+      const csv = "Name,City,Sales\nAlice,NYC,120\nBob,LA,95\nCarla,Austin,143\n";
+      renderCSV(csv);
+    });
+
+    function loadCSV(file){
+      const reader = new FileReader();
+      reader.onload = () => renderCSV(reader.result);
+      reader.readAsText(file);
+    }
+
+    function renderCSV(text){
+      // naive CSV split (simple demo)
+      const rows = text.trim().split(/\r?\n/).map(r =>
+        r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g,""))
+      );
+      if(!rows.length){ return; }
+
+      const headers = rows[0];
+      const body = rows.slice(1);
+
+      // table
+      table.innerHTML = "";
+      const thead = document.createElement("thead");
+      const thr = document.createElement("tr");
+      headers.forEach(h => {
+        const th = document.createElement("th");
+        th.textContent = h;
+        thr.appendChild(th);
+      });
+      thead.appendChild(thr);
+
+      const tbody = document.createElement("tbody");
+      body.forEach(r => {
+        const tr = document.createElement("tr");
+        r.forEach(c => {
+          const td = document.createElement("td");
+          td.textContent = c;
+          tr.appendChild(td);
+        });
+        tbody.appendChild(tr);
+      });
+
+      table.appendChild(thead);
+      table.appendChild(tbody);
+      preview.hidden = false;
+
+      // stats
+      const nRows = body.length;
+      const nCols = headers.length;
+      stats.innerHTML = `Rows: <b>${nRows}</b> &nbsp;•&nbsp; Columns: <b>${nCols}</b>`;
+      clearBtn.disabled = false;
+    }
+  </script>
 </body>
 </html>
