@@ -1,6 +1,219 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <title>Dataquill — AI powered embedded analytics platform</title>
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV to get instant KPIs, a table view, and quick charts. Export, white-label, and ship." />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dataquill — AI powered embedded analytics platform" />
+  <meta property="og:description" content="Upload a CSV to get instant KPIs, a table view, and quick charts. Export, white-label, and ship." />
+  <meta property="og:url" content="/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg:#000814;
+      --panel:#041a28;
+      --panel-2:#072037;
+      --text:#e6ffff;
+      --muted:#9fe7e1;
+      --teal1:#14c6bb;
+      --teal2:#0ea5a3;
+      --glow: rgba(20, 198, 187, .35);
+      --shadow: 0 0 24px rgba(20,198,187,.08), 0 8px 24px rgba(0,0,0,.45);
+      --radius: 14px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1200px 600px at 30% -5%, rgba(20,198,187,.18), transparent 55%),
+        radial-gradient(800px 500px at 85% -10%, rgba(60,105,255,.12), transparent 50%),
+        var(--bg);
+      letter-spacing:.2px;
+    }
+    header{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      padding:1rem 2rem;
+      background:var(--panel);
+      box-shadow:var(--shadow);
+    }
+    header h1{font-size:1.4rem;margin:0;color:var(--teal1);}
+    nav a{
+      color:var(--text);
+      text-decoration:none;
+      margin-left:1.5rem;
+      font-size:0.95rem;
+    }
+    main{
+      padding:2rem;
+      display:grid;
+      gap:2rem;
+      max-width:1100px;
+      margin:auto;
+    }
+    section{
+      background:var(--panel-2);
+      border-radius:var(--radius);
+      padding:1.5rem;
+      box-shadow:var(--shadow);
+    }
+    h2{margin-top:0;font-size:1.25rem;color:var(--teal1);}
+    table{
+      width:100%;
+      border-collapse:collapse;
+      margin-top:1rem;
+    }
+    th,td{
+      border-bottom:1px solid var(--teal2);
+      padding:.5rem .75rem;
+      text-align:left;
+    }
+    .csv-drop{
+      border:2px dashed var(--teal1);
+      border-radius:var(--radius);
+      padding:2rem;
+      text-align:center;
+      cursor:pointer;
+    }
+    .csv-drop.drag{background:rgba(20,198,187,.08);}
+    button{
+      background:var(--teal2);
+      color:#fff;
+      border:none;
+      padding:.5rem 1rem;
+      border-radius:var(--radius);
+      cursor:pointer;
+      margin-right:.5rem;
+    }
+    button:hover{background:var(--teal1);}
+    footer{
+      text-align:center;
+      padding:2rem;
+      font-size:0.85rem;
+      color:var(--muted);
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Dataquill</h1>
+    <nav>
+      <a href="#">Pricing</a>
+      <a href="#">FAQ</a>
+      <a href="#">Live App</a>
+    </nav>
+  </header>
+
+  <main>
+    <section>
+      <h2>AI powered embedded analytics platform</h2>
+      <p>Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
+    </section>
+
+    <section>
+      <h2>Drop or choose a CSV</h2>
+      <div class="csv-drop" id="dropZone">Drag a .csv here or <span style="text-decoration:underline;cursor:pointer;" id="browseLink">browse</span></div>
+      <input type="file" id="fileInput" accept=".csv" style="display:none" />
+      <div style="margin-top:1rem;">
+        <button onclick="loadSample()">Load Sample</button>
+        <button onclick="clearData()">Clear Data</button>
+      </div>
+      <table id="dataTable"></table>
+    </section>
+
+    <section>
+      <h2>Quick charts</h2>
+      <canvas id="chartCanvas" width="400" height="200"></canvas>
+    </section>
+  </main>
+
+  <footer>
+    © 2025 Dataquill. All rights reserved.
+  </footer>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script>
+    const fileInput = document.getElementById('fileInput');
+    const dropZone = document.getElementById('dropZone');
+    const dataTable = document.getElementById('dataTable');
+    const ctx = document.getElementById('chartCanvas').getContext('2d');
+    let chart;
+
+    document.getElementById('browseLink').onclick = () => fileInput.click();
+
+    dropZone.addEventListener('dragover', e => {
+      e.preventDefault();
+      dropZone.classList.add('drag');
+    });
+    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
+    dropZone.addEventListener('drop', e => {
+      e.preventDefault();
+      dropZone.classList.remove('drag');
+      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
+    });
+    fileInput.addEventListener('change', e => {
+      if (e.target.files.length) handleFile(e.target.files[0]);
+    });
+
+    function handleFile(file){
+      const reader = new FileReader();
+      reader.onload = e => parseCSV(e.target.result);
+      reader.readAsText(file);
+    }
+
+    function parseCSV(text){
+      const rows = text.trim().split(/\r?\n/).map(r => r.split(','));
+      renderTable(rows);
+      renderChart(rows);
+    }
+
+    function renderTable(rows){
+      dataTable.innerHTML = '';
+      if(rows.length){
+        const header = '<tr>' + rows[0].map(c => `<th>${c}</th>`).join('') + '</tr>';
+        const body = rows.slice(1).map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
+        dataTable.innerHTML = header + body;
+      }
+    }
+
+    function renderChart(rows){
+      if(!rows.length || rows[0].length < 2) return;
+      const labels = rows.slice(1).map(r => r[0]);
+      const values = rows.slice(1).map(r => parseFloat(r[1]) || 0);
+      if(chart) chart.destroy();
+      chart = new Chart(ctx, {
+        type:'bar',
+        data:{
+          labels,
+          datasets:[{label:rows[0][1], data:values, backgroundColor:'rgba(20,198,187,.6)'}]
+        },
+        options:{responsive:true,scales:{y:{beginAtZero:true}}}
+      });
+    }
+
+    function loadSample(){
+      const sample = "Name,Sales\nAlice,120\nBob,95\nCara,141";
+      parseCSV(sample);
+    }
+
+    function clearData(){
+      dataTable.innerHTML = '';
+      if(chart) chart.destroy();
+    }
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Dataquill – Turn Your Data Into Decisions</title>
