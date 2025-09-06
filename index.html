@@ -2,274 +2,116 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dataquill – Turn Your Data Into Decisions</title>
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets instantly in a clean black-and-teal UI." />
 
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
-
-  <!-- Open Graph / Twitter (update host after you confirm your final domain) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
+  <!-- Open Graph -->
+  <meta property="og:title" content="Dataquill – Turn Your Data Into Decisions" />
   <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
-  <meta property="og:url" content="https://dataquill.vercel.app/" />
+  <meta property="og:type" content="website" />
   <meta property="og:image" content="https://dataquill.vercel.app/og.png" />
+  <meta property="og:url" content="https://dataquill.vercel.app/" />
   <meta name="twitter:card" content="summary_large_image" />
 
-  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 128 128'%3E%3Crect width='128' height='128' rx='24' fill='%2300d7c9'/%3E%3Cpath d='M28 86c14-2 22-32 34-32s20 30 38 30' stroke='%23001418' stroke-width='10' fill='none' stroke-linecap='round'/%3E%3C/svg%3E" />
-
   <style>
-    /* ===== THEME (black & teal) ===== */
-    :root{
-      --bg:#000000;           /* page background */
-      --panel:#0b1418;        /* panels */
-      --card:#0f1c22;         /* cards */
-      --text:#e9ffff;         /* primary text */
-      --muted:#9fe7e1;        /* subtle text */
-      --teal1:#23d4c9;        /* bright teal accents */
-      --teal2:#1ca5a5;        /* secondary teal */
-      --glow: 0 0 24px rgba(35,212,201,.25);
-      --ring: 0 0 0 2px rgba(35,212,201,.28);
-      --border: 1px solid #0c2a2a;
-      --radius: 14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font:16px/1.45 system-ui,Segoe UI,Roboto,Helvetica,Arial,sans-serif;
-      color:var(--text);
-      background:radial-gradient(1200px 600px at 50% -120px,#0fd5c9 0%, #042d2d 32%, #000 62%) fixed,
-                 var(--bg);
+    :root {
+      --bg: #000000;
+      --panel: #0b1418;
+      --card: #0f1c22;
+      --text: #e9ffff;
+      --accent: #00e0c3;
     }
 
-    /* ========= LAYOUT ========= */
-    .topbar{
-      position:sticky; top:0; z-index:30;
-      display:flex; align-items:center; gap:16px; justify-content:space-between;
-      padding:14px 18px; backdrop-filter:saturate(140%) blur(8px);
-      background:linear-gradient(180deg, rgba(0,0,0,.75), rgba(0,0,0,.45));
-      border-bottom: var(--border);
-    }
-    .brand{
-      display:flex; align-items:center; gap:12px;
-    }
-    .logo{
-      width:28px; height:28px; border-radius:8px;
-      background:linear-gradient(135deg,#22e7d8,#0cc1b7);
-      box-shadow: var(--glow);
-    }
-    .brand h1{margin:0; font-weight:800; letter-spacing:.2px; font-size:20px}
-    .brand small{display:block; color:var(--muted); font-weight:500; margin-top:2px}
-
-    .container{
-      max-width:1100px;
-      margin:28px auto 80px;
-      padding:0 18px;
+    body {
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
     }
 
-    .grid{
-      display:grid;
-      grid-template-columns: 1fr 1fr;
-      gap:16px;
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--panel);
     }
-    @media (max-width: 900px){ .grid{grid-template-columns:1fr} }
 
-    .card{
-      background:linear-gradient(180deg,var(--panel),#031c1c);
-      border: var(--border);
-      border-radius: var(--radius);
-      padding:16px;
-      box-shadow: var(--glow);
+    .brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: var(--accent);
     }
-    .card h3{margin:0 0 8px}
-    .muted{color:var(--muted)}
-    .actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:10px}
 
-    .btn{
-      appearance:none; border:1px solid #144a49; background:#072022;
-      color:var(--text); padding:10px 14px; border-radius:12px; cursor:pointer;
+    .nav-actions a {
+      margin-left: 1rem;
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 600;
     }
-    .btn:hover{box-shadow: var(--ring); transform:translateY(-1px)}
-    .btn.primary{background:#052b2a; border-color:#1a6a66}
 
-    /* ===== CSV Drop / Input ===== */
-    .drop{
-      display:flex; align-items:center; justify-content:center;
-      border: 2px dashed #1b7370; color:var(--muted);
-      border-radius:12px; height:120px; margin-top:10px;
-      background:#071616;
+    .panel {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem auto;
+      max-width: 800px;
     }
-    .drop.drag{background:#062626; box-shadow: var(--ring)}
-    .drop input{display:none}
 
-    /* ===== Table Preview ===== */
-    .preview{
-      margin-top:16px; overflow:auto; max-height: 340px;
-      border-radius:12px; border:var(--border); background:#031416;
+    footer {
+      text-align: center;
+      padding: 2rem;
+      background: var(--panel);
+      margin-top: 2rem;
     }
-    table{width:100%; border-collapse:collapse; color:#cfeeed}
-    th,td{padding:.65rem .8rem; border-bottom:1px solid #143738; white-space:nowrap}
-    th{position:sticky; top:0; background:#052428; z-index:1}
-
-    /* ===== Footer ===== */
-    footer{margin-top:40px; text-align:center; color:var(--muted)}
-    footer a{color:var(--teal1); text-decoration:none}
-    footer a:hover{text-decoration:underline}
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <div class="brand">
-      <div class="logo" aria-hidden="true"></div>
-      <div>
-        <h1>Dataquill</h1>
-        <small>AI powered embedded analytics platform</small>
-      </div>
-    </div>
-    <nav class="actions">
-      <a class="btn" href="#pricing">Pricing</a>
-      <a class="btn" href="#faq">FAQ</a>
-      <a class="btn primary" href="#live">Live App</a>
+  <header>
+    <div class="brand">Dataquill</div>
+    <nav class="nav-actions">
+      <a href="#pricing">Pricing</a>
+      <a href="#faq">FAQ</a>
+      <a href="#live-app">Live App</a>
     </nav>
   </header>
 
-  <main class="container">
-    <section class="grid" id="live">
-      <article class="card">
-        <h3>Drop your CSV file</h3>
-        <p class="muted">Drag &amp; drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
-
-        <div class="drop" id="drop">
-          <label>
-            <input type="file" id="csvInput" accept=".csv,text/csv" />
-            <span>Drag a .csv here or <u>browse</u></span>
-          </label>
-        </div>
-
-        <div class="preview" id="preview" hidden>
-          <table id="table"></table>
-        </div>
-      </article>
-
-      <article class="card">
-        <h3>Quick Stats</h3>
-        <p class="muted">After loading a CSV, you’ll see a few basics here.</p>
-        <div id="stats" class="muted">No data loaded yet.</div>
-        <div class="actions">
-          <button class="btn" id="clearBtn" disabled>Clear Data</button>
-          <button class="btn" id="sampleBtn">Load Sample</button>
-        </div>
-      </article>
+  <main>
+    <section class="panel">
+      <h1>Dataquill</h1>
+      <p>AI powered embedded analytics platform</p>
     </section>
 
-    <section class="grid" style="margin-top:16px">
-      <article class="card">
-        <h3>See it in action</h3>
-        <p class="muted">Fully client-side. Nothing leaves your browser.</p>
-      </article>
-      <article class="card">
-        <h3>White-label</h3>
-        <p class="muted">Swap logo &amp; colors quickly to match your brand.</p>
-      </article>
+    <section id="live-app" class="panel">
+      <h2>Drop your CSV file</h2>
+      <p>Drag & drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
+      <div style="border:2px dashed var(--accent); padding:2rem; text-align:center;">
+        Drag a .csv here or <a href="#">browse</a>
+      </div>
     </section>
 
-    <footer>
-      <p>© <span id="year"></span> Dataquill. All rights reserved.</p>
-    </footer>
+    <section id="pricing" class="panel">
+      <h2>Pricing</h2>
+      <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
+      <p><strong>Pro (TBD):</strong> Export dashboards, white-label branding, priority support.</p>
+    </section>
+
+    <section id="faq" class="panel">
+      <h2>FAQ</h2>
+      <details>
+        <summary>Is my data sent to a server?</summary>
+        <p>No. All processing happens in your browser.</p>
+      </details>
+      <details>
+        <summary>What file formats are supported?</summary>
+        <p>Currently CSV only. More coming soon.</p>
+      </details>
+    </section>
   </main>
 
-  <script>
-    // ===== tiny helpers =====
-    const $ = sel => document.querySelector(sel);
-
-    // states
-    let data = null;
-
-    const drop = $("#drop");
-    const input = $("#csvInput");
-    const table = $("#table");
-    const preview = $("#preview");
-    const stats = $("#stats");
-    const clearBtn = $("#clearBtn");
-    const sampleBtn = $("#sampleBtn");
-    $("#year").textContent = new Date().getFullYear();
-
-    // drag events
-    ["dragenter", "dragover"].forEach(evt =>
-      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.add("drag"); })
-    );
-    ["dragleave", "drop"].forEach(evt =>
-      drop.addEventListener(evt, e => { e.preventDefault(); drop.classList.remove("drag"); })
-    );
-    drop.addEventListener("drop", e => {
-      if (e.dataTransfer?.files?.[0]) loadCSV(e.dataTransfer.files[0]);
-    });
-
-    input.addEventListener("change", e => {
-      if (e.target.files?.[0]) loadCSV(e.target.files[0]);
-    });
-
-    clearBtn.addEventListener("click", () => {
-      data = null;
-      table.innerHTML = "";
-      preview.hidden = true;
-      stats.textContent = "No data loaded yet.";
-      clearBtn.disabled = true;
-    });
-
-    sampleBtn.addEventListener("click", () => {
-      const csv = "Name,City,Sales\nAlice,NYC,120\nBob,LA,95\nCarla,Austin,143\n";
-      renderCSV(csv);
-    });
-
-    function loadCSV(file){
-      const reader = new FileReader();
-      reader.onload = () => renderCSV(reader.result);
-      reader.readAsText(file);
-    }
-
-    function renderCSV(text){
-      // naive CSV split (simple demo)
-      const rows = text.trim().split(/\r?\n/).map(r =>
-        r.split(/,(?=(?:(?:[^"]*"){2})*[^"]*$)/).map(c => c.replace(/^"|"$/g,""))
-      );
-      if(!rows.length){ return; }
-
-      const headers = rows[0];
-      const body = rows.slice(1);
-
-      // table
-      table.innerHTML = "";
-      const thead = document.createElement("thead");
-      const thr = document.createElement("tr");
-      headers.forEach(h => {
-        const th = document.createElement("th");
-        th.textContent = h;
-        thr.appendChild(th);
-      });
-      thead.appendChild(thr);
-
-      const tbody = document.createElement("tbody");
-      body.forEach(r => {
-        const tr = document.createElement("tr");
-        r.forEach(c => {
-          const td = document.createElement("td");
-          td.textContent = c;
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-
-      table.appendChild(thead);
-      table.appendChild(tbody);
-      preview.hidden = false;
-
-      // stats
-      const nRows = body.length;
-      const nCols = headers.length;
-      stats.innerHTML = `Rows: <b>${nRows}</b> &nbsp;•&nbsp; Columns: <b>${nCols}</b>`;
-      clearBtn.disabled = false;
-    }
-  </script>
+  <footer>
+    © 2025 Dataquill. All rights reserved.
+  </footer>
 </body>
 </html>
