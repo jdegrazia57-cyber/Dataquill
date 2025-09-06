@@ -4,6 +4,259 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dataquill — Turn Your Data Into Decisions</title>
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload CSVs and get instant insights in a clean black-and-teal UI." />
+
+  <!-- Basic social (adjust the URL once you confirm your final domain) -->
+  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
+  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore." />
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <style>
+    :root{
+      --bg:#000000;
+      --panel:#0b1418;
+      --card:#0f1c22;
+      --text:#e9ffff;
+      --muted:#9fe7e1;
+      --teal:#14b8a6;     /* accent */
+      --teal-2:#22d3c5;   /* accent hover */
+      --line:#133137;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--text);
+      background:
+        radial-gradient(1000px 600px at 20% -10%, rgba(20,184,166,.25), transparent 60%),
+        radial-gradient(900px 540px at 90% 0%, rgba(34,211,197,.18), transparent 60%),
+        var(--bg);
+    }
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* Header */
+    .hero{
+      padding:28px 24px;
+      border-radius:22px;
+      background:
+        radial-gradient(800px 480px at 10% -20%, rgba(20,184,166,.18), transparent 60%),
+        radial-gradient(900px 540px at 110% 0%, rgba(34,211,197,.14), transparent 60%),
+        linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.01));
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+    }
+    .brand{display:flex;align-items:center;gap:14px}
+    .logo{
+      width:44px;height:44px;border-radius:12px;display:grid;place-items:center;
+      background: radial-gradient(120% 120% at 30% 20%, rgba(34,211,197,.2), rgba(20,184,166,.25));
+      border:1px solid #145c54;
+    }
+    .title h1{margin:0;font-size:28px;letter-spacing:.2px}
+    .title p{margin:.25rem 0 0 0;color:var(--muted);font-size:14px}
+    .nav{margin-top:14px;display:flex;gap:12px;flex-wrap:wrap}
+    .pill{
+      padding:8px 12px;border-radius:999px;color:var(--text);
+      border:1px solid var(--line);background:rgba(255,255,255,.02)
+    }
+    .pill:hover{border-color:#1e6e66}
+
+    /* Grid */
+    .grid{
+      margin-top:20px;
+      display:grid;gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+    .card{
+      border-radius:var(--radius);
+      background:
+        radial-gradient(120% 120% at 10% -10%, rgba(20,184,166,.10), transparent 50%),
+        radial-gradient(120% 120% at 110% 10%, rgba(34,211,197,.08), transparent 45%),
+        var(--card);
+      border:1px solid var(--line);
+      box-shadow:var(--shadow);
+      padding:18px;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:#198c81;
+      box-shadow:0 0 0 1px rgba(20,184,166,.25), 0 0 60px 10px rgba(34,211,197,.08);
+    }
+    .card h3{margin:0 0 8px 0;font-size:18px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* Upload */
+    .drop{
+      margin-top:10px;border:1px dashed rgba(255,255,255,.16);
+      border-radius:12px;padding:18px;text-align:center;cursor:pointer;
+      background:linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,.015));
+    }
+    .drop:hover{border-color:rgba(20,184,166,.6)}
+    input[type="file"]{display:none}
+
+    .stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px
+    }
+    .stat{
+      border:1px solid var(--line);border-radius:12px;padding:10px 12px;background:var(--panel)
+    }
+    .stat b{display:block;font-size:18px;margin-bottom:2px}
+
+    /* Buttons */
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:12px;border:1px solid var(--line);
+      background:linear-gradient(135deg, rgba(20,184,166,.25), rgba(34,211,197,.18));
+      color:white;
+    }
+    .btn:hover{border-color:#1e6e66}
+
+    footer{margin:28px 0;color:var(--muted);text-align:center;font-size:13px}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="brand">
+        <!-- Simple inline “quill” teal logo -->
+        <div class="logo" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <defs>
+              <linearGradient id="gteal" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#22d3c5"/><stop offset="1" stop-color="#14b8a6"/>
+              </linearGradient>
+            </defs>
+            <path d="M16 3c5 2 9 2 12 0 0 9-3 16-12 21C7 19 4 12 4 3c3 2 7 2 12 0Z" stroke="url(#gteal)" stroke-width="1.6" fill="none"/>
+            <path d="M10 17c6-6 9-7 12-7-2 3-4 6-9 10l-3 2 2-3Z" fill="url(#gteal)"/>
+            <path d="M19 12l-7 7" stroke="white" stroke-opacity=".9" stroke-width="1.2" />
+          </svg>
+        </div>
+        <div class="title">
+          <h1>Dataquill</h1>
+          <p>AI powered embedded analytics platform</p>
+        </div>
+      </div>
+      <div class="nav">
+        <span class="pill">Features</span>
+        <span class="pill">Live App</span>
+        <span class="pill">Pricing</span>
+        <span class="pill">FAQ</span>
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section class="grid">
+      <article class="card">
+        <h3>Instant</h3>
+        <p class="muted">Drop a CSV → get KPIs + charts immediately.</p>
+      </article>
+
+      <article class="card">
+        <h3>Private</h3>
+        <p class="muted">100% client-side. No server, no database required.</p>
+      </article>
+
+      <article class="card">
+        <h3>White-label</h3>
+        <p class="muted">Swap logo, colors & favicon in minutes.</p>
+      </article>
+
+      <article class="card">
+        <h3>Upload CSV</h3>
+        <label class="drop" for="csvInput">Tap to choose or drop a file here</label>
+        <input id="csvInput" type="file" accept=".csv" />
+        <div class="stats">
+          <div class="stat"><b id="rCount">0</b><span class="muted">Rows</span></div>
+          <div class="stat"><b id="cCount">0</b><span class="muted">Columns</span></div>
+          <div class="stat"><b id="sampleCell">—</b><span class="muted">Sample</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>See it in action</h3>
+        <p class="muted">Guided demo with live animations.</p>
+        <a class="btn" href="#">Run Demo</a>
+      </article>
+
+      <article class="card">
+        <h3>Start free — explore integrations</h3>
+        <p class="muted">Coming soon: embed SDKs, exports, and more.</p>
+      </article>
+    </section>
+
+    <footer>© <span id="year"></span> Dataquill</footer>
+  </div>
+
+  <script>
+    // --- CSV handling (simple, client-side preview) ---
+    const csvInput = document.getElementById('csvInput');
+    const rCount = document.getElementById('rCount');
+    const cCount = document.getElementById('cCount');
+    const sampleCell = document.getElementById('sampleCell');
+
+    function parseCSV(text){
+      const rows = text.replace(/\r/g,'').split('\n').filter(Boolean);
+      return rows.map(r=>{
+        const out=[]; let cur='', q=false;
+        for(let i=0;i<r.length;i++){
+          const ch=r[i], nx=r[i+1];
+          if(ch==='"' && nx==='"'){ cur+='"'; i++; continue; }
+          if(ch==='"'){ q=!q; continue; }
+          if(ch===',' && !q){ out.push(cur); cur=''; continue; }
+          cur+=ch;
+        }
+        out.push(cur);
+        return out;
+      });
+    }
+
+    function handleFile(file){
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result || '';
+        const data = parseCSV(String(text));
+        if(!data.length) return;
+
+        const headers = data[0] || [];
+        const firstRow = data[1] || [];
+        rCount.textContent = Math.max(0, data.length - 1);
+        cCount.textContent = headers.length;
+        sampleCell.textContent = firstRow[0] ?? '—';
+      };
+      reader.readAsText(file);
+    }
+
+    csvInput?.addEventListener('change', e => {
+      const f = e.target.files?.[0];
+      if(f) handleFile(f);
+    });
+
+    // Drag-over support for the label (optional; label already opens file picker on tap)
+    const drop = document.querySelector('.drop');
+    ['dragenter','dragover','dragleave','drop'].forEach(ev=>{
+      drop.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }, false);
+    });
+    drop.addEventListener('drop', e=>{
+      const f = e.dataTransfer?.files?.[0];
+      if(f) handleFile(f);
+    });
+
+    // Footer year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dataquill — Turn Your Data Into Decisions</title>
   <meta name="description" content="Dataquill: sleek, client-side analytics. Upload CSVs, explore widgets, and ship dashboards fast." />
 
   <!-- Social preview (optional; update to your deployed URL if you add an image later) -->
