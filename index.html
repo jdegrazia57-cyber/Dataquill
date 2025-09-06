@@ -1,6 +1,280 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dataquill — Turn Your Data Into Decisions</title>
+  <meta name="description" content="Dataquill: sleek, client-side analytics. Upload CSVs, explore widgets, and ship dashboards fast." />
+
+  <!-- Social preview (optional; update to your deployed URL if you add an image later) -->
+  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
+  <meta property="og:description" content="Sleek, client-side analytics with a violet→cyan glow." />
+  <meta property="og:type" content="website" />
+  <meta property="og:image" content="https://dataquill.vercel.app/og.png" />
+  <meta property="og:url" content="https://dataquill.vercel.app" />
+
+  <style>
+    /* ===== THEME ===== */
+    :root{
+      --bg:#0a0b12;           /* page background */
+      --surface:#101426;      /* panels */
+      --card:#0e1830;         /* cards */
+      --text:#eef3ff;         /* primary text */
+      --muted:#a9b4ff;        /* secondary text */
+      --outline:#243a73;      /* borders */
+
+      --violet:#7c3aed;       /* accent 1 */
+      --violet-2:#a855f7;     /* accent 1b */
+      --cyan:#22d3ee;         /* accent 2 */
+
+      --glow: 0 0 0 1px rgba(124,58,237,.25),
+              0 0 60px 10px rgba(34,211,238,.09);
+      --radius:16px;
+      --shadow: 0 20px 60px rgba(0,0,0,.45);
+      --glass: linear-gradient(180deg, rgba(255,255,255,.04), rgba(255,255,255,.02));
+    }
+
+    /* ===== RESET / BASE ===== */
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background:
+        radial-gradient(circle at 20% -10%, rgba(124,58,237,.25), transparent 45%),
+        radial-gradient(circle at 80% 10%, rgba(34,211,238,.25), transparent 45%),
+        var(--bg);
+    }
+
+    a{color:inherit;text-decoration:none}
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* ===== HEADER ===== */
+    .hero{
+      position:relative;
+      padding:28px 24px;
+      border-radius:calc(var(--radius) + 6px);
+      background:linear-gradient(135deg, rgba(124,58,237,.25), rgba(34,211,238,.25));
+      box-shadow:var(--shadow);
+      overflow:hidden;
+    }
+    .brand{
+      display:flex;align-items:center;gap:14px;
+    }
+    .logo{
+      width:44px;height:44px;display:grid;place-items:center;
+      border-radius:12px;
+      background: radial-gradient(120% 120% at 30% 20%, rgba(34,211,238,.2), rgba(124,58,237,.25));
+      box-shadow: var(--glow);
+    }
+    .logo svg{display:block}
+    .title{
+      display:flex;flex-direction:column;line-height:1.1
+    }
+    .title h1{margin:0;font-size:28px;letter-spacing:.3px}
+    .title span{font-size:13px;color:var(--muted)}
+    .nav{
+      margin-top:14px;display:flex;gap:14px;flex-wrap:wrap
+    }
+    .pill{
+      padding:8px 12px;border-radius:999px;color:var(--text);
+      border:1px solid rgba(255,255,255,.08);background:var(--glass)
+    }
+    .pill:hover{border-color:rgba(255,255,255,.18)}
+
+    /* ===== GRID ===== */
+    .grid{
+      margin-top:20px;
+      display:grid;gap:16px;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+    }
+    .card{
+      border-radius:var(--radius);
+      background:
+        radial-gradient(120% 120% at 10% -10%, rgba(124,58,237,.10), transparent 50%),
+        radial-gradient(120% 120% at 110% 10%, rgba(34,211,238,.09), transparent 45%),
+        var(--card);
+      border:1px solid var(--outline);
+      box-shadow:var(--shadow);
+      padding:18px;
+      transition:transform .18s ease, border-color .18s ease, box-shadow .18s ease;
+    }
+    .card:hover{
+      transform:translateY(-2px);
+      border-color:rgba(124,58,237,.55);
+      box-shadow:var(--glow);
+    }
+    .card h3{margin:0 0 8px 0;font-size:18px}
+    .muted{color:var(--muted);font-size:14px}
+
+    /* ===== UPLOAD ===== */
+    .drop{
+      margin-top:10px;border:1px dashed rgba(255,255,255,.15);
+      border-radius:12px;padding:18px;text-align:center;cursor:pointer;
+      background:var(--glass)
+    }
+    .drop:hover{border-color:rgba(255,255,255,.28)}
+    .stats{
+      display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:12px
+    }
+    .stat{
+      border:1px solid var(--outline);border-radius:12px;padding:10px 12px;background:var(--surface);
+    }
+    .stat b{display:block;font-size:18px;margin-bottom:2px}
+
+    /* ===== FOOTER ===== */
+    footer{margin:28px 0;color:var(--muted);text-align:center;font-size:13px}
+    .btn{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 14px;border-radius:12px;border:1px solid rgba(255,255,255,.12);
+      background:linear-gradient(135deg, rgba(124,58,237,.35), rgba(34,211,238,.25));
+      color:white;
+    }
+    .btn:hover{border-color:rgba(255,255,255,.22)}
+    input[type="file"]{display:none}
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- HERO -->
+    <section class="hero">
+      <div class="brand">
+        <!-- Inline SVG Logo: stylized quill in a shield -->
+        <div class="logo" aria-hidden="true">
+          <svg width="26" height="26" viewBox="0 0 32 32" fill="none">
+            <defs>
+              <linearGradient id="g1" x1="0" y1="0" x2="32" y2="32" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#22D3EE"/>
+                <stop offset="1" stop-color="#7C3AED"/>
+              </linearGradient>
+            </defs>
+            <!-- shield -->
+            <path d="M16 3c5 2 9 2 12 0 0 9-3 16-12 21C7 19 4 12 4 3c3 2 7 2 12 0Z" stroke="url(#g1)" stroke-width="1.6" fill="none"/>
+            <!-- quill -->
+            <path d="M10 17c6-6 9-7 12-7-2 3-4 6-9 10l-3 2 2-3Z" fill="url(#g1)"/>
+            <path d="M19 12l-7 7" stroke="white" stroke-opacity=".9" stroke-width="1.2" />
+          </svg>
+        </div>
+        <div class="title">
+          <h1>Dataquill</h1>
+          <span>Violet-to-cyan glow • 100% client-side</span>
+        </div>
+      </div>
+      <div class="nav">
+        <span class="pill">Features</span>
+        <span class="pill">Live App</span>
+        <span class="pill">Pricing</span>
+        <span class="pill">FAQ</span>
+      </div>
+    </section>
+
+    <!-- GRID -->
+    <section class="grid">
+      <article class="card">
+        <h3>Instant</h3>
+        <p class="muted">Drop a CSV → get KPIs + charts immediately.</p>
+      </article>
+
+      <article class="card">
+        <h3>Private</h3>
+        <p class="muted">100% client-side. No server, no data leaves the browser.</p>
+      </article>
+
+      <article class="card">
+        <h3>White-label</h3>
+        <p class="muted">Swap logo, colors &amp; favicon easily.</p>
+      </article>
+
+      <article class="card">
+        <h3>Upload CSV</h3>
+        <label class="drop" for="csvInput">Tap to choose or drop a file here</label>
+        <input id="csvInput" type="file" accept=".csv" />
+        <div class="stats">
+          <div class="stat"><b id="rCount">0</b><span class="muted">Rows</span></div>
+          <div class="stat"><b id="cCount">0</b><span class="muted">Columns</span></div>
+          <div class="stat"><b id="sampleCell">—</b><span class="muted">Sample</span></div>
+        </div>
+      </article>
+
+      <article class="card">
+        <h3>See it in action</h3>
+        <p class="muted">Live animations &amp; instant feedback after upload.</p>
+        <a class="btn" href="#">Run Demo</a>
+      </article>
+
+      <article class="card">
+        <h3>Start free — explore integrations</h3>
+        <p class="muted">Coming soon: embed SDKs, exports, and more.</p>
+      </article>
+    </section>
+
+    <footer>© <span id="year"></span> Dataquill</footer>
+  </div>
+
+  <script>
+    // ===== CSV UPLOAD (simple preview) =====
+    const csvInput = document.getElementById('csvInput');
+    const drop = document.querySelector('.drop');
+    const rCount = document.getElementById('rCount');
+    const cCount = document.getElementById('cCount');
+    const sampleCell = document.getElementById('sampleCell');
+
+    function parseCSV(text){
+      // Split respecting simple quoted fields
+      const rows = text.replace(/\r/g,'').split('\n').filter(Boolean);
+      const data = rows.map(r=>{
+        const out=[]; let cur='', q=false;
+        for(let i=0;i<r.length;i++){
+          const ch=r[i], nx=r[i+1];
+          if(ch==='"' && nx=== '"'){ cur+='"'; i++; continue; }
+          if(ch=== '"'){ q=!q; continue; }
+          if(ch=== ',' && !q){ out.push(cur); cur=''; continue; }
+          cur+=ch;
+        }
+        out.push(cur);
+        return out;
+      });
+      return data;
+    }
+
+    function handleFile(file){
+      const reader = new FileReader();
+      reader.onload = () => {
+        const text = reader.result || '';
+        const data = parseCSV(String(text));
+        if(!data.length) return;
+
+        const headers = data[0] || [];
+        const firstDataRow = data[1] || [];
+        rCount.textContent = data.length - 1; // minus header
+        cCount.textContent = headers.length;
+        sampleCell.textContent = firstDataRow[0] ?? '—';
+      };
+      reader.readAsText(file);
+    }
+
+    csvInput?.addEventListener('change', e=>{
+      const f = e.target.files?.[0];
+      if(f) handleFile(f);
+    });
+
+    // Drag & drop behavior
+    ;['dragenter','dragover','dragleave','drop'].forEach(ev=>{
+      drop.addEventListener(ev, e=>{ e.preventDefault(); e.stopPropagation(); }, false);
+    });
+    drop.addEventListener('drop', e=>{
+      const f = e.dataTransfer?.files?.[0];
+      if(f) handleFile(f);
+    });
+
+    // Year
+    document.getElementById('year').textContent = new Date().getFullYear();
+  </script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>InsightPulse — Turn Your Data Into Decisions</title>
