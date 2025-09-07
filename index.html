@@ -1,6 +1,393 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dataquill — Turn Your Data Into Decisions</title>
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV, explore widgets, and export in a clean black-and-teal UI.">
+
+  <!-- Social -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
+  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore instantly." />
+  <meta property="og:url" content="/" />
+  <meta name="twitter:card" content="summary_large_image" />
+
+  <!-- Chart + PDF (CDN) -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
+  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+
+  <style>
+    :root{
+      --bg:#000915;            /* page background */
+      --panel:#06152a;         /* cards */
+      --panel-deep:#091c33;    /* deeper panels */
+      --card:#0e1f3a;          /* inner panels */
+      --text:#e9ffff;          /* primary text */
+      --muted:#9fd6e1;         /* secondary text */
+      --teal:#20d4c7;          /* accents */
+      --teal2:#178f89;         /* accents deep */
+      --glow: 0 0 32px rgba(32,212,199,.25);
+      --dash:#2ac6b9;
+      --dash-bg: rgba(32,212,199,.12);
+      --btn:#168f88;
+      --btn-txt:#031c1b;
+      --ring:#2ac6b957;
+      --border:#12324a;
+    }
+    *{ box-sizing: border-box }
+    html,body{ height:100% }
+    body{
+      margin:0; color:var(--text); background:radial-gradient(1200px 700px at 50% -20%, #052236 0%, #03101e 35%, var(--bg) 70%) fixed;
+      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
+    }
+    a{ color:var(--teal); text-decoration:none }
+    a:hover{ text-decoration:underline }
+
+    /* topbar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:rgba(3,16,30,.6); backdrop-filter: blur(8px);
+      border-bottom:1px solid var(--border);
+    }
+    .topwrap{
+      max-width:1100px; margin:auto; padding:12px 16px; display:flex; align-items:center; gap:14px;
+    }
+    .logo{
+      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px;
+    }
+    .dot{ width:16px; height:16px; border-radius:6px; background:#17ffe6; box-shadow:0 0 20px #17ffe6 }
+    .brand{ font-size:20px }
+    .spacer{ flex:1 }
+    .nav{ display:flex; gap:10px }
+    .chip{
+      padding:.45rem .7rem; border-radius:999px; color:#bdeff1; background:#0b2635; border:1px solid #0f3a53;
+      cursor:pointer; transition: all .2s ease;
+    }
+    .chip:hover{ color:var(--text); box-shadow: var(--glow); border-color:#18516e }
+
+    /* layout */
+    .container{ max-width:1100px; margin:24px auto 80px; padding:0 16px }
+    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:16px }
+    .card{
+      background: linear-gradient(180deg, #071a2f, #07182b);
+      border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow: var(--glow);
+    }
+    .title{ font-size:20px; color:var(--teal); font-weight:800; margin:2px 0 10px }
+    .sub{ color:var(--muted) }
+
+    /* drop zone */
+    .drop{
+      border:2px dashed var(--dash); background:var(--dash-bg);
+      border-radius:12px; padding:22px; text-align:center; transition: all .15s ease;
+    }
+    .drop.drag{ box-shadow:0 0 0 4px var(--ring) inset }
+    .hint{ color:#a8d8df }
+    .kpis{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px }
+    .kpi{ background:#0a1b2f; border:1px solid #0d2a42; border-radius:12px; padding:10px 12px; min-width:120px }
+    .klabel{ color:#86cfd9; font-size:12px; margin-bottom:2px }
+    .kval{ font-weight:800; font-size:18px }
+
+    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px }
+    .btn{
+      background:linear-gradient(180deg, var(--btn), #0c6c66); color:#dffffc; border:none;
+      padding:.65rem .9rem; border-radius:10px; font-weight:700; cursor:pointer; border:1px solid #0e645f;
+      transition: transform .05s ease;
+    }
+    .btn:active{ transform: translateY(1px) }
+    .btn.secondary{ background:#0b2435; border-color:#10364a; color:#bfecef }
+    .btn.ghost{ background:#081a29; border-color:#0f334a; color:#bfecef }
+
+    .tables{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px }
+    table{ width:100%; border-collapse:collapse; background:#081a2b; border:1px solid #0f2d46; border-radius:12px; overflow:hidden }
+    th,td{ padding:10px 12px; border-bottom:1px solid #0d2a42; text-align:left; white-space:nowrap }
+    th{ background:#071f34; color:#a9e5ea }
+    tr:last-child td{ border-bottom:none }
+
+    /* anchors spacing for sticky header */
+    .anchor{ position:relative; top:-72px; visibility:hidden }
+
+    /* footer */
+    footer{ margin:36px 0 40px; text-align:center; color:#88cdd9 }
+    .muter{ color:#7fbfca }
+
+    @media (max-width:900px){
+      .grid2{ grid-template-columns: 1fr }
+      .tables{ grid-template-columns: 1fr }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top -->
+  <div class="topbar">
+    <div class="topwrap">
+      <div class="logo"><div class="dot"></div><div class="brand">Dataquill</div></div>
+      <div class="spacer"></div>
+      <div class="nav">
+        <a class="chip" href="#pricing">Pricing</a>
+        <a class="chip" href="#faq">FAQ</a>
+        <a class="chip" href="#app">Live App</a>
+      </div>
+    </div>
+  </div>
+
+  <main class="container">
+    <!-- HERO -->
+    <div class="grid2">
+      <section class="card">
+        <h2 class="title">AI powered embedded analytics platform</h2>
+        <p class="sub">Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
+      </section>
+      <section class="card">
+        <h2 class="title">Quick charts</h2>
+        <p class="sub">The first numeric column is charted automatically.</p>
+      </section>
+    </div>
+
+    <!-- LIVE APP -->
+    <span id="app" class="anchor"></span>
+    <section class="card" style="margin-top:16px">
+      <h3 class="title" style="font-size:22px">Drop or choose a CSV</h3>
+
+      <div id="drop" class="drop">
+        <div class="hint">Drag a .csv here or <label for="csvInput" style="text-decoration:underline; cursor:pointer">browse</label></div>
+        <input id="csvInput" type="file" accept=".csv" style="display:none" />
+      </div>
+
+      <div class="row">
+        <button id="loadSample" class="btn">Load Sample</button>
+        <button id="clearData" class="btn secondary">Clear Data</button>
+        <button id="exportPNG" class="btn">Export PNG (chart)</button>
+        <button id="exportPDF" class="btn ghost">Export PDF</button>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="klabel">Rows</div><div id="rowsKpi" class="kval">0</div></div>
+        <div class="kpi"><div class="klabel">Columns</div><div id="colsKpi" class="kval">0</div></div>
+        <div class="kpi"><div class="klabel">Sample</div><div id="sampleKpi" class="kval">—</div></div>
+      </div>
+
+      <div class="tables">
+        <div class="card">
+          <canvas id="chart" height="220"></canvas>
+        </div>
+        <div class="card" style="overflow:auto">
+          <table id="table">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PRICING -->
+    <span id="pricing" class="anchor"></span>
+    <section class="grid2" style="margin-top:16px">
+      <div class="card">
+        <h3 class="title">Pricing</h3>
+        <p class="sub"><b>Free:</b> Upload CSV and preview widgets instantly.</p>
+        <p class="sub"><b>Pro (TBD):</b> Export dashboards, white-label branding, priority support.</p>
+      </div>
+      <div class="card" id="faq">
+        <h3 class="title">FAQ</h3>
+        <p class="sub"><b>Is my data sent to a server?</b><br/>No. All processing happens in your browser.</p>
+        <p class="sub" style="margin-top:10px"><b>What file formats are supported?</b><br/>CSV for now. More coming soon.</p>
+      </div>
+    </section>
+
+    <footer class="muter">© 2025 Dataquill. All rights reserved.</footer>
+  </main>
+
+<script>
+(() => {
+  const $ = sel => document.querySelector(sel);
+
+  // Elements
+  const csvInput = $("#csvInput");
+  const drop = $("#drop");
+  const tHead = $("#table thead");
+  const tBody = $("#table tbody");
+  const rowsKpi = $("#rowsKpi");
+  const colsKpi = $("#colsKpi");
+  const sampleKpi = $("#sampleKpi");
+
+  let chart;
+  const ctx = $("#chart").getContext("2d");
+
+  // Drag & drop
+  ["dragenter", "dragover"].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("drag"); })
+  );
+  ["dragleave", "drop"].forEach(ev =>
+    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("drag"); })
+  );
+  drop.addEventListener("click", () => csvInput.click());
+  drop.addEventListener("drop", e => {
+    const f = e.dataTransfer?.files?.[0];
+    if (f) readCSV(f);
+  });
+  csvInput.addEventListener("change", e => {
+    const f = e.target.files?.[0];
+    if (f) readCSV(f);
+    csvInput.value = "";
+  });
+
+  // Buttons
+  $("#loadSample").addEventListener("click", () => {
+    const sample = `Name,City,Sales
+Alice,New York,120
+Bob,Miami,95
+Cara,Chicago,141`;
+    renderCSV(sample);
+  });
+  $("#clearData").addEventListener("click", clearAll);
+  $("#exportPNG").addEventListener("click", exportPNG);
+  $("#exportPDF").addEventListener("click", exportPDF);
+
+  function clearAll(){
+    tHead.innerHTML = ""; tBody.innerHTML = "";
+    rowsKpi.textContent = "0"; colsKpi.textContent = "0"; sampleKpi.textContent = "—";
+    if (chart) { chart.destroy(); chart = null; }
+  }
+
+  function readCSV(file){
+    const reader = new FileReader();
+    reader.onload = () => renderCSV(reader.result);
+    reader.readAsText(file);
+  }
+
+  // Simple CSV parser (handles commas inside quotes)
+  function parseCSV(text){
+    const lines = text.replace(/\r/g,"").split("\n").filter(l => l.trim().length);
+    const rows = lines.map(line => {
+      const out = [];
+      let cur = "", q = false;
+      for (let i=0;i<line.length;i++){
+        const c = line[i];
+        if (c === '"' ){
+          if (q && line[i+1] === '"'){ cur += '"'; i++; }
+          else q = !q;
+        } else if (c === ',' && !q){
+          out.push(cur); cur = "";
+        } else cur += c;
+      }
+      out.push(cur);
+      return out;
+    });
+    return rows;
+  }
+
+  function renderCSV(text){
+    const rows = parseCSV(text);
+    if (!rows.length) return;
+
+    // KPIs
+    rowsKpi.textContent = rows.length - 1;
+    colsKpi.textContent = rows[0].length;
+    sampleKpi.textContent = rows[1]?.[0] || "—";
+
+    // Table
+    tHead.innerHTML = "<tr>" + rows[0].map(h => `<th>${escapeHTML(h)}</th>`).join("") + "</tr>";
+    tBody.innerHTML = rows.slice(1).map(r => `<tr>${r.map(c => `<td>${escapeHTML(c)}</td>`).join("")}</tr>`).join("");
+
+    // Chart: first numeric column (search)
+    const header = rows[0];
+    const dataRows = rows.slice(1);
+    const numericIndex = findFirstNumericColumn(dataRows);
+    const labelIndex = numericIndex === 0 ? 1 : 0;
+    const labels = dataRows.map(r => r[labelIndex]);
+    const values = dataRows.map(r => Number(r[numericIndex]) || 0);
+
+    if (chart) chart.destroy();
+    chart = new Chart(ctx, {
+      type:"bar",
+      data:{
+        labels,
+        datasets:[{
+          label: header[numericIndex] || "Value",
+          data: values,
+          borderWidth:1,
+          backgroundColor: "rgba(32,212,199,0.45)",
+          borderColor: "rgba(32,212,199,0.9)"
+        }]
+      },
+      options:{
+        plugins:{ legend:{ labels:{ color:"#c9ffff" } } },
+        scales:{
+          x:{ ticks:{ color:"#b6e7ef" }, grid:{ color:"#0f334a" } },
+          y:{ ticks:{ color:"#b6e7ef" }, grid:{ color:"#0f334a" } }
+        }
+      }
+    });
+  }
+
+  function findFirstNumericColumn(rows){
+    if (!rows.length) return 0;
+    const width = rows[0].length;
+    for (let col=0; col<width; col++){
+      const cells = rows.map(r => Number(r[col]));
+      if (cells.every(v => !isNaN(v))) return col;
+    }
+    return Math.max(1, width-1);
+  }
+
+  function escapeHTML(s){
+    return String(s)
+      .replaceAll("&","&amp;")
+      .replaceAll("<","&lt;")
+      .replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;")
+      .replaceAll("'","&#39;");
+  }
+
+  function exportPNG(){
+    if (!chart) return alert("Load a CSV first.");
+    const a = document.createElement("a");
+    a.download = "dataquill-chart.png";
+    a.href = chart.toBase64Image("image/png", 1.0);
+    a.click();
+  }
+
+  async function exportPDF(){
+    if (!chart) return alert("Load a CSV first.");
+    const { jsPDF } = window.jspdf;
+    const pdf = new jsPDF({ orientation:"landscape", unit:"pt", format:"a4" });
+
+    pdf.setFontSize(16);
+    pdf.text("Dataquill — Report", 40, 40);
+
+    // Chart image
+    const img = chart.toBase64Image("image/png", 1.0);
+    pdf.addImage(img, "PNG", 40, 60, 500, 260);
+
+    // Table (first 15 rows)
+    const head = [...tHead.querySelectorAll("th")].map(th => th.textContent);
+    const body = [...tBody.querySelectorAll("tr")].slice(0,15).map(tr => {
+      return [...tr.children].map(td => td.textContent);
+    });
+
+    // Simple table render
+    let x = 560, y = 60, rowH = 18, colW = 90;
+    pdf.setFontSize(10);
+    pdf.text("Preview (first rows)", x, y-10);
+    pdf.setDrawColor(200); pdf.setLineWidth(.5);
+    // header
+    head.forEach((h,i)=>{ pdf.text(h, x + i*colW, y); });
+    y += rowH;
+    body.forEach(r=>{
+      r.forEach((c,i)=>{ pdf.text(String(c).slice(0,14), x + i*colW, y); });
+      y += rowH;
+    });
+
+    pdf.save("dataquill-report.pdf");
+  }
+})();
+</script>
+</body>
+</html><!DOCTYPE html>
+<html lang="en">
+<head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dataquill — Turn Your Data Into Decisions</title>
