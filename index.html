@@ -113,6 +113,94 @@
   </style>
 </head>
 <body>
+  <header class="topbar">
+    <div class="brand">
+      <span class="logo-dot"></span>
+      <span class="brand-name">Dataquill</span>
+    </div>
+    <nav class="nav">
+      <a href="#pricing" class="btn pill">Pricing</a>
+      <a href="#faq" class="btn pill">FAQ</a>
+      <a href="#app" class="btn pill solid">Live App</a>
+    </nav>
+  </header>
+
+  <main id="app" class="wrap">
+    <!-- Hero -->
+    <section class="grid hero">
+      <div class="card">
+        <h2>AI powered embedded analytics platform</h2>
+        <p>Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
+      </div>
+      <div class="card">
+        <h2>Quick charts</h2>
+        <p>The first numeric column is charted automatically.</p>
+      </div>
+    </section>
+
+    <!-- Uploader -->
+    <section class="card big">
+      <h3 class="section-title">Drop or choose a CSV</h3>
+
+      <div class="drop-zone file-drop" id="fileDrop">
+        <input id="csvInput" type="file" accept=".csv" hidden />
+        <p>Drag a .csv here or <a href="#" id="browseLink">browse</a></p>
+      </div>
+
+      <div class="actions">
+        <button class="btn" id="loadSample">Load Sample</button>
+        <button class="btn" id="clearData">Clear Data</button>
+        <button class="btn" id="exportPng">Export PNG (chart)</button>
+        <button class="btn" id="exportPdf">Export PDF</button>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi">
+          <div class="kpi-value" id="rowsCount">0</div>
+          <div class="kpi-label">Rows</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-value" id="colsCount">0</div>
+          <div class="kpi-label">Columns</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-value" id="sampleName">—</div>
+          <div class="kpi-label">Sample</div>
+        </div>
+      </div>
+
+      <div class="grid charts">
+        <div class="chart-box">
+          <canvas id="chartCanvas" height="220"></canvas>
+        </div>
+        <div class="table-wrap">
+          <table id="dataTable">
+            <thead></thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Pricing -->
+    <section id="pricing" class="grid">
+      <div class="card">
+        <h3>Pricing</h3>
+        <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
+        <p><strong>Pro (TBD):</strong> Export dashboards, white-label branding, priority support.</p>
+      </div>
+      <div id="faq" class="card">
+        <h3>FAQ</h3>
+        <p><strong>Is my data sent to a server?</strong><br/>No. All processing happens in your browser.</p>
+        <p><strong>What file formats are supported?</strong><br/>CSV for now. More coming soon.</p>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">© 2025 Dataquill. All rights reserved.</div>
+  </footer>
+</body><body>
 
   <!-- NAV -->
   <div class="topbar">
