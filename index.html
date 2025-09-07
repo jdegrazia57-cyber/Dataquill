@@ -4,112 +4,112 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship." />
+  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
 
-  <!-- Social (update og:url after you decide final domain) -->
+  <!-- Social (adjust og:url after you point to your final domain) -->
   <meta property="og:type" content="website" />
   <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets." />
+  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
   <meta property="og:url" content="/" />
   <meta name="twitter:card" content="summary_large_image" />
 
   <style>
+    /* ===== THEME ===== */
     :root{
-      --bg:#000614;        /* page background */
-      --panel:#071a2b;     /* panels */
-      --card:#0b2336;      /* cards */
-      --text:#e9fbff;      /* primary text */
-      --muted:#7db7c6;     /* secondary text */
-      --mint:#38e6d7;      /* accents (teal/mint) */
-      --mint-2:#19c3b7;
-      --teal:#18a0a6;
-      --dash:#36d9c9;
-      --glow:0 0 24px rgba(56,230,215,.25);
+      --bg:#000000;           /* page background */
+      --panel:#0b1418;        /* cards */
+      --panel-2:#0c1f2c;      /* dim section bg */
+      --text:#e9ffff;         /* primary text */
+      --muted:#97e7e1;        /* muted text */
+      --teal:#17cab2;         /* accent (buttons, focus) */
+      --teal-2:#1aa9a0;       /* accent (darker) */
+      --dash:#37d5d0;         /* dashed box */
+      --ring:0 0 0 2px rgba(23,202,178,.35);
+      --radius:16px;
+      --shadow:0 18px 48px rgba(0,0,0,.45), inset 0 1px 0 rgba(255,255,255,.03);
     }
+
     *{box-sizing:border-box}
     html,body{height:100%}
     body{
-      margin:0; background:var(--bg); color:var(--text);
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      line-height:1.4;
+      margin:0;
+      font:16px/1.55 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
+      color:var(--text);
+      background: radial-gradient(1200px 500px at 50% -5%, #052226 0%, #020a0c 55%, #000 100%), var(--bg);
+      -webkit-font-smoothing:antialiased; text-rendering:optimizeLegibility;
     }
-    a{color:var(--mint); text-decoration:none}
-    a:hover{opacity:.9}
 
     /* Topbar */
     .topbar{
-      position:sticky; top:0; z-index:20; backdrop-filter:saturate(160%) blur(8px);
-      background:linear-gradient(180deg, rgba(8,24,38,.9), rgba(8,24,38,.65) 60%, rgba(8,24,38,0));
-      display:flex; align-items:center; justify-content:space-between; gap:.75rem;
-      padding:.65rem 1rem; border-bottom:1px solid rgba(90,200,200,.08);
+      position:sticky; top:0; z-index:50;
+      display:flex; align-items:center; justify-content:space-between;
+      padding:14px 20px; backdrop-filter:saturate(1.2) blur(12px);
+      background:linear-gradient(180deg, rgba(0,10,12,.65), rgba(0,10,12,.25) 60%, transparent);
+      border-bottom:1px solid rgba(255,255,255,.06);
     }
-    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700}
-    .dot{width:14px;height:14px;border-radius:50%;background:var(--mint);box-shadow:var(--glow)}
-    .brand span{letter-spacing:.2px}
-
-    .nav{display:flex; gap:.5rem; align-items:center}
-    .chip{
+    .brand{display:flex; align-items:center; gap:10px; font-weight:700; letter-spacing:.2px}
+    .logo-dot{width:14px; height:14px; border-radius:8px; background:linear-gradient(180deg,#34ffe0,#00b3a5); box-shadow:0 0 18px #1dd6c4}
+    .brand-name{font-size:18px}
+    .nav{display:flex; align-items:center; gap:10px}
+    .btn{
       display:inline-flex; align-items:center; justify-content:center;
-      padding:.45rem .8rem; border-radius:999px; border:1px solid rgba(90,200,200,.18);
-      color:#bfeff0; background:rgba(8,24,38,.55)
+      padding:9px 14px; border-radius:999px; border:1px solid rgba(255,255,255,.08);
+      color:var(--text); background:rgba(10,20,24,.35); box-shadow:var(--shadow);
+      text-decoration:none; font-weight:600; transition:.2s ease;
     }
-    .chip:hover{border-color:rgba(90,200,200,.35)}
+    .btn:hover{transform:translateY(-1px); border-color:rgba(255,255,255,.18)}
+    .btn.solid{background:linear-gradient(180deg,#1fe3cc,#0f9a90); color:#001314; border:none}
 
     /* Layout */
-    .wrap{max-width:1080px; margin:0 auto; padding:1rem .9rem 3rem}
+    .wrap{max-width:1100px; margin:0 auto; padding:26px 18px 70px}
+    .grid{display:grid; gap:18px}
+    .hero{grid-template-columns:1fr 1fr}
+    @media (max-width:880px){ .hero{grid-template-columns:1fr} }
 
-    .row{display:grid; gap:1rem; grid-template-columns: 1fr}
-    .two{grid-template-columns:1fr 1fr}
-    @media (max-width:880px){ .two{grid-template-columns:1fr} }
-
-    .panel{
-      background:radial-gradient(1200px 400px at 50% -50%, rgba(0,224,216,.06), transparent 60%), var(--panel);
-      border:1px solid rgba(90,200,200,.12); border-radius:14px; padding:1rem;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.02);
-    }
+    /* Cards */
     .card{
-      background:radial-gradient(1000px 400px at 50% -60%, rgba(0,224,216,.05), transparent 60%), var(--card);
-      border:1px dashed rgba(90,200,200,.25); border-radius:12px; padding:1rem;
+      background: radial-gradient(80% 120% at 20% 0%, rgba(16,92,88,.25), transparent 55%) , var(--panel);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius: var(--radius);
+      padding:20px; box-shadow:var(--shadow);
+    }
+    .card.big{padding:24px}
+
+    .section-title{margin:0 0 10px; font-size:20px}
+
+    /* Drop zone */
+    .file-drop{
+      margin:10px 0 14px; padding:16px; border-radius:12px;
+      border:2px dashed var(--dash); color:var(--muted); text-align:center;
+      background:rgba(12,28,35,.45);
+    }
+    .file-drop.dragover{outline: var(--ring)}
+
+    /* KPI pills */
+    .kpis{display:grid; grid-template-columns: repeat(3, minmax(0,1fr)); gap:12px; margin:10px 0 6px}
+    .kpi{background:rgba(5,20,26,.65); border:1px solid rgba(255,255,255,.06); border-radius:12px; padding:14px}
+    .kpi-value{font-size:22px; font-weight:800}
+    .kpi-label{color:var(--muted)}
+
+    /* Chart + table */
+    .charts{grid-template-columns:1.1fr .9fr}
+    @media (max-width:980px){ .charts{grid-template-columns:1fr} }
+    .chart-box, .table-wrap{
+      background:rgba(5,18,22,.45); border:1px solid rgba(255,255,255,.06);
+      border-radius:12px; padding:12px; min-height:220px;
+    }
+    table{width:100%; border-collapse:collapse}
+    thead th, tbody td{
+      padding:10px 10px; border-bottom:1px solid rgba(255,255,255,.06); text-align:left;
+      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
     }
 
-    h1{font-size:1.6rem; margin:0}
-    h2{font-size:1.15rem; margin:0 0 .35rem 0}
-    .muted{color:var(--muted)}
-    .glow{box-shadow:var(--glow)}
+    /* Footer */
+    .site-footer{margin-top:36px; color:var(--muted); border-top:1px solid rgba(255,255,255,.08)}
+    .site-footer .wrap{padding:18px}
 
-    /* Upload box */
-    .drop{
-      margin:.6rem 0; min-height:120px; display:flex; align-items:center; justify-content:center;
-      border:2px dashed var(--dash); border-radius:12px; padding:1rem;
-      background:rgba(2,70,80,.18)
-    }
-    .drop.drag{outline:2px solid var(--mint)}
-    .actions{display:flex; flex-wrap:wrap; gap:.6rem; margin:.4rem 0 .6rem}
-    .btn{
-      background:#07202f; color:var(--text); border:1px solid rgba(90,200,200,.22);
-      padding:.55rem .9rem; border-radius:10px; cursor:pointer
-    }
-    .btn.primary{background:var(--mint); color:#00353d; border-color:transparent; font-weight:700}
-    .btn:disabled{opacity:.45; cursor:not-allowed}
-
-    .kpis{display:flex; gap:.8rem; flex-wrap:wrap}
-    .kpi{flex:1 1 160px; background:#041622; border:1px solid rgba(90,200,200,.15);
-      padding:.9rem; border-radius:12px}
-    .kpi h3{margin:.1rem 0 .35rem 0; font-size:.9rem; color:#a8e6ea}
-    .kpi .val{font-size:1.25rem; font-weight:800}
-
-    /* Grid outputs */
-    .out{display:grid; gap:1rem; grid-template-columns: 1fr 1fr}
-    @media (max-width:960px){ .out{grid-template-columns:1fr} }
-    table{width:100%; border-collapse:collapse; color:var(--text); font-size:.95rem}
-    th,td{padding:.55rem .6rem; border-bottom:1px solid rgba(90,200,200,.12); text-align:left; white-space:nowrap}
-    th{color:#bfeff0; background:#04131c}
-    .table-wrap{overflow:auto; background:#031018; border:1px solid rgba(90,200,200,.14); border-radius:12px}
-
-    /* Footer cards */
-    .grid-2{display:grid; gap:1rem; grid-template-columns:1fr 1fr}
-    @media (max-width:880px){ .grid-2{grid-template-columns:1fr} }
-    footer{margin-top:2rem; text-align:center; color:#9dd; padding:1rem 0}
+    /* Buttons row */
+    .actions{display:flex; flex-wrap:wrap; gap:10px; margin:6px 0 8px}
   </style>
 </head>
 <body>
@@ -119,14 +119,14 @@
       <span class="brand-name">Dataquill</span>
     </div>
     <nav class="nav">
-      <a href="#pricing" class="btn pill">Pricing</a>
-      <a href="#faq" class="btn pill">FAQ</a>
-      <a href="#app" class="btn pill solid">Live App</a>
+      <a href="#pricing" class="btn">Pricing</a>
+      <a href="#faq" class="btn">FAQ</a>
+      <a href="#app" class="btn solid">Live App</a>
     </nav>
   </header>
 
   <main id="app" class="wrap">
-    <!-- Hero -->
+    <!-- HERO -->
     <section class="grid hero">
       <div class="card">
         <h2>AI powered embedded analytics platform</h2>
@@ -138,11 +138,11 @@
       </div>
     </section>
 
-    <!-- Uploader -->
+    <!-- UPLOADER -->
     <section class="card big">
       <h3 class="section-title">Drop or choose a CSV</h3>
 
-      <div class="drop-zone file-drop" id="fileDrop">
+      <div class="file-drop" id="fileDrop">
         <input id="csvInput" type="file" accept=".csv" hidden />
         <p>Drag a .csv here or <a href="#" id="browseLink">browse</a></p>
       </div>
@@ -182,8 +182,8 @@
       </div>
     </section>
 
-    <!-- Pricing -->
-    <section id="pricing" class="grid">
+    <!-- PRICING + FAQ -->
+    <section id="pricing" class="grid" style="grid-template-columns:1fr 1fr">
       <div class="card">
         <h3>Pricing</h3>
         <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
@@ -200,2252 +200,152 @@
   <footer class="site-footer">
     <div class="wrap">© 2025 Dataquill. All rights reserved.</div>
   </footer>
-</body><body>
 
-  <!-- NAV -->
-  <div class="topbar">
-    <div class="brand"><span class="dot"></span><span>Dataquill</span></div>
-    <nav class="nav">
-      <a class="chip" href="#pricing">Pricing</a>
-      <a class="chip" href="#faq">FAQ</a>
-      <a class="chip" href="#app">Live App</a>
-    </nav>
-  </div>
-
-  <main id="app" class="wrap">
-    <!-- HERO -->
-    <section class="row two">
-      <div class="panel">
-        <h2>AI powered embedded analytics platform</h2>
-        <p class="muted">Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
-      </div>
-      <div class="panel">
-        <h2>Quick charts</h2>
-        <p class="muted">The first numeric column is charted automatically.</p>
-      </div>
-    </section>
-
-    <!-- UPLOAD -->
-    <section class="panel" style="margin-top:1rem">
-      <h2>Drop or choose a CSV</h2>
-      <div id="drop" class="drop">
-        <span>Drag a .csv here or <a id="browse" href="#">browse</a></span>
-      </div>
-      <input id="csvInput" type="file" accept=".csv,text/csv" style="display:none" />
-      <div class="actions">
-        <button id="btnSample" class="btn primary">Load Sample</button>
-        <button id="btnClear"  class="btn">Clear Data</button>
-        <button id="btnPNG"   class="btn">Export PNG (chart)</button>
-        <button id="btnPDF"   class="btn">Export PDF</button>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><h3>Rows</h3><div id="kRows" class="val">0</div></div>
-        <div class="kpi"><h3>Columns</h3><div id="kCols" class="val">0</div></div>
-        <div class="kpi"><h3>Sample</h3><div id="kSample" class="val">—</div></div>
-      </div>
-
-      <div class="out" style="margin-top:.8rem">
-        <div class="table-wrap"><table id="tbl"></table></div>
-        <div class="card"><canvas id="chart" width="760" height="420"></canvas></div>
-      </div>
-    </section>
-
-    <!-- PRICING / FAQ -->
-    <section id="pricing" class="grid-2" style="margin-top:1rem">
-      <div class="panel">
-        <h2>Pricing</h2>
-        <p class="muted"><b>Free:</b> Upload CSV and preview widgets instantly.</p>
-        <p class="muted"><b>Pro (TBD):</b> Export dashboards, white-label branding, priority support.</p>
-      </div>
-      <div id="faq" class="panel">
-        <h2>FAQ</h2>
-        <p class="muted"><b>Is my data sent to a server?</b><br/>No. All processing happens in your browser.</p>
-        <p class="muted"><b>What file formats are supported?</b><br/>CSV for now. More coming soon.</p>
-      </div>
-    </section>
-
-    <footer>© 2025 Dataquill. All rights reserved.</footer>
-  </main>
-
+  <!-- ===== SCRIPTS (no duplicates) ===== -->
   <script>
-    /* ===== helpers ===== */
-    const $ = (sel, p=document) => p.querySelector(sel);
-
+    // --- CSV utilities (simple, client-side) ---
     function parseCSV(text){
-      // robust-ish CSV (handles quoted commas & quotes)
-      const rows = [];
-      let i = 0, cur = '', inQ = false, row = [];
-      while (i < text.length){
-        const c = text[i];
-        if (inQ){
-          if (c === '"'){
-            if (text[i+1] === '"'){ cur += '"'; i++; }
-            else inQ = false;
-          } else cur += c;
-        } else {
-          if (c === '"') inQ = true;
-          else if (c === ','){ row.push(cur); cur=''; }
-          else if (c === '\n' || c === '\r'){
-            if (cur.length || row.length){ row.push(cur); rows.push(row); }
-            cur=''; row=[]; if (c === '\r' && text[i+1] === '\n') i++;
-          } else cur += c;
-        }
-        i++;
-      }
-      if (cur.length || row.length){ row.push(cur); rows.push(row); }
-      // trim empty trailing rows
-      return rows.filter(r => r.some(cell => String(cell).trim() !== ''));
+      // very simple CSV parser (no quotes/escapes handling for brevity)
+      return text.trim().split(/\r?\n/).map(r => r.split(","));
     }
 
-    function toTable(headers, rows){
-      const thead = `<thead><tr>${headers.map(h=>`<th>${h}</th>`).join('')}</tr></thead>`;
-      const body  = `<tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody>`;
-      return thead + body;
-    }
-
-    /* ===== chart (vanilla canvas) ===== */
-    const ctx = $('#chart').getContext('2d');
-
-    function drawChart(headers, rows){
-      ctx.clearRect(0,0,ctx.canvas.width,ctx.canvas.height);
-      if (!headers || !rows || !rows.length) return;
-
-      // find first numeric column
-      const numericIndex = headers.findIndex((_, idx) => rows.some(r => !isNaN(parseFloat(r[idx])) ));
-      if (numericIndex < 0){ // no numeric columns
-        ctx.fillStyle = '#9fd'; ctx.font = '16px ui-sans-serif';
-        ctx.fillText('Load a CSV with at least one numeric column to render the chart here.', 20, 40);
-        return;
-      }
-      const labelsIdx = headers.findIndex((_, idx) => idx !== numericIndex);
-      const values = rows.map(r => parseFloat(r[numericIndex]) || 0);
-      const labels = rows.map(r => String(r[labelsIdx] ?? ''));
-
-      const W = ctx.canvas.width, H = ctx.canvas.height, pad = 44;
-      const max = Math.max(...values, 1);
-      const barW = (W - pad*2) / values.length * 0.7;
-      const step = (W - pad*2) / values.length;
-
-      // axes
-      ctx.strokeStyle = 'rgba(120,220,220,.35)'; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad, H-pad); ctx.lineTo(W-pad, H-pad); ctx.stroke();
-
-      // bars
-      for (let i=0;i<values.length;i++){
-        const x = pad + i*step + (step-barW)/2;
-        const h = Math.round((values[i]/max) * (H - pad*2));
-        ctx.fillStyle = i%2 ? '#38e6d7' : '#19c3b7';
-        ctx.fillRect(x, H-pad-h, barW, h);
-      }
-
-      // title
-      ctx.fillStyle = '#bfeff0'; ctx.font = '14px ui-sans-serif';
-      ctx.fillText(headers[numericIndex], pad, 26);
-    }
-
-    /* ===== app state & wiring ===== */
-    const state = { headers: null, rows: [] };
-
-    function renderTable(){
-      $('#tbl').innerHTML = state.headers ? toTable(state.headers, state.rows) : '';
-    }
-    function renderKpis(){
-      $('#kRows').textContent = state.rows.length || 0;
-      $('#kCols').textContent = state.headers ? state.headers.length : 0;
-      $('#kSample').textContent = state.rows[0] ? (state.rows[0][0] || '—') : '—';
-    }
-    function renderAll(){
-      renderTable();
-      renderKpis();
-      drawChart(state.headers, state.rows);
-    }
-
-    function loadText(text){
-      const rows = parseCSV(text);
-      if (!rows.length){ clearAll(); return; }
-      state.headers = rows[0];
-      state.rows    = rows.slice(1);
-      renderAll();
-    }
-
-    function clearAll(){
-      state.headers = null; state.rows = [];
-      renderAll();
-    }
-
-    // sample
-    const SAMPLE = `Name,City,Sales
-Alice,New York,120
-Bob,Miami,95
-Cara,Chicago,141`;
-
-    /* DOM hooks */
-    const drop = $('#drop');
-    const browse = $('#browse');
-    const csvInput = $('#csvInput');
-
-    // drag/drop
-    ['dragenter','dragover'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add('drag'); }));
-    ['dragleave','drop'].forEach(ev => drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove('drag'); }));
-    drop.addEventListener('drop', e => {
-      const f = e.dataTransfer?.files?.[0]; if (f) readFile(f);
-    });
-
-    // browse
-    browse.addEventListener('click', e => { e.preventDefault(); csvInput.click(); });
-    csvInput.addEventListener('change', e => {
-      const f = e.target.files?.[0]; if (f) readFile(f); e.target.value = '';
-    });
-
-    function readFile(file){
-      const reader = new FileReader();
-      reader.onload = () => loadText(reader.result);
-      reader.readAsText(file);
-    }
-
-    // buttons
-    $('#btnSample').addEventListener('click', () => loadText(SAMPLE));
-    $('#btnClear').addEventListener('click', clearAll);
-
-    $('#btnPNG').addEventListener('click', () => {
-      if (!state.headers){ alert('Load data first.'); return; }
-      const url = $('#chart').toDataURL('image/png');
-      const a = document.createElement('a');
-      a.href = url; a.download = 'dataquill-chart.png'; a.click();
-    });
-
-    $('#btnPDF').addEventListener('click', () => window.print());
-
-    // smooth scroll for chips
-    document.querySelectorAll('a[href^="#"]').forEach(a=>{
-      a.addEventListener('click', e=>{
-        const id = a.getAttribute('href')?.slice(1);
-        if (id){
-          const el = document.getElementById(id);
-          if (el){ e.preventDefault(); el.scrollIntoView({behavior:'smooth', block:'start'}); }
-        }
-      });
-    });
-
-    // first paint
-    clearAll();
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV, explore widgets, and export in a clean black-and-teal UI.">
-
-  <!-- Social -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore instantly." />
-  <meta property="og:url" content="/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <!-- Chart + PDF (CDN) -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1"></script>
-  <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
-
-  <style>
-    :root{
-      --bg:#000915;            /* page background */
-      --panel:#06152a;         /* cards */
-      --panel-deep:#091c33;    /* deeper panels */
-      --card:#0e1f3a;          /* inner panels */
-      --text:#e9ffff;          /* primary text */
-      --muted:#9fd6e1;         /* secondary text */
-      --teal:#20d4c7;          /* accents */
-      --teal2:#178f89;         /* accents deep */
-      --glow: 0 0 32px rgba(32,212,199,.25);
-      --dash:#2ac6b9;
-      --dash-bg: rgba(32,212,199,.12);
-      --btn:#168f88;
-      --btn-txt:#031c1b;
-      --ring:#2ac6b957;
-      --border:#12324a;
-    }
-    *{ box-sizing: border-box }
-    html,body{ height:100% }
-    body{
-      margin:0; color:var(--text); background:radial-gradient(1200px 700px at 50% -20%, #052236 0%, #03101e 35%, var(--bg) 70%) fixed;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-    }
-    a{ color:var(--teal); text-decoration:none }
-    a:hover{ text-decoration:underline }
-
-    /* topbar */
-    .topbar{
-      position:sticky; top:0; z-index:10;
-      background:rgba(3,16,30,.6); backdrop-filter: blur(8px);
-      border-bottom:1px solid var(--border);
-    }
-    .topwrap{
-      max-width:1100px; margin:auto; padding:12px 16px; display:flex; align-items:center; gap:14px;
-    }
-    .logo{
-      display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.3px;
-    }
-    .dot{ width:16px; height:16px; border-radius:6px; background:#17ffe6; box-shadow:0 0 20px #17ffe6 }
-    .brand{ font-size:20px }
-    .spacer{ flex:1 }
-    .nav{ display:flex; gap:10px }
-    .chip{
-      padding:.45rem .7rem; border-radius:999px; color:#bdeff1; background:#0b2635; border:1px solid #0f3a53;
-      cursor:pointer; transition: all .2s ease;
-    }
-    .chip:hover{ color:var(--text); box-shadow: var(--glow); border-color:#18516e }
-
-    /* layout */
-    .container{ max-width:1100px; margin:24px auto 80px; padding:0 16px }
-    .grid2{ display:grid; grid-template-columns: 1fr 1fr; gap:16px }
-    .card{
-      background: linear-gradient(180deg, #071a2f, #07182b);
-      border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow: var(--glow);
-    }
-    .title{ font-size:20px; color:var(--teal); font-weight:800; margin:2px 0 10px }
-    .sub{ color:var(--muted) }
-
-    /* drop zone */
-    .drop{
-      border:2px dashed var(--dash); background:var(--dash-bg);
-      border-radius:12px; padding:22px; text-align:center; transition: all .15s ease;
-    }
-    .drop.drag{ box-shadow:0 0 0 4px var(--ring) inset }
-    .hint{ color:#a8d8df }
-    .kpis{ display:flex; gap:12px; flex-wrap:wrap; margin-top:14px }
-    .kpi{ background:#0a1b2f; border:1px solid #0d2a42; border-radius:12px; padding:10px 12px; min-width:120px }
-    .klabel{ color:#86cfd9; font-size:12px; margin-bottom:2px }
-    .kval{ font-weight:800; font-size:18px }
-
-    .row{ display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:12px }
-    .btn{
-      background:linear-gradient(180deg, var(--btn), #0c6c66); color:#dffffc; border:none;
-      padding:.65rem .9rem; border-radius:10px; font-weight:700; cursor:pointer; border:1px solid #0e645f;
-      transition: transform .05s ease;
-    }
-    .btn:active{ transform: translateY(1px) }
-    .btn.secondary{ background:#0b2435; border-color:#10364a; color:#bfecef }
-    .btn.ghost{ background:#081a29; border-color:#0f334a; color:#bfecef }
-
-    .tables{ display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-top:14px }
-    table{ width:100%; border-collapse:collapse; background:#081a2b; border:1px solid #0f2d46; border-radius:12px; overflow:hidden }
-    th,td{ padding:10px 12px; border-bottom:1px solid #0d2a42; text-align:left; white-space:nowrap }
-    th{ background:#071f34; color:#a9e5ea }
-    tr:last-child td{ border-bottom:none }
-
-    /* anchors spacing for sticky header */
-    .anchor{ position:relative; top:-72px; visibility:hidden }
-
-    /* footer */
-    footer{ margin:36px 0 40px; text-align:center; color:#88cdd9 }
-    .muter{ color:#7fbfca }
-
-    @media (max-width:900px){
-      .grid2{ grid-template-columns: 1fr }
-      .tables{ grid-template-columns: 1fr }
-    }
-  </style>
-</head>
-<body>
-
-  <!-- Top -->
-  <div class="topbar">
-    <div class="topwrap">
-      <div class="logo"><div class="dot"></div><div class="brand">Dataquill</div></div>
-      <div class="spacer"></div>
-      <div class="nav">
-        <a class="chip" href="#pricing">Pricing</a>
-        <a class="chip" href="#faq">FAQ</a>
-        <a class="chip" href="#app">Live App</a>
-      </div>
-    </div>
-  </div>
-
-  <main class="container">
-    <!-- HERO -->
-    <div class="grid2">
-      <section class="card">
-        <h2 class="title">AI powered embedded analytics platform</h2>
-        <p class="sub">Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
-      </section>
-      <section class="card">
-        <h2 class="title">Quick charts</h2>
-        <p class="sub">The first numeric column is charted automatically.</p>
-      </section>
-    </div>
-
-    <!-- LIVE APP -->
-    <span id="app" class="anchor"></span>
-    <section class="card" style="margin-top:16px">
-      <h3 class="title" style="font-size:22px">Drop or choose a CSV</h3>
-
-      <div id="drop" class="drop">
-        <div class="hint">Drag a .csv here or <label for="csvInput" style="text-decoration:underline; cursor:pointer">browse</label></div>
-        <input id="csvInput" type="file" accept=".csv" style="display:none" />
-      </div>
-
-      <div class="row">
-        <button id="loadSample" class="btn">Load Sample</button>
-        <button id="clearData" class="btn secondary">Clear Data</button>
-        <button id="exportPNG" class="btn">Export PNG (chart)</button>
-        <button id="exportPDF" class="btn ghost">Export PDF</button>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><div class="klabel">Rows</div><div id="rowsKpi" class="kval">0</div></div>
-        <div class="kpi"><div class="klabel">Columns</div><div id="colsKpi" class="kval">0</div></div>
-        <div class="kpi"><div class="klabel">Sample</div><div id="sampleKpi" class="kval">—</div></div>
-      </div>
-
-      <div class="tables">
-        <div class="card">
-          <canvas id="chart" height="220"></canvas>
-        </div>
-        <div class="card" style="overflow:auto">
-          <table id="table">
-            <thead></thead>
-            <tbody></tbody>
-          </table>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING -->
-    <span id="pricing" class="anchor"></span>
-    <section class="grid2" style="margin-top:16px">
-      <div class="card">
-        <h3 class="title">Pricing</h3>
-        <p class="sub"><b>Free:</b> Upload CSV and preview widgets instantly.</p>
-        <p class="sub"><b>Pro (TBD):</b> Export dashboards, white-label branding, priority support.</p>
-      </div>
-      <div class="card" id="faq">
-        <h3 class="title">FAQ</h3>
-        <p class="sub"><b>Is my data sent to a server?</b><br/>No. All processing happens in your browser.</p>
-        <p class="sub" style="margin-top:10px"><b>What file formats are supported?</b><br/>CSV for now. More coming soon.</p>
-      </div>
-    </section>
-
-    <footer class="muter">© 2025 Dataquill. All rights reserved.</footer>
-  </main>
-
-<script>
-(() => {
-  const $ = sel => document.querySelector(sel);
-
-  // Elements
-  const csvInput = $("#csvInput");
-  const drop = $("#drop");
-  const tHead = $("#table thead");
-  const tBody = $("#table tbody");
-  const rowsKpi = $("#rowsKpi");
-  const colsKpi = $("#colsKpi");
-  const sampleKpi = $("#sampleKpi");
-
-  let chart;
-  const ctx = $("#chart").getContext("2d");
-
-  // Drag & drop
-  ["dragenter", "dragover"].forEach(ev =>
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.add("drag"); })
-  );
-  ["dragleave", "drop"].forEach(ev =>
-    drop.addEventListener(ev, e => { e.preventDefault(); drop.classList.remove("drag"); })
-  );
-  drop.addEventListener("click", () => csvInput.click());
-  drop.addEventListener("drop", e => {
-    const f = e.dataTransfer?.files?.[0];
-    if (f) readCSV(f);
-  });
-  csvInput.addEventListener("change", e => {
-    const f = e.target.files?.[0];
-    if (f) readCSV(f);
-    csvInput.value = "";
-  });
-
-  // Buttons
-  $("#loadSample").addEventListener("click", () => {
-    const sample = `Name,City,Sales
-Alice,New York,120
-Bob,Miami,95
-Cara,Chicago,141`;
-    renderCSV(sample);
-  });
-  $("#clearData").addEventListener("click", clearAll);
-  $("#exportPNG").addEventListener("click", exportPNG);
-  $("#exportPDF").addEventListener("click", exportPDF);
-
-  function clearAll(){
-    tHead.innerHTML = ""; tBody.innerHTML = "";
-    rowsKpi.textContent = "0"; colsKpi.textContent = "0"; sampleKpi.textContent = "—";
-    if (chart) { chart.destroy(); chart = null; }
-  }
-
-  function readCSV(file){
-    const reader = new FileReader();
-    reader.onload = () => renderCSV(reader.result);
-    reader.readAsText(file);
-  }
-
-  // Simple CSV parser (handles commas inside quotes)
-  function parseCSV(text){
-    const lines = text.replace(/\r/g,"").split("\n").filter(l => l.trim().length);
-    const rows = lines.map(line => {
-      const out = [];
-      let cur = "", q = false;
-      for (let i=0;i<line.length;i++){
-        const c = line[i];
-        if (c === '"' ){
-          if (q && line[i+1] === '"'){ cur += '"'; i++; }
-          else q = !q;
-        } else if (c === ',' && !q){
-          out.push(cur); cur = "";
-        } else cur += c;
-      }
-      out.push(cur);
-      return out;
-    });
-    return rows;
-  }
-
-  function renderCSV(text){
-    const rows = parseCSV(text);
-    if (!rows.length) return;
-
-    // KPIs
-    rowsKpi.textContent = rows.length - 1;
-    colsKpi.textContent = rows[0].length;
-    sampleKpi.textContent = rows[1]?.[0] || "—";
-
-    // Table
-    tHead.innerHTML = "<tr>" + rows[0].map(h => `<th>${escapeHTML(h)}</th>`).join("") + "</tr>";
-    tBody.innerHTML = rows.slice(1).map(r => `<tr>${r.map(c => `<td>${escapeHTML(c)}</td>`).join("")}</tr>`).join("");
-
-    // Chart: first numeric column (search)
-    const header = rows[0];
-    const dataRows = rows.slice(1);
-    const numericIndex = findFirstNumericColumn(dataRows);
-    const labelIndex = numericIndex === 0 ? 1 : 0;
-    const labels = dataRows.map(r => r[labelIndex]);
-    const values = dataRows.map(r => Number(r[numericIndex]) || 0);
-
-    if (chart) chart.destroy();
-    chart = new Chart(ctx, {
-      type:"bar",
-      data:{
-        labels,
-        datasets:[{
-          label: header[numericIndex] || "Value",
-          data: values,
-          borderWidth:1,
-          backgroundColor: "rgba(32,212,199,0.45)",
-          borderColor: "rgba(32,212,199,0.9)"
-        }]
-      },
-      options:{
-        plugins:{ legend:{ labels:{ color:"#c9ffff" } } },
-        scales:{
-          x:{ ticks:{ color:"#b6e7ef" }, grid:{ color:"#0f334a" } },
-          y:{ ticks:{ color:"#b6e7ef" }, grid:{ color:"#0f334a" } }
-        }
-      }
-    });
-  }
-
-  function findFirstNumericColumn(rows){
-    if (!rows.length) return 0;
-    const width = rows[0].length;
-    for (let col=0; col<width; col++){
-      const cells = rows.map(r => Number(r[col]));
-      if (cells.every(v => !isNaN(v))) return col;
-    }
-    return Math.max(1, width-1);
-  }
-
-  function escapeHTML(s){
-    return String(s)
-      .replaceAll("&","&amp;")
-      .replaceAll("<","&lt;")
-      .replaceAll(">","&gt;")
-      .replaceAll('"',"&quot;")
-      .replaceAll("'","&#39;");
-  }
-
-  function exportPNG(){
-    if (!chart) return alert("Load a CSV first.");
-    const a = document.createElement("a");
-    a.download = "dataquill-chart.png";
-    a.href = chart.toBase64Image("image/png", 1.0);
-    a.click();
-  }
-
-  async function exportPDF(){
-    if (!chart) return alert("Load a CSV first.");
-    const { jsPDF } = window.jspdf;
-    const pdf = new jsPDF({ orientation:"landscape", unit:"pt", format:"a4" });
-
-    pdf.setFontSize(16);
-    pdf.text("Dataquill — Report", 40, 40);
-
-    // Chart image
-    const img = chart.toBase64Image("image/png", 1.0);
-    pdf.addImage(img, "PNG", 40, 60, 500, 260);
-
-    // Table (first 15 rows)
-    const head = [...tHead.querySelectorAll("th")].map(th => th.textContent);
-    const body = [...tBody.querySelectorAll("tr")].slice(0,15).map(tr => {
-      return [...tr.children].map(td => td.textContent);
-    });
-
-    // Simple table render
-    let x = 560, y = 60, rowH = 18, colW = 90;
-    pdf.setFontSize(10);
-    pdf.text("Preview (first rows)", x, y-10);
-    pdf.setDrawColor(200); pdf.setLineWidth(.5);
-    // header
-    head.forEach((h,i)=>{ pdf.text(h, x + i*colW, y); });
-    y += rowH;
-    body.forEach(r=>{
-      r.forEach((c,i)=>{ pdf.text(String(c).slice(0,14), x + i*colW, y); });
-      y += rowH;
-    });
-
-    pdf.save("dataquill-report.pdf");
-  }
-})();
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-
-  <!-- Social (update after you pick a final domain) -->
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black–and–teal UI." />
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore." />
-  <meta property="og:url" content="/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <style>
-    :root{
-      --bg:#000b10;        /* page background */
-      --panel:#0b141e;     /* panels */
-      --card:#0f1c22;      /* cards */
-      --ink:#e9ffff;       /* primary text */
-      --muted:#9fe7e1;     /* lighter text */
-      --teal1:#30d0c9;     /* glow teal */
-      --teal2:#1ca5a5;     /* borders */
-      --accent:#14b8a6;    /* buttons */
-      --brand:#11f0cc;     /* logo dot */
-      --shadow:0 12px 28px rgba(0,0,0,.35);
-      --radius:14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      background:radial-gradient(1200px 600px at 50% -10%, #052029 0%, #000b10 60%) fixed;
-      color:var(--ink);
-    }
-    a{color:var(--muted); text-decoration:none}
-    header{
-      position:sticky; top:0; z-index:10;
-      background:rgba(5, 18, 26, .75);
-      backdrop-filter: blur(8px);
-      border-bottom:1px solid rgba(38,104,112,.35);
-    }
-    .nav{
-      max-width:1000px; margin:auto; padding:12px 18px;
-      display:flex; align-items:center; justify-content:space-between; gap:12px;
-    }
-    .brand{display:flex; align-items:center; gap:.6rem; font-weight:700; letter-spacing:.25px}
-    .dot{width:18px;height:18px;border-radius:999px;background:var(--brand);box-shadow:0 0 18px 6px rgba(17,240,204,.35)}
-    .nav a.btn{
-      padding:.55rem .9rem; border-radius:999px; background:#0e1b21; border:1px solid #16363a; color:var(--ink);
-    }
-    .hero, .section{
-      max-width:1000px; margin:22px auto; padding:0 18px;
-    }
-    .cards{display:grid; grid-template-columns:1fr; gap:16px}
-    @media(min-width:900px){ .cards{grid-template-columns:1fr 1fr} }
-
-    .panel{
-      background:linear-gradient(180deg, #0a1620, #08131a);
-      border:1px solid rgba(48,208,201,.25);
-      border-radius:var(--radius);
-      box-shadow: var(--shadow);
-      padding:18px;
-    }
-    .panel h2{
-      margin:0 0 8px 0; font-size:1.2rem; color:var(--muted);
-      text-shadow:0 0 18px rgba(48,208,201,.25);
-    }
-    .sub{color:#7ec9c3; font-size:.95rem}
-
-    /* Upload card */
-    .dropzone{
-      border:2px dashed rgba(48,208,201,.55);
-      border-radius:12px; padding:18px; text-align:center; margin:12px 0 8px;
-    }
-    .actions{display:flex; gap:10px; flex-wrap:wrap; margin:10px 0}
-    .btn{
-      display:inline-block; padding:.55rem .9rem; border-radius:12px; cursor:pointer;
-      border:1px solid #20484b; background:#0b1216; color:var(--ink);
-    }
-    .btn.primary{ background:var(--accent); border-color:#0e7d72; color:#041214; font-weight:700 }
-    .stats{ display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:12px 0}
-    .stat{ background:#071117; border:1px solid #18363a; border-radius:10px; padding:10px; text-align:center}
-    .stat .k{ font-size:1.25rem; font-weight:700 }
-
-    table{ width:100%; border-collapse:collapse; margin-top:8px; border-radius:12px; overflow:hidden }
-    th,td{ padding:10px; border-bottom:1px solid #133136; text-align:left; color:#dff4f4 }
-    th{ background:#0b1b21; color:#a7efea; font-weight:700 }
-
-    /* Chart area */
-    .chart-wrap{ background:#061116; border:1px solid #193b40; border-radius:var(--radius); padding:12px; min-height:240px }
-    canvas{ width:100%; height:240px; display:block }
-
-    /* Pricing/FAQ */
-    .cols{ display:grid; grid-template-columns:1fr; gap:16px }
-    @media(min-width:900px){ .cols{ grid-template-columns:1fr 1fr } }
-
-    footer{
-      border-top:1px solid rgba(38,104,112,.35);
-      margin-top:30px; padding:18px; text-align:center; color:#9bd8d3;
-      background:rgba(5,18,26,.6)
-    }
-  </style>
-</head>
-<body>
-  <!-- Top Nav -->
-  <header>
-    <div class="nav">
-      <div class="brand"><span class="dot"></span> <span>Dataquill</span></div>
-      <nav style="display:flex; gap:8px">
-        <a class="btn" href="#pricing">Pricing</a>
-        <a class="btn" href="#faq">FAQ</a>
-        <a class="btn" href="#app">Live App</a>
-      </nav>
-    </div>
-  </header>
-
-  <!-- Hero / Intro -->
-  <section class="hero">
-    <div class="cards">
-      <div class="panel">
-        <h2>AI powered embedded analytics platform</h2>
-        <div class="sub">Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</div>
-      </div>
-      <div class="panel">
-        <h2>Quick charts</h2>
-        <div class="sub">The first numeric column is charted automatically.</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- App -->
-  <section id="app" class="section">
-    <div class="panel">
-      <h2>Drop or choose a CSV</h2>
-      <div id="drop" class="dropzone">
-        Drag a .csv here or <label for="csv" style="text-decoration:underline;cursor:pointer;color:#7eeadf">browse</label>
-        <input id="csv" type="file" accept=".csv,text/csv" hidden />
-      </div>
-
-      <div class="actions">
-        <button id="sampleBtn" class="btn primary">Load Sample</button>
-        <button id="clearBtn" class="btn">Clear Data</button>
-        <button id="exportPng" class="btn">Export PNG (chart)</button>
-      </div>
-
-      <div class="stats">
-        <div class="stat"><div>Rows</div><div id="rows" class="k">0</div></div>
-        <div class="stat"><div>Columns</div><div id="cols" class="k">0</div></div>
-        <div class="stat"><div>Sample</div><div id="sample" class="k">—</div></div>
-      </div>
-
-      <div class="cols">
-        <div class="chart-wrap">
-          <canvas id="chart" width="900" height="240" aria-label="Quick chart"></canvas>
-        </div>
-        <div style="background:#061116;border:1px solid #193b40;border-radius:var(--radius);padding:12px">
-          <table id="table"><thead></thead><tbody></tbody></table>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing & FAQ -->
-  <section class="section">
-    <div class="cols">
-      <div id="pricing" class="panel">
-        <h2>Pricing</h2>
-        <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
-        <p><strong>Pro ($20/mo):</strong> Export dashboards, white-label branding, priority support.</p>
-      </div>
-      <div id="faq" class="panel">
-        <h2>FAQ</h2>
-        <p><strong>Is my data sent to a server?</strong><br/>No. All processing happens in your browser.</p>
-        <p><strong>What file formats are supported?</strong><br/>CSV for now. More coming soon.</p>
-      </div>
-    </div>
-  </section>
-
-  <footer>© 2025 Dataquill. All rights reserved.</footer>
-
-  <script>
-    // ---------- Helpers ----------
-    const $ = sel => document.querySelector(sel);
-    const csvInput = $("#csv");
-    const drop = $("#drop");
-    const tbody = $("#table tbody");
-    const thead = $("#table thead");
-    const rowsEl = $("#rows");
-    const colsEl = $("#cols");
-    const sampleEl = $("#sample");
-    const chartCanvas = $("#chart");
-    const ctx = chartCanvas.getContext("2d");
-
-    let data = [];   // array of rows
-    let headers = []; // header row
-
-    function parseCSV(text){
-      // Light CSV parser: handles quotes & commas
-      const lines = text.replace(/\r/g,'').split('\n').filter(l=>l.trim().length);
-      const out = lines.map(line=>{
-        const cells=[]; let cur='', q=false;
-        for(let i=0;i<line.length;i++){
-          const c=line[i];
-          if(c === '"' ){
-            if(q && line[i+1] === '"'){ cur+='"'; i++; }
-            else q = !q;
-          }else if(c === ',' && !q){
-            cells.push(cur); cur='';
-          }else cur+=c;
-        }
-        cells.push(cur);
-        return cells;
-      });
-      return out;
-    }
-
-    function renderTable(){
-      thead.innerHTML = ''; tbody.innerHTML = '';
-      if(!data.length) return;
-      const th = document.createElement('tr');
-      headers.forEach(h=>{
-        const cell=document.createElement('th'); cell.textContent=h; th.appendChild(cell);
-      });
-      thead.appendChild(th);
-      data.forEach(r=>{
-        const tr=document.createElement('tr');
-        r.forEach(v=>{
-          const td=document.createElement('td'); td.textContent=v; tr.appendChild(td);
-        });
+    function renderTable(rows){
+      const thead = document.querySelector("#dataTable thead");
+      const tbody = document.querySelector("#dataTable tbody");
+      thead.innerHTML = ""; tbody.innerHTML = "";
+      if(!rows.length) return;
+
+      const header = rows[0];
+      thead.innerHTML = "<tr>"+ header.map(h=>`<th>${h}</th>`).join("") +"</tr>";
+      rows.slice(1).forEach(r=>{
+        const tr = document.createElement("tr");
+        tr.innerHTML = r.map(c=>`<td>${c}</td>`).join("");
         tbody.appendChild(tr);
       });
     }
 
-    function firstNumericColumn(rows){
-      const nCols = headers.length;
-      for(let c=0;c<nCols;c++){
-        let ok = true;
-        for(let r=0;r<Math.min(rows.length, 20); r++){
-          const v = Number(rows[r][c]);
-          if(Number.isNaN(v)) { ok=false; break; }
-        }
-        if(ok) return c;
+    // --- Mini chart (no external libs) ---
+    function drawBarChart(rows){
+      const canvas = document.getElementById("chartCanvas");
+      const ctx = canvas.getContext("2d");
+      ctx.clearRect(0,0,canvas.width,canvas.height);
+      if(rows.length < 2) return;
+
+      const header = rows[0];
+      // pick first numeric column
+      let numIdx = -1;
+      for(let c=0;c<header.length;c++){
+        const v = rows[1][c];
+        if(!isNaN(parseFloat(v))){ numIdx = c; break; }
       }
-      return -1;
-    }
+      if(numIdx === -1) return;
 
-    function renderChart(){
-      // Clear
-      ctx.clearRect(0,0,chartCanvas.width, chartCanvas.height);
+      const labels = rows.slice(1).map(r => r[0]);
+      const values = rows.slice(1).map(r => Number(r[numIdx]));
 
-      if(!data.length){ // placeholder
-        ctx.fillStyle = "#2a4f55";
-        ctx.font = "16px ui-sans-serif, system-ui";
-        ctx.fillText("Upload a CSV (first numeric column is charted automatically).", 18, 42);
-        return;
-      }
-
-      const col = firstNumericColumn(data);
-      if(col === -1){
-        ctx.fillStyle = "#ffb4b4";
-        ctx.fillText("No numeric column found to chart.", 18, 42);
-        return;
-      }
-
-      // Labels from the first column if it's not the numeric one, otherwise use row index
-      const labelCol = col === 0 ? 1 : 0;
-      const labels = data.map((r,i)=> (r[labelCol] ?? `Row ${i+1}`));
-      const values = data.map(r=> Number(r[col]));
-
-      // Dimensions
-      const W = chartCanvas.width, H = chartCanvas.height;
-      const pad = 40;
-      const chartW = W - pad*2, chartH = H - pad*2;
-
-      // Axis
-      ctx.strokeStyle = "#20484b"; ctx.lineWidth = 1;
-      ctx.beginPath(); ctx.moveTo(pad, H-pad); ctx.lineTo(W-pad, H-pad); ctx.stroke();
-
-      // Bars
+      // draw axes
+      const W = canvas.width, H = canvas.height, pad = 36;
       const max = Math.max(...values, 1);
-      const barW = chartW / values.length * 0.7;
-      const gap = chartW / values.length * 0.3;
+      const barW = (W - pad*2) / values.length - 8;
 
+      ctx.strokeStyle = "rgba(255,255,255,.15)";
+      ctx.lineWidth = 1;
+      ctx.beginPath(); ctx.moveTo(pad, pad); ctx.lineTo(pad, H-pad); ctx.lineTo(W-pad, H-pad); ctx.stroke();
+
+      // bars
       values.forEach((v,i)=>{
-        const x = pad + i*(barW+gap);
-        const h = Math.round((v/max)* (chartH-10));
+        const x = pad + i*(barW+8) + 8;
+        const h = (v/max) * (H - pad*2);
         const y = H - pad - h;
-
-        // bar
-        const grad = ctx.createLinearGradient(0,y,0,H-pad);
-        grad.addColorStop(0, "#24c9c0");
-        grad.addColorStop(1, "#0e7d72");
+        const grad = ctx.createLinearGradient(0,y,0,y+h);
+        grad.addColorStop(0, "#1fe3cc");
+        grad.addColorStop(1, "#128a84");
         ctx.fillStyle = grad;
-        ctx.fillRect(x, y, barW, h);
-
-        // label (cropped)
-        ctx.fillStyle = "#8fded8";
-        ctx.font = "12px ui-sans-serif, system-ui";
-        const txt = String(labels[i]).slice(0,10);
-        ctx.fillText(txt, x, H-pad+14);
+        ctx.fillRect(x,y,barW,h);
       });
 
-      // Title
-      ctx.fillStyle = "#8fded8";
-      ctx.font = "14px ui-sans-serif, system-ui";
+      // title
+      ctx.fillStyle = "rgba(233,255,255,.9)";
+      ctx.font = "600 14px ui-sans-serif, system-ui";
       ctx.fillText("Auto chart", pad, pad-10);
     }
 
-    function updateStats(){
-      rowsEl.textContent = data.length;
-      colsEl.textContent = headers.length;
-      sampleEl.textContent = data.length ? (data[0][0] || "—") : "—";
+    // --- State & wiring ---
+    const el = {
+      fileDrop: document.getElementById("fileDrop"),
+      csvInput: document.getElementById("csvInput"),
+      browseLink: document.getElementById("browseLink"),
+      loadSample: document.getElementById("loadSample"),
+      clearData: document.getElementById("clearData"),
+      exportPng: document.getElementById("exportPng"),
+      exportPdf: document.getElementById("exportPdf"),
+      rows: document.getElementById("rowsCount"),
+      cols: document.getElementById("colsCount"),
+      sample: document.getElementById("sampleName"),
+    };
+
+    function setStats(rows){
+      el.rows.textContent = rows.length ? rows.length-1 : 0;
+      el.cols.textContent = rows.length ? rows[0].length : 0;
     }
 
-    function loadCSV(file){
+    function loadRows(rows, sampleLabel){
+      renderTable(rows);
+      drawBarChart(rows);
+      setStats(rows);
+      el.sample.textContent = sampleLabel || "—";
+    }
+
+    function handleFiles(files){
+      if(!files || !files[0]) return;
+      const f = files[0];
       const reader = new FileReader();
-      reader.onload = () => {
-        const rows = parseCSV(reader.result);
-        headers = rows.shift() || [];
-        data = rows;
-        renderTable();
-        updateStats();
-        renderChart();
+      reader.onload = e=>{
+        const rows = parseCSV(String(e.target.result));
+        loadRows(rows, f.name);
       };
-      reader.readAsText(file);
+      reader.readAsText(f);
     }
-
-    // Sample data
-    const SAMPLE_CSV = `Name,City,Sales
-Alice,New York,120
-Bob,Miami,95
-Cara,Chicago,141`;
-
-    function loadSample(){
-      const rows = parseCSV(SAMPLE_CSV);
-      headers = rows.shift();
-      data = rows;
-      renderTable();
-      updateStats();
-      renderChart();
-    }
-
-    function clearAll(){
-      data = []; headers = [];
-      thead.innerHTML = ''; tbody.innerHTML = '';
-      updateStats();
-      renderChart();
-    }
-
-    function exportPNG(){
-      const link = document.createElement('a');
-      link.download = 'dataquill-chart.png';
-      link.href = chartCanvas.toDataURL('image/png');
-      link.click();
-    }
-
-    // ---------- Events ----------
-    $("#sampleBtn").addEventListener("click", loadSample);
-    $("#clearBtn").addEventListener("click", clearAll);
-    $("#exportPng").addEventListener("click", exportPNG);
-    csvInput.addEventListener("change", (e)=> {
-      const f = e.target.files?.[0];
-      if(f) loadCSV(f);
-    });
 
     // Drag & drop
-    ['dragenter','dragover'].forEach(n=>drop.addEventListener(n, e=>{
-      e.preventDefault(); e.stopPropagation(); drop.classList.add('drag');
-    }));
-    ['dragleave','drop'].forEach(n=>drop.addEventListener(n, e=>{
-      e.preventDefault(); e.stopPropagation(); drop.classList.remove('drag');
-    }));
-    drop.addEventListener('click', ()=> csvInput.click());
-    drop.addEventListener('drop', e=>{
-      const f = e.dataTransfer?.files?.[0]; if(f) loadCSV(f);
+    el.fileDrop.addEventListener("dragover",e=>{e.preventDefault(); el.fileDrop.classList.add("dragover");});
+    el.fileDrop.addEventListener("dragleave",()=> el.fileDrop.classList.remove("dragover"));
+    el.fileDrop.addEventListener("drop",e=>{
+      e.preventDefault(); el.fileDrop.classList.remove("dragover");
+      handleFiles(e.dataTransfer.files);
     });
 
-    // Initial state
-    renderChart(); // placeholder
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dataquill — Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload CSVs and get instant insights with a clean black-and-teal UI." />
+    // Browse link
+    el.browseLink.addEventListener("click", e=>{e.preventDefault(); el.csvInput.click();});
+    el.csvInput.addEventListener("change", e=> handleFiles(e.target.files));
 
-  <!-- Social (adjust og:url after you confirm your final domain) -->
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets." />
-  <meta property="og:url" content="/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <style>
-    :root{
-      --bg:#000810;         /* page background */
-      --panel:#061a28;      /* panels */
-      --card:#0b2133;       /* cards */
-      --text:#e9ffff;       /* primary text */
-      --muted:#9fe7e1;      /* muted text */
-      --teal1:#18cab9;      /* cyan glow */
-      --teal2:#0da6a0;      /* borders */
-      --mint:#43fff0;       /* accents */
-      --glow: 0 0 28px rgba(24,202,185,.25);
-    }
-
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font: 16px/1.5 ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:radial-gradient(1200px 520px at 20% -10%, rgba(24,202,185,.15), transparent 60%),
-                 radial-gradient(900px 420px at 80% -10%, rgba(24,202,185,.12), transparent 60%), var(--bg);
-    }
-
-    /* Topbar */
-    .topbar{
-      position:sticky; top:0; z-index:50;
-      background:linear-gradient(to bottom, rgba(0,0,0,.65), rgba(0,0,0,0));
-      backdrop-filter:saturate(140%) blur(8px);
-      border-bottom:1px solid rgba(255,255,255,.04);
-    }
-    .wrap{max-width:1100px; margin:0 auto; padding:12px 18px}
-    .row{display:flex; align-items:center; justify-content:space-between; gap:14px}
-    .brand{display:flex; align-items:center; gap:10px}
-    .dot{width:22px; height:22px; border-radius:6px; background:linear-gradient(135deg, #20ffe3, #00a3a3); box-shadow:var(--glow)}
-    .name{font-weight:700; letter-spacing:.2px}
-    .nav a{
-      color:var(--text); text-decoration:none; padding:.55rem .85rem;
-      border:1px solid rgba(255,255,255,.08); border-radius:10px;
-      background:rgba(255,255,255,.02)
-    }
-    .nav a:hover{border-color:rgba(67,255,240,.55)}
-
-    /* Sections */
-    .section{padding:20px 18px}
-    .grid{display:grid; gap:18px}
-    @media(min-width:900px){ .grid.cols-2{grid-template-columns:1fr 1fr} }
-
-    .card{
-      background:linear-gradient( 180deg, rgba(15,45,60,.65), rgba(8,24,36,.85) 40%, rgba(5,16,26,.95));
-      border:1px solid rgba(67,255,240,.2);
-      border-radius:14px; padding:18px; box-shadow:var(--glow)
-    }
-    .title{font-size:1.25rem; font-weight:800; letter-spacing:.2px; margin:0 0 .5rem}
-    .sub{color:var(--muted); margin:0}
-
-    /* Drop zone */
-    .dropzone{
-      border:2px dashed rgba(67,255,240,.55);
-      border-radius:12px;
-      min-height:96px;
-      display:flex; align-items:center; justify-content:center;
-      color:var(--muted);
-      background:rgba(3,20,28,.35);
-      transition:all .18s ease;
-    }
-    .dropzone.drag{background:rgba(3,30,38,.55); transform:scale(1.01)}
-    .hint{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap}
-    .btn{
-      display:inline-flex; align-items:center; justify-content:center; gap:.5rem;
-      padding:.6rem .9rem; border-radius:10px; cursor:pointer; user-select:none;
-      border:1px solid rgba(255,255,255,.1); background:#092331; color:var(--text); text-decoration:none;
-    }
-    .btn:hover{border-color:rgba(67,255,240,.55)}
-    .btn.ghost{background:transparent}
-
-    /* KPIs */
-    .kpis{display:flex; gap:12px; flex-wrap:wrap}
-    .kpi{flex:1 1 140px; border:1px solid rgba(67,255,240,.22); border-radius:12px; padding:12px; background:rgba(4,18,28,.6)}
-    .kpi .k{color:var(--muted); font-size:.9rem}
-    .kpi .v{font-weight:800; font-size:1.25rem}
-
-    /* Table */
-    table{width:100%; border-collapse:collapse; margin-top:12px}
-    th, td{padding:.65rem .7rem; text-align:left; border-bottom:1px solid rgba(255,255,255,.06); white-space:nowrap}
-    th{color:var(--mint); font-weight:700}
-    tbody tr:hover{background:rgba(255,255,255,.03)}
-
-    /* Chart */
-    #chartWrap{min-height:240px; display:flex; align-items:center; justify-content:center; background:rgba(3,18,28,.4); border:1px solid rgba(67,255,240,.15); border-radius:12px}
-    svg text{fill:#c7fffb; font-size:12px}
-
-    /* Footer */
-    footer{padding:30px 18px 60px; color:var(--muted); text-align:center}
-  </style>
-</head>
-<body>
-
-  <!-- Topbar -->
-  <header class="topbar">
-    <div class="wrap row">
-      <div class="brand">
-        <div class="dot"></div>
-        <div class="name">Dataquill</div>
-      </div>
-      <nav class="nav">
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="#app">Live App</a>
-      </nav>
-    </div>
-  </header>
-
-  <main id="app" class="wrap section">
-    <!-- Hero -->
-    <div class="grid cols-2">
-      <section class="card">
-        <h2 class="title">AI powered embedded analytics platform</h2>
-        <p class="sub">Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
-      </section>
-
-      <section class="card">
-        <h2 class="title">Quick charts</h2>
-        <p class="sub">The first numeric column is charted automatically.</p>
-      </section>
-    </div>
-
-    <!-- Upload + Quick Stats -->
-    <section class="section">
-      <div class="card">
-        <h3 class="title">Drop or choose a CSV</h3>
-
-        <div id="drop" class="dropzone" aria-label="CSV dropzone">
-          <span>Drag a .csv here or <a id="browseLink" href="#">browse</a></span>
-          <input id="csvInput" type="file" accept=".csv,text/csv" hidden>
-        </div>
-
-        <div class="hint">
-          <button class="btn" id="btnSample">Load Sample</button>
-          <button class="btn ghost" id="btnClear">Clear Data</button>
-          <button class="btn" id="btnPNG">Export PNG (chart)</button>
-          <button class="btn ghost" id="btnPDF">Export PDF</button>
-        </div>
-
-        <div class="kpis" style="margin-top:12px">
-          <div class="kpi"><div class="k">Rows</div><div class="v" id="kRows">0</div></div>
-          <div class="kpi"><div class="k">Columns</div><div class="v" id="kCols">0</div></div>
-          <div class="kpi"><div class="k">Sample</div><div class="v" id="kSample">—</div></div>
-        </div>
-
-        <div class="grid cols-2" style="margin-top:14px">
-          <div class="card" style="background:transparent; border:none; padding:0">
-            <div id="chartWrap" aria-label="Bar Chart">
-              <div style="color:var(--muted)">Load a CSV to render the chart here.</div>
-            </div>
-          </div>
-
-          <div class="card" style="background:transparent; border:none; padding:0">
-            <div style="overflow:auto; max-height:320px">
-              <table id="table" aria-label="Data Table"></table>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- Pricing & FAQ -->
-    <section class="grid cols-2 section">
-      <div id="pricing" class="card">
-        <h3 class="title">Pricing</h3>
-        <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
-        <p><strong>Pro (TBD):</strong> Export dashboards, white-label branding, priority support.</p>
-      </div>
-      <div id="faq" class="card">
-        <h3 class="title">FAQ</h3>
-        <p><strong>Is my data sent to a server?</strong><br/>No. All processing happens in your browser.</p>
-        <p><strong>What file formats are supported?</strong><br/>CSV for now. More coming soon.</p>
-      </div>
-    </section>
-  </main>
-
-  <footer>© 2025 Dataquill. All rights reserved.</footer>
-
-  <script>
-    // ------- tiny helpers
-    const $ = sel => document.querySelector(sel);
-    const $$ = sel => Array.from(document.querySelectorAll(sel));
-
-    const csvInput  = $("#csvInput");
-    const drop      = $("#drop");
-    const browse    = $("#browseLink");
-    const tableEl   = $("#table");
-    const kRows     = $("#kRows");
-    const kCols     = $("#kCols");
-    const kSample   = $("#kSample");
-    const chartWrap = $("#chartWrap");
-
-    let current = { headers: [], rows: [] };
-
-    // ------- CSV parsing (simple but handles quoted commas)
-    function parseCSV(text){
-      const lines = text.replace(/\r/g, "").split("\n").filter(Boolean);
-      if(!lines.length) return { headers: [], rows: [] };
-
-      const parseLine = (line) => {
-        const out=[]; let cur=""; let q=false;
-        for(let i=0;i<line.length;i++){
-          const c=line[i], n=line[i+1];
-          if(c==='\"'){
-            if(q && n==='\"'){ cur+='\"'; i++; }
-            else q=!q;
-          }else if(c===',' && !q){ out.push(cur); cur=""; }
-          else cur+=c;
-        }
-        out.push(cur);
-        return out;
-      };
-
-      const headers = parseLine(lines[0]);
-      const rows = lines.slice(1).map(parseLine).filter(r => r.some(c => c.trim()!==""));
-      return { headers, rows };
-    }
-
-    // ------- UI rendering
-    function renderTable(data){
-      const { headers, rows } = data;
-      if(!headers.length){ tableEl.innerHTML=""; return; }
-
-      let thead = "<thead><tr>"+headers.map(h=>`<th>${escapeHTML(h)}</th>`).join("")+"</tr></thead>";
-      let tbody = "<tbody>"+rows.map(r=>"<tr>"+r.map(c=>`<td>${escapeHTML(c)}</td>`).join("")+"</tr>").join("")+"</tbody>";
-      tableEl.innerHTML = thead + tbody;
-
-      // KPIs
-      kRows.textContent  = rows.length;
-      kCols.textContent  = headers.length;
-      kSample.textContent= rows[0]?.[0] ? String(rows[0][0]).slice(0,18) : "—";
-    }
-
-    function escapeHTML(s){ return String(s).replace(/[&<>"]/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[m])); }
-
-    // ------- Chart (first categorical vs first numeric)
-    function renderChart(data){
-      const { headers, rows } = data;
-      chartWrap.innerHTML = "";
-
-      if(!headers.length || !rows.length){
-        chartWrap.innerHTML = '<div style="color:var(--muted)">Load a CSV to render the chart here.</div>';
-        return;
-      }
-
-      const firstNumIdx = rows[0].findIndex(v => !isNaN(parseFloat(v)));
-      const firstCatIdx = firstNumIdx <= 0 ? 0 : 0; // take col0 as label; first numeric as value
-      const numIdx = firstNumIdx >= 0 ? firstNumIdx : 1;
-      const catIdx = firstCatIdx;
-
-      const labels = rows.map(r=>String(r[catIdx] ?? "")).slice(0,12);
-      const values = rows.map(r=>parseFloat(r[numIdx] ?? 0)).slice(0,12).map(v=>isNaN(v)?0:v);
-
-      const w = Math.max(420, labels.length*48 + 80), h = 260, pad = 40;
-      const max = Math.max(...values, 1);
-
-      const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-      svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
-      svg.setAttribute("width","100%"); svg.setAttribute("height","100%");
-
-      // axis
-      const axis = document.createElementNS(svg.namespaceURI,"line");
-      axis.setAttribute("x1", pad); axis.setAttribute("y1", h-pad);
-      axis.setAttribute("x2", w-pad); axis.setAttribute("y2", h-pad);
-      axis.setAttribute("stroke", "#43fff0"); axis.setAttribute("stroke-opacity",".35");
-      svg.appendChild(axis);
-
-      const bw = (w - pad*2) / Math.max(labels.length,1) * .8;
-      labels.forEach((lab,i)=>{
-        const x = pad + (i+.1)*((w-pad*2)/labels.length);
-        const val = values[i];
-        const barH = (h - pad*2) * (val/max);
-        const y = h - pad - barH;
-
-        const rect = document.createElementNS(svg.namespaceURI,"rect");
-        rect.setAttribute("x", x);
-        rect.setAttribute("y", y);
-        rect.setAttribute("width", bw);
-        rect.setAttribute("height", Math.max(barH,1));
-        rect.setAttribute("rx","6");
-        rect.setAttribute("fill","url(#grad)");
-        rect.setAttribute("stroke","#18cab9");
-        rect.setAttribute("stroke-opacity",".35");
-        svg.appendChild(rect);
-
-        const tx = document.createElementNS(svg.namespaceURI,"text");
-        tx.setAttribute("x", x + bw/2);
-        tx.setAttribute("y", h - pad + 14);
-        tx.setAttribute("text-anchor","middle");
-        tx.textContent = (lab || "").slice(0,10);
-        svg.appendChild(tx);
-
-        const tv = document.createElementNS(svg.namespaceURI,"text");
-        tv.setAttribute("x", x + bw/2);
-        tv.setAttribute("y", y - 6);
-        tv.setAttribute("text-anchor","middle");
-        tv.textContent = isFinite(val) ? val : 0;
-        svg.appendChild(tv);
-      });
-
-      // gradient
-      const defs = document.createElementNS(svg.namespaceURI,"defs");
-      const lg = document.createElementNS(svg.namespaceURI,"linearGradient");
-      lg.setAttribute("id","grad"); lg.setAttribute("x1","0"); lg.setAttribute("y1","0"); lg.setAttribute("x2","0"); lg.setAttribute("y2","1");
-      const s1 = document.createElementNS(svg.namespaceURI,"stop"); s1.setAttribute("offset","0%"); s1.setAttribute("stop-color","#18cab9");
-      const s2 = document.createElementNS(svg.namespaceURI,"stop"); s2.setAttribute("offset","100%"); s2.setAttribute("stop-color","#0b4f59");
-      defs.appendChild(lg); lg.appendChild(s1); lg.appendChild(s2); svg.appendChild(defs);
-
-      chartWrap.appendChild(svg);
-    }
-
-    // ------- Export PNG (chart only)
-    async function exportChartPNG(){
-      const svg = chartWrap.querySelector("svg");
-      if(!svg){ alert("Nothing to export yet."); return; }
-
-      const xml = new XMLSerializer().serializeToString(svg);
-      const blob = new Blob([xml], {type:"image/svg+xml"});
-      const url = URL.createObjectURL(blob);
-      const img = new Image();
-      img.onload = () => {
-        const canvas = document.createElement("canvas");
-        canvas.width = svg.viewBox.baseVal.width || 800;
-        canvas.height = svg.viewBox.baseVal.height || 400;
-        const ctx = canvas.getContext("2d");
-        ctx.fillStyle = "#000810"; ctx.fillRect(0,0,canvas.width,canvas.height);
-        ctx.drawImage(img,0,0);
-        canvas.toBlob(b=>{
-          const a = document.createElement("a");
-          a.href = URL.createObjectURL(b);
-          a.download = "dataquill-chart.png";
-          a.click();
-          URL.revokeObjectURL(a.href);
-        });
-        URL.revokeObjectURL(url);
-      };
-      img.src = url;
-    }
-
-    // ------- Export PDF (print the page – users can Save as PDF)
-    function exportPDF(){
-      const html = document.documentElement.cloneNode(true);
-      const blob = new Blob(
-        ['<!doctype html><html>'+html.innerHTML+'</html>'],
-        {type:'text/html'}
-      );
-      const url = URL.createObjectURL(blob);
-      const w = window.open(url, "_blank");
-      const t = setInterval(()=>{ try{ w.focus(); w.print(); clearInterval(t); }catch(e){} }, 500);
-    }
-
-    // ------- Load sample
-    function loadSample(){
+    // Load sample
+    el.loadSample.addEventListener("click", ()=>{
       const csv = `Name,City,Sales
 Alice,New York,120
 Bob,Miami,95
 Cara,Chicago,141
-Dan,Austin,88
-Eli,Denver,130`;
-      current = parseCSV(csv);
-      renderTable(current);
-      renderChart(current);
-    }
-
-    // ------- Clear
-    function clearAll(){
-      current = {headers:[], rows:[]};
-      tableEl.innerHTML = "";
-      kRows.textContent = "0"; kCols.textContent="0"; kSample.textContent="—";
-      chartWrap.innerHTML = '<div style="color:var(--muted)">Load a CSV to render the chart here.</div>';
-    }
-
-    // ------- Events
-    browse.addEventListener("click", e=>{ e.preventDefault(); csvInput.click(); });
-    csvInput.addEventListener("change", e=>{
-      const f = e.target.files?.[0]; if(!f) return;
-      const r = new FileReader();
-      r.onload = () => { current = parseCSV(String(r.result||"")); renderTable(current); renderChart(current); };
-      r.readAsText(f);
+Dave,Dallas,102
+Eva,Seattle,88`;
+      loadRows(parseCSV(csv), "Sample: Alice");
     });
 
-    ["dragenter","dragover"].forEach(evt => drop.addEventListener(evt, e=>{
-      e.preventDefault(); e.stopPropagation(); drop.classList.add("drag");
-    }));
-    ["dragleave","drop"].forEach(evt => drop.addEventListener(evt, e=>{
-      e.preventDefault(); e.stopPropagation(); drop.classList.remove("drag");
-    }));
-    drop.addEventListener("drop", e=>{
-      const f = e.dataTransfer?.files?.[0]; if(!f) return;
-      const r = new FileReader();
-      r.onload = () => { current = parseCSV(String(r.result||"")); renderTable(current); renderChart(current); };
-      r.readAsText(f);
+    // Clear
+    el.clearData.addEventListener("click", ()=>{
+      renderTable([]); drawBarChart([]); setStats([]); el.sample.textContent = "—";
+      el.csvInput.value = "";
     });
 
-    $("#btnSample").addEventListener("click", loadSample);
-    $("#btnClear").addEventListener("click", clearAll);
-    $("#btnPNG").addEventListener("click", exportChartPNG);
-    $("#btnPDF").addEventListener("click", exportPDF);
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Dataquill — Turn Your Data Into Decisions</title>
-<meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
-
-<!-- Social (you can update og:image later) -->
-<meta property="og:type" content="website" />
-<meta property="og:title" content="Dataquill — Turn Your Data Into Decisions" />
-<meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
-<meta property="og:url" content="/" />
-<meta name="twitter:card" content="summary_large_image" />
-
-<style>
-:root{
-  --bg:#000a0e;
-  --surface:#0b1418;
-  --card:#0f1c22;
-  --muted:#18242a;
-  --text:#eaffff;
-  --sub:#9fcfe7;
-  --teal1:#19b6a5;
-  --teal2:#0aa8a0;
-  --teal3:#067a74;
-  --glow: 0 0 30px rgba(0, 255, 214, .15), 0 0 8px rgba(0, 255, 214, .12);
-}
-
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;background:radial-gradient(1000px 600px at 20% -10%, #072128 0%, #031014 35%, var(--bg) 80%);
-  color:var(--text);font-family:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial; 
-}
-
-/* Top bar */
-.topbar{
-  position:sticky;top:0;z-index:10;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:.9rem 1.1rem;background:linear-gradient(180deg, rgba(5,16,22,.9), rgba(5,16,22,.6));
-  backdrop-filter: blur(6px); border-bottom:1px solid #0f2a31;
-}
-.brand{
-  display:flex;align-items:center;gap:.6rem;font-weight:700;letter-spacing:.2px;
-}
-.brand .dot{
-  width:22px;height:22px;border-radius:6px;
-  background: radial-gradient(circle at 30% 25%, #58ffe8, #00e7d0 55%, #00b6aa 85%);
-  box-shadow: var(--glow);
-}
-.brand span{font-size:1.05rem}
-
-.nav{
-  display:flex;gap:.4rem;align-items:center;
-}
-.nav a{
-  color:#dff; text-decoration:none; font-size:.92rem;
-  padding:.4rem .7rem; border-radius:.6rem; border:1px solid #103640;
-  background:linear-gradient(180deg,#052027,#071c21); 
-}
-.nav a:hover{border-color:#1e6e76; box-shadow:var(--glow)}
-.nav .cta{
-  background:linear-gradient(180deg,#0ab6a8,#07867f);
-  border-color:#0ab6a8;color:#001314;font-weight:700;
-}
-
-/* Sections */
-.section{padding:1.2rem; max-width:1100px; margin:0 auto;}
-.card{
-  background:linear-gradient(180deg, #0a151a, #081419);
-  border:1px solid #113640; border-radius:14px; padding:1rem; box-shadow: var(--glow);
-}
-.hrow{display:grid;grid-template-columns:1fr 1fr; gap:1rem}
-.h{font-weight:800; font-size:1.35rem; color:#aef; margin:.2rem 0 .6rem}
-
-/* Drop area & stats */
-.drop{
-  border:2px dashed #1b6b74; border-radius:12px; padding:1.1rem; text-align:center; 
-  background: #07161b; color:#cfe; cursor:pointer;
-}
-.drop:hover{border-color:#2fcad0; box-shadow:var(--glow)}
-.btns{display:flex; flex-wrap:wrap; gap:.6rem; margin:.8rem 0}
-.btn{
-  border:1px dashed #197c86; background:#062329; color:#e7ffff; 
-  padding:.5rem .8rem; border-radius:.8rem; cursor:pointer; font-size:.9rem;
-}
-.btn:hover{border-style:solid; box-shadow:var(--glow)}
-
-.kpis{display:flex; gap:.8rem; flex-wrap:wrap; margin:.8rem 0}
-.kpi{flex:1 1 120px; background:#07161b; border:1px solid #133c45; border-radius:10px; padding:.6rem}
-.kpi .lab{color:#8fbcc9; font-size:.8rem;margin-bottom:.25rem}
-.kpi .val{font-weight:800; font-size:1.2rem}
-
-/* Grid below: table + chart */
-.grid{
-  display:grid; grid-template-columns:1.2fr .8fr; gap:1rem;
-}
-.tablewrap{
-  background:#07161b; border:1px solid #133c45; border-radius:12px; overflow:auto;
-}
-table{width:100%; border-collapse:collapse; font-size:.95rem}
-th,td{padding:.6rem .7rem; border-bottom:1px solid #0f2a31; white-space:nowrap}
-th{position:sticky; top:0; background:#0a1c21; color:#bfe}
-tr:hover td{background:#061a20}
-
-/* Chart card */
-.chart{
-  background:#07161b; border:1px solid #133c45; border-radius:12px; padding:.6rem .8rem
-}
-canvas{width:100%; height:280px}
-
-/* Pricing / FAQ / Footer */
-.subgrid{display:grid; grid-template-columns:1fr 1fr; gap:1rem}
-.footer{opacity:.9; text-align:center; padding:2rem 1rem; color:#9fd}
-small a{color:#9fd}
-
-/* Small screens */
-@media (max-width:900px){
-  .hrow{grid-template-columns:1fr}
-  .grid{grid-template-columns:1fr}
-  canvas{height:240px}
-}
-</style>
-</head>
-<body>
-
-<header class="topbar">
-  <div class="brand"><div class="dot"></div><span>Dataquill</span></div>
-  <nav class="nav">
-    <a href="#pricing">Pricing</a>
-    <a href="#faq">FAQ</a>
-    <a href="#app" class="cta">Live App</a>
-  </nav>
-</header>
-
-<main>
-  <!-- Hero -->
-  <section class="section">
-    <div class="hrow">
-      <div class="card">
-        <div class="h">AI powered embedded analytics platform</div>
-        <p style="color:#98c7d6;line-height:1.5;margin:.2rem 0 0">
-          Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.
-        </p>
-      </div>
-      <div class="card">
-        <div class="h">Quick charts</div>
-        <p style="color:#98c7d6">The first numeric column is charted automatically.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- Live App -->
-  <section class="section" id="app">
-    <div class="card">
-      <div class="h">Drop or choose a CSV</div>
-
-      <div id="drop" class="drop" tabindex="0" role="button" aria-label="Upload CSV">
-        Drag a .csv here or <span style="text-decoration:underline">browse</span>
-        <input id="file" type="file" accept=".csv" style="display:none" />
-      </div>
-
-      <div class="btns">
-        <button class="btn" id="loadSample">Load Sample</button>
-        <button class="btn" id="clear">Clear Data</button>
-      </div>
-
-      <div class="kpis">
-        <div class="kpi"><div class="lab">Rows</div><div class="val" id="rows">0</div></div>
-        <div class="kpi"><div class="lab">Columns</div><div class="val" id="cols">0</div></div>
-        <div class="kpi"><div class="lab">Sample</div><div class="val" id="sample">—</div></div>
-      </div>
-
-      <div class="grid">
-        <div class="tablewrap"><table id="table"></table></div>
-        <div class="chart">
-          <canvas id="chart" width="600" height="280" aria-label="Quick chart"></canvas>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Pricing + FAQ -->
-  <section class="section subgrid">
-    <div class="card" id="pricing">
-      <div class="h">Pricing</div>
-      <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
-      <p><strong>Pro (TBD):</strong> Export dashboards, white-label branding, priority support.</p>
-    </div>
-
-    <div class="card" id="faq">
-      <div class="h">FAQ</div>
-      <p><strong>Is my data sent to a server?</strong><br/>No. All processing happens in your browser.</p>
-      <p><strong>What file formats are supported?</strong><br/>CSV for now. More coming soon.</p>
-    </div>
-  </section>
-
-  <footer class="footer">
-    <small>© 2025 Dataquill. All rights reserved.</small>
-  </footer>
-</main>
-
-<script>
-/* ---------- Helpers ---------- */
-const $ = sel => document.querySelector(sel);
-
-function parseCSV(text){
-  // Simple CSV parser w/ quoted values
-  const rows = [];
-  let row = [], val = '', inQuotes = false;
-  for(let i=0;i<text.length;i++){
-    const c = text[i], n = text[i+1];
-    if(c === '"' ){
-      if(inQuotes && n === '"'){ val+='"'; i++; }
-      else inQuotes = !inQuotes;
-    }else if(c === ',' && !inQuotes){ row.push(val); val=''; }
-    else if((c === '\n' || c === '\r') && !inQuotes){
-      if(val!=='' || row.length){ row.push(val); rows.push(row); row=[]; val=''; }
-      if(c === '\r' && n === '\n') i++;
-    }else{
-      val += c;
-    }
-  }
-  if(val!=='' || row.length){ row.push(val); rows.push(row); }
-  return rows.filter(r => r.length && r.join('').trim()!=='');
-}
-
-/* ---------- State ---------- */
-let headers = [];
-let dataRows = [];
-
-/* ---------- DOM ---------- */
-const fileInput = $("#file");
-const drop = $("#drop");
-const tableEl = $("#table");
-const rowsEl = $("#rows");
-const colsEl = $("#cols");
-const sampleEl = $("#sample");
-const chartCanvas = $("#chart");
-const ctx = chartCanvas.getContext("2d");
-
-/* ---------- Chart ---------- */
-function drawChart(){
-  // find first numeric column
-  if(!headers.length || !dataRows.length){ ctx.clearRect(0,0,chartCanvas.width, chartCanvas.height); return; }
-  const cols = headers.length;
-  let numCol = -1;
-  for(let c=0; c<cols; c++){
-    if(dataRows.some(r => !isNaN(parseFloat(r[c])))){ numCol = c; break; }
-  }
-  if(numCol===-1){ ctx.clearRect(0,0,chartCanvas.width, chartCanvas.height); return; }
-
-  const labels = dataRows.map(r => r[0] || '');
-  const values = dataRows.map(r => parseFloat(r[numCol]) || 0);
-
-  // draw simple bar chart
-  const W = chartCanvas.width, H = chartCanvas.height;
-  ctx.clearRect(0,0,W,H);
-  const padL=40, padR=10, padT=15, padB=30;
-  const innerW = W - padL - padR, innerH = H - padT - padB;
-  ctx.fillStyle = "#061a20"; ctx.fillRect(0,0,W,H);
-  // axes
-  ctx.strokeStyle = "#1a6c74"; ctx.lineWidth = 1.2;
-  ctx.beginPath(); ctx.moveTo(padL, padT); ctx.lineTo(padL, padT+innerH); ctx.lineTo(padL+innerW, padT+innerH); ctx.stroke();
-
-  const maxV = Math.max(...values, 0.0001);
-  const barW = innerW / values.length * 0.75;
-  const gap = innerW / values.length * 0.25;
-  ctx.fillStyle = "#19b6a5";
-  values.forEach((v,i)=>{
-    const h = (v/maxV) * (innerH-4);
-    const x = padL + i*(barW+gap) + gap/2;
-    const y = padT + innerH - h;
-    ctx.fillRect(x,y,barW,h);
-  });
-
-  // x labels (first 10)
-  ctx.fillStyle = "#9fcfe7"; ctx.font = "12px system-ui, sans-serif"; ctx.textAlign="center";
-  values.slice(0,10).forEach((_,i)=>{
-    const x = padL + i*(barW+gap) + gap/2 + barW/2;
-    ctx.fillText((labels[i]||'').slice(0,8), x, H-10);
-  });
-}
-
-/* ---------- Table ---------- */
-function renderTable(){
-  if(!headers.length){ tableEl.innerHTML=''; return; }
-  let html = "<thead><tr>";
-  headers.forEach(h => html += `<th>${escapeHtml(h)}</th>`);
-  html += "</tr></thead><tbody>";
-  dataRows.forEach(r=>{
-    html += "<tr>";
-    for(let i=0;i<headers.length;i++){
-      html += `<td>${escapeHtml(r[i] ?? "")}</td>`;
-    }
-    html += "</tr>";
-  });
-  html += "</tbody>";
-  tableEl.innerHTML = html;
-}
-
-function escapeHtml(s){ return String(s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])); }
-
-/* ---------- Loaders ---------- */
-function useCSV(text){
-  const rows = parseCSV(text);
-  if(!rows.length){ return; }
-  headers = rows[0];
-  dataRows = rows.slice(1);
-
-  rowsEl.textContent = dataRows.length;
-  colsEl.textContent = headers.length;
-  sampleEl.textContent = (dataRows[0] && dataRows[0][0]) ? dataRows[0][0] : '—';
-
-  renderTable();
-  drawChart();
-}
-
-function clearData(){
-  headers = []; dataRows = [];
-  rowsEl.textContent = '0';
-  colsEl.textContent = '0';
-  sampleEl.textContent = '—';
-  tableEl.innerHTML = '';
-  drawChart();
-}
-
-/* ---------- Events ---------- */
-drop.addEventListener("click", () => fileInput.click());
-drop.addEventListener("keydown", (e)=>{ if(e.key==='Enter' || e.key===' '){ e.preventDefault(); fileInput.click(); } });
-drop.addEventListener("dragover", e => { e.preventDefault(); drop.style.borderColor='#2fcad0'; });
-drop.addEventListener("dragleave", e => { drop.style.borderColor='#1b6b74'; });
-drop.addEventListener("drop", e => {
-  e.preventDefault(); drop.style.borderColor='#1b6b74';
-  const f = e.dataTransfer.files?.[0];
-  if(f) readFile(f);
-});
-fileInput.addEventListener("change", e => {
-  const f = e.target.files?.[0];
-  if(f) readFile(f);
-});
-
-function readFile(f){
-  const r = new FileReader();
-  r.onload = () => useCSV(r.result);
-  r.readAsText(f);
-}
-
-$("#loadSample").addEventListener("click", ()=> {
-  const sample = `Name,City,Sales
-Alice,New York,120
-Bob,Miami,95
-Cara,Chicago,141`;
-  useCSV(sample);
-});
-$("#clear").addEventListener("click", clearData);
-
-// initial blank chart
-drawChart();
-</script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-
-  <title>Dataquill — AI powered embedded analytics platform</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV to get instant KPIs, a table view, and quick charts. Export, white-label, and ship." />
-
-  <meta property="og:type" content="website" />
-  <meta property="og:title" content="Dataquill — AI powered embedded analytics platform" />
-  <meta property="og:description" content="Upload a CSV to get instant KPIs, a table view, and quick charts. Export, white-label, and ship." />
-  <meta property="og:url" content="/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <style>
-    :root{
-      --bg:#000814;
-      --panel:#041a28;
-      --panel-2:#072037;
-      --text:#e6ffff;
-      --muted:#9fe7e1;
-      --teal1:#14c6bb;
-      --teal2:#0ea5a3;
-      --glow: rgba(20, 198, 187, .35);
-      --shadow: 0 0 24px rgba(20,198,187,.08), 0 8px 24px rgba(0,0,0,.45);
-      --radius: 14px;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font:16px/1.5 ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial;
-      color:var(--text);
-      background:
-        radial-gradient(1200px 600px at 30% -5%, rgba(20,198,187,.18), transparent 55%),
-        radial-gradient(800px 500px at 85% -10%, rgba(60,105,255,.12), transparent 50%),
-        var(--bg);
-      letter-spacing:.2px;
-    }
-    header{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      padding:1rem 2rem;
-      background:var(--panel);
-      box-shadow:var(--shadow);
-    }
-    header h1{font-size:1.4rem;margin:0;color:var(--teal1);}
-    nav a{
-      color:var(--text);
-      text-decoration:none;
-      margin-left:1.5rem;
-      font-size:0.95rem;
-    }
-    main{
-      padding:2rem;
-      display:grid;
-      gap:2rem;
-      max-width:1100px;
-      margin:auto;
-    }
-    section{
-      background:var(--panel-2);
-      border-radius:var(--radius);
-      padding:1.5rem;
-      box-shadow:var(--shadow);
-    }
-    h2{margin-top:0;font-size:1.25rem;color:var(--teal1);}
-    table{
-      width:100%;
-      border-collapse:collapse;
-      margin-top:1rem;
-    }
-    th,td{
-      border-bottom:1px solid var(--teal2);
-      padding:.5rem .75rem;
-      text-align:left;
-    }
-    .csv-drop{
-      border:2px dashed var(--teal1);
-      border-radius:var(--radius);
-      padding:2rem;
-      text-align:center;
-      cursor:pointer;
-    }
-    .csv-drop.drag{background:rgba(20,198,187,.08);}
-    button{
-      background:var(--teal2);
-      color:#fff;
-      border:none;
-      padding:.5rem 1rem;
-      border-radius:var(--radius);
-      cursor:pointer;
-      margin-right:.5rem;
-    }
-    button:hover{background:var(--teal1);}
-    footer{
-      text-align:center;
-      padding:2rem;
-      font-size:0.85rem;
-      color:var(--muted);
-    }
-  </style>
-</head>
-<body>
-  <header>
-    <h1>Dataquill</h1>
-    <nav>
-      <a href="#">Pricing</a>
-      <a href="#">FAQ</a>
-      <a href="#">Live App</a>
-    </nav>
-  </header>
-
-  <main>
-    <section>
-      <h2>AI powered embedded analytics platform</h2>
-      <p>Upload a CSV to get instant KPIs, a table view, and a quick chart. Export, white-label, and ship.</p>
-    </section>
-
-    <section>
-      <h2>Drop or choose a CSV</h2>
-      <div class="csv-drop" id="dropZone">Drag a .csv here or <span style="text-decoration:underline;cursor:pointer;" id="browseLink">browse</span></div>
-      <input type="file" id="fileInput" accept=".csv" style="display:none" />
-      <div style="margin-top:1rem;">
-        <button onclick="loadSample()">Load Sample</button>
-        <button onclick="clearData()">Clear Data</button>
-      </div>
-      <table id="dataTable"></table>
-    </section>
-
-    <section>
-      <h2>Quick charts</h2>
-      <canvas id="chartCanvas" width="400" height="200"></canvas>
-    </section>
-  </main>
-
-  <footer>
-    © 2025 Dataquill. All rights reserved.
-  </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script>
-    const fileInput = document.getElementById('fileInput');
-    const dropZone = document.getElementById('dropZone');
-    const dataTable = document.getElementById('dataTable');
-    const ctx = document.getElementById('chartCanvas').getContext('2d');
-    let chart;
-
-    document.getElementById('browseLink').onclick = () => fileInput.click();
-
-    dropZone.addEventListener('dragover', e => {
-      e.preventDefault();
-      dropZone.classList.add('drag');
-    });
-    dropZone.addEventListener('dragleave', () => dropZone.classList.remove('drag'));
-    dropZone.addEventListener('drop', e => {
-      e.preventDefault();
-      dropZone.classList.remove('drag');
-      if (e.dataTransfer.files.length) handleFile(e.dataTransfer.files[0]);
-    });
-    fileInput.addEventListener('change', e => {
-      if (e.target.files.length) handleFile(e.target.files[0]);
+    // Export PNG (chart)
+    el.exportPng.addEventListener("click", ()=>{
+      const url = document.getElementById("chartCanvas").toDataURL("image/png");
+      const a = document.createElement("a");
+      a.href = url; a.download = "chart.png"; a.click();
     });
 
-    function handleFile(file){
-      const reader = new FileReader();
-      reader.onload = e => parseCSV(e.target.result);
-      reader.readAsText(file);
-    }
-
-    function parseCSV(text){
-      const rows = text.trim().split(/\r?\n/).map(r => r.split(','));
-      renderTable(rows);
-      renderChart(rows);
-    }
-
-    function renderTable(rows){
-      dataTable.innerHTML = '';
-      if(rows.length){
-        const header = '<tr>' + rows[0].map(c => `<th>${c}</th>`).join('') + '</tr>';
-        const body = rows.slice(1).map(r => '<tr>' + r.map(c => `<td>${c}</td>`).join('') + '</tr>').join('');
-        dataTable.innerHTML = header + body;
-      }
-    }
-
-    function renderChart(rows){
-      if(!rows.length || rows[0].length < 2) return;
-      const labels = rows.slice(1).map(r => r[0]);
-      const values = rows.slice(1).map(r => parseFloat(r[1]) || 0);
-      if(chart) chart.destroy();
-      chart = new Chart(ctx, {
-        type:'bar',
-        data:{
-          labels,
-          datasets:[{label:rows[0][1], data:values, backgroundColor:'rgba(20,198,187,.6)'}]
-        },
-        options:{responsive:true,scales:{y:{beginAtZero:true}}}
-      });
-    }
-
-    function loadSample(){
-      const sample = "Name,Sales\nAlice,120\nBob,95\nCara,141";
-      parseCSV(sample);
-    }
-
-    function clearData(){
-      dataTable.innerHTML = '';
-      if(chart) chart.destroy();
-    }
-  </script>
-</body>
-</html><!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Dataquill – Turn Your Data Into Decisions</title>
-  <meta name="description" content="Dataquill: AI powered embedded analytics platform. Upload a CSV and explore widgets instantly in a clean black-and-teal UI." />
-
-  <!-- Open Graph -->
-  <meta property="og:title" content="Dataquill – Turn Your Data Into Decisions" />
-  <meta property="og:description" content="AI powered embedded analytics platform. Upload a CSV and explore widgets in a clean black-and-teal UI." />
-  <meta property="og:type" content="website" />
-  <meta property="og:url" content="https://dataquill.vercel.app/" />
-  <meta name="twitter:card" content="summary_large_image" />
-
-  <style>
-    :root{
-      --bg:#000; --panel:#0b1418; --card:#0f1c22; --text:#e9ffff;
-      --muted:#9fe7e1; --accent:#00e0c3; --accentDim:#00b8a1; --border:#124e4b;
-    }
-    *{box-sizing:border-box}
-    body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text)}
-    a{color:var(--muted)}
-    header{display:flex;justify-content:space-between;align-items:center;padding:14px 22px;background:var(--panel);position:sticky;top:0;z-index:10}
-    .brand{font-weight:800;font-size:22px;color:var(--accent)}
-    nav a{margin-left:16px;text-decoration:none;color:var(--text);opacity:.9}
-    nav a:hover{opacity:1}
-    main{padding:18px}
-    .panel{background:var(--card);border:1px solid var(--border);border-radius:14px;padding:18px;margin:14px auto;max-width:1100px}
-    h1,h2{margin:0 0 10px}
-    .dropzone{
-      border:2px dashed var(--accent);border-radius:12px;padding:28px;text-align:center;
-      transition:all .2s ease;background:rgba(0,224,195,.04)
-    }
-    .dropzone.drag{background:rgba(0,224,195,.08);border-color:#64ffe9;transform:scale(1.01)}
-    .actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
-    .btn{background:var(--accent);border:none;color:#003b34;font-weight:700;padding:10px 14px;border-radius:10px;cursor:pointer}
-    .btn.secondary{background:transparent;border:1px solid var(--border);color:var(--text)}
-    .stats{display:flex;gap:12px;margin-top:12px;flex-wrap:wrap}
-    .stat{background:#061315;border:1px solid var(--border);padding:10px 12px;border-radius:10px;min-width:120px}
-    table{width:100%;border-collapse:collapse;margin-top:12px}
-    th,td{border-bottom:1px solid var(--border);padding:8px 10px;text-align:left;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    th{color:var(--muted)}
-    footer{text-align:center;padding:28px;background:var(--panel);margin-top:24px;border-top:1px solid var(--border)}
-    .hint{opacity:.8;font-size:.95rem}
-  </style>
-</head>
-<body>
-  <header>
-    <div class="brand">Dataquill</div>
-    <nav>
-      <a href="#pricing">Pricing</a>
-      <a href="#faq">FAQ</a>
-      <a href="#live-app">Live App</a>
-    </nav>
-  </header>
-
-  <main>
-    <section class="panel">
-      <h1>Dataquill</h1>
-      <p class="hint">AI powered embedded analytics platform</p>
-    </section>
-
-    <section id="live-app" class="panel">
-      <h2>Drop your CSV file</h2>
-      <p class="hint">Drag &amp; drop or tap <strong>Browse</strong> to choose a CSV. Rows will render instantly below.</p>
-
-      <!-- Hidden file input (triggered by “Browse” button) -->
-      <input id="csvInput" type="file" accept=".csv,text/csv" style="display:none" />
-
-      <div id="dropzone" class="dropzone" role="button" aria-label="CSV Drop Area">
-        Drag a .csv here or <a id="browseLink" href="#">browse</a>
-      </div>
-
-      <div class="actions">
-        <button id="clearBtn" class="btn secondary" type="button">Clear Data</button>
-        <button id="loadSampleBtn" class="btn secondary" type="button">Load Sample</button>
-      </div>
-
-      <div class="stats" id="stats" style="display:none">
-        <div class="stat"><div class="hint">Rows</div><div id="rowsCount">0</div></div>
-        <div class="stat"><div class="hint">Columns</div><div id="colsCount">0</div></div>
-        <div class="stat"><div class="hint">Sample</div><div id="sampleValue">—</div></div>
-      </div>
-
-      <div id="previewWrap" style="overflow:auto">
-        <table id="previewTable" style="display:none"></table>
-      </div>
-    </section>
-
-    <section id="pricing" class="panel">
-      <h2>Pricing</h2>
-      <p><strong>Free:</strong> Upload CSV and preview widgets instantly.</p>
-      <p><strong>Pro (TBD):</strong> Export dashboards, white-label branding, priority support.</p>
-    </section>
-
-    <section id="faq" class="panel">
-      <h2>FAQ</h2>
-      <details>
-        <summary>Is my data sent to a server?</summary>
-        <p>No. All processing happens in your browser.</p>
-      </details>
-      <details>
-        <summary>What file formats are supported?</summary>
-        <p>Currently CSV only. More coming soon.</p>
-      </details>
-    </section>
-  </main>
-
-  <footer>© 2025 Dataquill. All rights reserved.</footer>
-
-  <script>
-    // --- helpers -------------------------------------------------------------
-    const $ = sel => document.querySelector(sel);
-    const csvInput = $('#csvInput');
-    const dropzone = $('#dropzone');
-    const browseLink = $('#browseLink');
-    const clearBtn = $('#clearBtn');
-    const loadSampleBtn = $('#loadSampleBtn');
-    const previewTable = $('#previewTable');
-    const stats = $('#stats');
-    const rowsCount = $('#rowsCount');
-    const colsCount = $('#colsCount');
-    const sampleValue = $('#sampleValue');
-
-    function setPreview(headers, rows) {
-      // Build table (show up to 100 rows for performance)
-      const maxRows = 100;
-      previewTable.innerHTML = '';
-      const thead = document.createElement('thead');
-      const trh = document.createElement('tr');
-      headers.forEach(h => {
-        const th = document.createElement('th');
-        th.textContent = h ?? '';
-        trh.appendChild(th);
-      });
-      thead.appendChild(trh);
-      previewTable.appendChild(thead);
-
-      const tbody = document.createElement('tbody');
-      rows.slice(0, maxRows).forEach(r => {
-        const tr = document.createElement('tr');
-        r.forEach(cell => {
-          const td = document.createElement('td');
-          td.textContent = cell ?? '';
-          tr.appendChild(td);
-        });
-        tbody.appendChild(tr);
-      });
-      previewTable.appendChild(tbody);
-
-      // Stats
-      rowsCount.textContent = rows.length.toLocaleString();
-      colsCount.textContent = headers.length;
-      sampleValue.textContent = rows.length && rows[0].length ? (rows[0][0] + '') : '—';
-
-      stats.style.display = 'flex';
-      previewTable.style.display = 'table';
-    }
-
-    function clearPreview() {
-      previewTable.style.display = 'none';
-      previewTable.innerHTML = '';
-      stats.style.display = 'none';
-      rowsCount.textContent = '0';
-      colsCount.textContent = '0';
-      sampleValue.textContent = '—';
-    }
-
-    // Robust-ish CSV parser that handles quoted fields & commas inside quotes
-    function parseCSV(text) {
-      const rows = [];
-      let row = [], cur = '', inQuotes = false;
-      for (let i = 0; i < text.length; i++) {
-        const c = text[i], n = text[i+1];
-        if (c === '"' ) {
-          if (inQuotes && n === '"') { cur += '"'; i++; }
-          else { inQuotes = !inQuotes; }
-        } else if (c === ',' && !inQuotes) {
-          row.push(cur); cur = '';
-        } else if ((c === '\n' || c === '\r') && !inQuotes) {
-          if (cur !== '' || row.length) { row.push(cur); rows.push(row); row = []; cur=''; }
-          if (c === '\r' && n === '\n') i++; // handle CRLF
-        } else {
-          cur += c;
-        }
-      }
-      if (cur !== '' || row.length) { row.push(cur); rows.push(row); }
-      if (!rows.length) return { headers: [], rows: [] };
-      const headers = rows[0];
-      return { headers, rows: rows.slice(1) };
-    }
-
-    function handleText(text) {
-      const { headers, rows } = parseCSV(text);
-      if (!headers.length) {
-        clearPreview();
-        alert('No data found in CSV.');
-        return;
-      }
-      setPreview(headers, rows);
-    }
-
-    // --- wiring: browse / drag & drop ---------------------------------------
-    browseLink.addEventListener('click', e => {
-      e.preventDefault();
-      csvInput.click();
-    });
-
-    csvInput.addEventListener('change', e => {
-      const f = e.target.files && e.target.files[0];
-      if (!f) return;
-      const reader = new FileReader();
-      reader.onload = () => handleText(reader.result);
-      reader.readAsText(f);
-      // reset input so choosing same file again re-triggers
-      e.target.value = '';
-    });
-
-    ;['dragenter','dragover'].forEach(evt =>
-      dropzone.addEventListener(evt, e => {
-        e.preventDefault(); e.stopPropagation();
-        dropzone.classList.add('drag');
-      })
-    );
-    ;['dragleave','drop'].forEach(evt =>
-      dropzone.addEventListener(evt, e => {
-        e.preventDefault(); e.stopPropagation();
-        dropzone.classList.remove('drag');
-      })
-    );
-    dropzone.addEventListener('drop', e => {
-      const f = e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0];
-      if (!f) return;
-      const reader = new FileReader();
-      reader.onload = () => handleText(reader.result);
-      reader.readAsText(f);
-    });
-
-    // --- misc buttons --------------------------------------------------------
-    clearBtn.addEventListener('click', clearPreview);
-
-    loadSampleBtn.addEventListener('click', () => {
-      // Tiny inline sample to avoid network calls
-      const sample = `Name,City,Sales
-Alice,New York,120
-Bob,Miami,95
-Cara,Chicago,141`;
-      handleText(sample);
+    // Export PDF (simple print of page section)
+    el.exportPdf.addEventListener("click", ()=>{
+      window.print(); // quick solution (prints the page nicely on iPad Safari/desktop)
     });
   </script>
 </body>
